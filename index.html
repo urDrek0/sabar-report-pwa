@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="id">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Report</title>
+        <link href="https://fonts.googleapis.com/css2?family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="./dist/style.css" />
+
+         <!-- STANDARD JS -->
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@7.1.0/all/global.js"></script>
+
+        <!-- THEME JS -->
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@7.1.0/themes/monarch/global.js"></script>
+
+        <!-- STYLESHEETS -->
+        <link href='https://cdn.jsdelivr.net/npm/fullcalendar@7.1.0/skeleton.css' rel='stylesheet' />
+        <link href='https://cdn.jsdelivr.net/npm/fullcalendar@7.1.0/themes/monarch/theme.css' rel='stylesheet' />
+        <link href='https://cdn.jsdelivr.net/npm/fullcalendar@7.1.0/themes/monarch/palettes/purple.css' rel='stylesheet' />
+
+        <link rel="icon" href="src/asset/logo/documents.png" type="image/x-icon">
+	</head>
+	<body data-color-scheme="dark">
+        <div class="flex min-h-screen">
+            <aside id="sidebar-container"class="bg-[#353A3E] h-auto w-auto pt-6 pb-6 pl-6 pr-6">
+                <div class="flex space-x-5">
+                    <button id="toggle-sidebar" class="cursor-pointer" onclick="toggleSideBar()">
+                            <img src="src/asset/logo/sidebar.png" class="max-h-6 max-w-8" >
+                    </button>
+                <h1 id="aside-title" class="text-white text-xl navbar-font">Menu</h1>
+                </div>
+                <div class="pt-8">
+                    <button id="" class="cursor-pointer flex space-x-5" onclick="dashboard()">
+                        <img src="src/asset/logo/home.png" class="max-w-10 h-auto" alt="">
+                        <h1 id="aside-home" class="navbar-font text-white justify-center text-left mt-2">Dashboard</h1>
+                    </button>
+                </div>
+
+                <form id="searchForm" class="flex space-x-5 pt-8">
+                    <button id="searchName" class="cursor-pointer" type="submit">
+                        <img src="src/asset/logo/search.png" class="h-auto max-w-8" alt="">
+                    </button>
+                        <input id="aside-search" type="text" class="border border-1 rounded-xl text-white border-white p-2" placeholder="Cari Nama Pasien" value="">
+                </form>
+
+                <!-- calender -->
+                <div class="flex space-x-5 pt-8">
+                    <img src="src/asset/logo/calendar.png" alt="" class="h-auto max-w-8">
+                    <h1 id="aside-calendar" class="navbar-font text-white pt-2"></h1>
+                    <button id="prevMonth" class="cursor-pointer">
+                        <img src="src/asset/logo/prev.png" alt="" class="">
+                    </button>
+                    <button id="nextMonth" class="cursor-pointer">
+                        <img src="src/asset/logo/next.png" alt="" class="">
+
+                    </button>
+                </div>
+                <div id="calendar-wrapper" class="pt-2" >
+                    <div id="navbar-content-calendar" class="cursor-pointer">
+                        <script>
+                            let calendar;
+
+                            document.addEventListener("DOMContentLoaded", function () {
+                            const calendarEl = document.getElementById("navbar-content-calendar");
+                            calendar = new FullCalendar.Calendar(calendarEl, {
+                                initialView: "dayGridMonth",
+                            });
+                            calendar.render();
+                            const dateNow = document.getElementById('aside-calendar');
+
+                            const dateFormatting = calendar.getDate()
+                                dateNow.textContent = dateFormatting.toLocaleDateString('id-ID', 
+                                    {month: 'long', year: 'numeric' })
+
+                                document.getElementById('prevMonth').addEventListener('click', function () {
+                                    calendar.prev();
+                                    });
+                                document.getElementById('nextMonth').addEventListener('click', function () {
+                                    calendar.next();
+                                    });
+                            });
+                        </script>
+                    </div>
+                </div>
+                <div id="" class="flex space-x-5 pt-8">
+                    <img src="src/asset/logo/shift.png" alt="" class="max-w-10">
+                    <select id="aside-shift" name="Shift" class="border border-1 border-white rounded-xl p-2 text-white">
+                        <option value="pagi" class="text-black">Pagi</option>
+                        <option value="siang" class="text-black">Siang</option>
+                        <option value="malam" class="text-black">Malam</option>
+                    </select>
+                </div>
+                <div class="pt-8">
+                    <button id="" class="cursor-pointer" onclick="daftarPegawai()">
+                        <div class="flex space-x-5">
+                            <img src="src/asset/logo/pegawai.png" alt="" class="max-w-10 h-auto">
+                            <h1 id="aside-pegawai" class="navbar-font text-white justify-center text-left mt-2">Daftar Pegawai</h1>
+                        </div>
+                    </button>
+                </div>
+                <div class="pt-8">
+                    <button id="" class="cursor-pointer" onclick="daftarPasien()">
+                        <div class="flex space-x-5">
+                            <img src="src/asset/logo/pasien.png" alt="" class="max-w-10 h-auto">
+                            <h1 id="aside-pasien" class="navbar-font text-white justify-center text-left mt-2">Daftar Pasien</h1>
+                        </div>
+                    </button>
+                </div>    
+            </aside>
+
+            <main class="min-w-0 flex-1" id="">
+                <h1 id="report-title-dashboard" class="navbar-font text-4xl text-center p-4">SABR Shift's Report</h1>
+                <div id="table-header-dashboard" class="bg-[#BFBFBF] p-4 grid grid-cols-7 gap-4 w-full">
+                    <h2 class="">No</h2>
+                    <h2 class="">Name</h2>
+                    <h2 class="">Situation</h2>
+                    <h2 class="">Background</h2>
+                    <h2 class="">Assesment</h2>
+                    <h2 class="">Recommendation</h2>
+                    <h2 class=""></h2>
+                </div>
+                <div id="table-data-pasien-sabr" class="">
+                </div>
+
+                <div id="daftar-pegawai" class="hidden">
+                    <h1 id="report-title-pegawai" class="navbar-font text-4xl text-center p-4">Daftar Pegawai</h1>
+                    <div id="table-header-pegawai" class="bg-[#BFBFBF] p-4 grid grid-cols-4 gap-4 w-full">
+                        <h2 class="">No</h2>
+                        <h2 class="">Name</h2>
+                        <h2 class="">Signature</h2>
+                        <h2 class=""></h2>
+                    </div>
+                    <div id="table-data-daftar-pegawai" class="">
+                    </div>
+                </div>
+
+                <div id="daftar-pasien" class="hidden">
+                    <h1 id="report-title-pasien" class="navbar-font text-4xl text-center p-4">Daftar Pasien</h1>
+                    <div id="table-header-pasien" class="bg-[#BFBFBF] p-4 grid grid-cols-4 gap-4 w-full">
+                        <h2 class="">No</h2>
+                        <h2 class="">Name</h2>
+                        <h2 class="">Age</h2>
+                        <h2 class=""></h2>
+                    </div>
+                    <div id="table-data-daftar-pasien" class="">
+                    </div>
+                </div>
+            </main>
+
+
+        </div>
+	</body>
+    <script>
+        function toggleSideBar(){
+            document.getElementById('sidebar-container').classList.toggle('pr-6')
+            document.getElementById('aside-title').classList.toggle('hidden')
+            document.getElementById('aside-home').classList.toggle('hidden')
+            document.getElementById('aside-search').classList.toggle('hidden')
+            document.getElementById('aside-calendar').classList.toggle('hidden')
+            document.getElementById('calendar-wrapper').classList.toggle('hidden')
+            document.getElementById('aside-shift').classList.toggle('hidden')
+            document.getElementById('aside-pegawai').classList.toggle('hidden')
+            document.getElementById('aside-pasien').classList.toggle('hidden')
+            document.getElementById('prevMonth').classList.toggle('hidden')
+            document.getElementById('nextMonth').classList.toggle('hidden')
+        }
+        function dummyData(){
+        let count =""
+        for(let i = 1; i <= 25 ; i++){
+            count += `
+                <div class="pt-1 pb-1">
+                    <div id="table-content" class="bg-white p-4 grid grid-cols-7 gap-4 w-full">
+                        <h2>${i}</h2>
+                        <h2>Name</h2>
+                        <p>Situation</p>
+                        <p>Background</p>
+                        <p>Assesment</p>
+                        <p>Recommendation</p>
+                        <button id="" class="cursor-pointer" onclick="">
+                            <img src="src/asset/logo/edit.png" alt="" class="max-w-4 justify-center place-self-end">
+                        </button>
+                    </div>
+                </div>    
+                `
+                }
+            document.getElementById('table-data-pasien-sabr').innerHTML = count
+        }
+        dummyData()
+        function dummyPegawai(){
+        let pegawai =""
+        for(let i = 1; i <= 25 ; i++){
+            pegawai += `
+                <div id="data-pegawai-wrapper" class="pt-1 pb-1">
+                    <div id="" class="bg-white p-4 grid grid-cols-4 gap-4 w-full">
+                        <h2 class="">${i}</h2>
+                        <h2 class="">Name</h2>
+                        <div class="">
+                            <img src="src/asset/signature/sign-dummy.png" alt="" class="max-w-25 h-auto">
+                        </div>
+                        <div id="action" class="flex space-x-4 justify-center place-self-end">
+                            <button class="max-w-5 h-auto cursor-pointer" id="" onclick="">
+                                <img src="src/asset/logo/edit.png" alt="" class="">
+                            </button>
+                            <button class="max-w-5 h-auto cursor-pointer" id="" onclick="">
+                                <img src="src/asset/logo/delete.png" alt="" class="">
+                            </button>
+                        </div>
+                    </div>
+                </div>    
+                `
+                }
+            document.getElementById('table-data-daftar-pegawai').innerHTML = pegawai
+        }
+        dummyPegawai()
+        function dummyPasien(){
+        let pasien =""
+        for(let i = 1; i <= 25 ; i++){
+            pasien += `
+                <div id="data-pegawai-wrapper" class="pt-1 pb-1">
+                    <div id="" class="bg-white p-4 grid grid-cols-4 gap-4 w-full">
+                        <h2 class="">${i}</h2>
+                        <h2 class="">Name</h2>
+                        <h2 class="">Age</h2>
+                        <div id="action" class="flex space-x-4 justify-center place-self-end">
+                            <button class="max-w-5 h-auto cursor-pointer" id="" onclick="">
+                                <img src="src/asset/logo/edit.png" alt="" class="">
+                            </button>
+                            <button class="max-w-5 h-auto cursor-pointer" id="" onclick="">
+                                <img src="src/asset/logo/delete.png" alt="" class="">
+                            </button>
+                        </div>
+                    </div>
+                </div>    
+                `
+                }
+            document.getElementById('table-data-daftar-pasien').innerHTML = pasien
+        }
+        dummyPasien()
+        function daftarPegawai(){
+            document.getElementById('table-data-pasien-sabr').classList.add('hidden')
+            document.getElementById('report-title-dashboard').classList.add('hidden')
+            document.getElementById('table-header-dashboard').classList.add('hidden')
+
+            document.getElementById('daftar-pegawai').classList.remove('hidden')
+            document.getElementById('table-data-daftar-pegawai').classList.remove('hidden')
+            document.getElementById('report-title-pegawai').classList.remove('hidden')
+            document.getElementById('table-header-pegawai').classList.remove('hidden')
+
+            document.getElementById('daftar-pasien').classList.add('hidden')
+            document.getElementById('report-title-pasien').classList.add('hidden')
+            document.getElementById('table-header-pasien').classList.add('hidden')
+            document.getElementById('table-data-daftar-pasien').classList.add('hidden')
+        }
+        function dashboard(){
+            document.getElementById('daftar-pegawai').classList.add('hidden')
+            document.getElementById('table-data-daftar-pegawai').classList.add('hidden')
+            document.getElementById('report-title-pegawai').classList.add('hidden')
+            document.getElementById('table-header-pegawai').classList.add('hidden')
+
+            document.getElementById('table-data-pasien-sabr').classList.remove('hidden')
+            document.getElementById('report-title-dashboard').classList.remove('hidden')
+            document.getElementById('table-header-dashboard').classList.remove('hidden')
+        
+            document.getElementById('daftar-pasien').classList.add('hidden')
+            document.getElementById('report-title-pasien').classList.add('hidden')
+            document.getElementById('table-header-pasien').classList.add('hidden')
+            document.getElementById('table-data-daftar-pasien').classList.add('hidden')
+        }
+        function daftarPasien(){
+            document.getElementById('daftar-pegawai').classList.add('hidden')
+            document.getElementById('table-data-daftar-pegawai').classList.add('hidden')
+            document.getElementById('report-title-pegawai').classList.add('hidden')
+            document.getElementById('table-header-pegawai').classList.add('hidden')
+
+            document.getElementById('table-data-pasien-sabr').classList.add('hidden')
+            document.getElementById('report-title-dashboard').classList.add('hidden')
+            document.getElementById('table-header-dashboard').classList.add('hidden')
+            
+            document.getElementById('daftar-pasien').classList.remove('hidden')
+            document.getElementById('report-title-pasien').classList.remove('hidden')
+            document.getElementById('table-header-pasien').classList.remove('hidden')
+            document.getElementById('table-data-daftar-pasien').classList.remove('hidden')
+        }
+        
+        let currentKeyword ="";
+
+        function searchName(){
+            const searching = document.getElementById('searchForm');
+            const inputText = document.getElementById('aside-search');
+
+            function startSearching(text){
+                text.preventDefault();
+                currentKeyword = inputText.value.trim()
+                readKey(currentKeyword)
+
+            }
+            const returnValue = searching.addEventListener('submit',startSearching)
+        }
+        searchName()
+
+        function readKey(keyword){
+            console.log(`Filter yang apply : ${keyword}`)
+        }
+        </script>
+</html>
