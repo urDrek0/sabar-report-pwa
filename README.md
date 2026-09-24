@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SABR Shift's Report
 
 <p align="center">
@@ -105,3 +106,6 @@ Jika kamu mau, saya juga bisa bantu bikin versi README yang lebih premium dengan
 - screenshot mockup section
 - versi README dalam bahasa Inggris
 - struktur yang lebih cocok untuk portfolio/GitHub project
+=======
+on build
+>>>>>>> 50c9eff1771736679f5a8fc10e7b6f7d35845e63
