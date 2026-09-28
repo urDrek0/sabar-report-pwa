@@ -21,7 +21,7 @@
 
         <link rel="icon" href="src/asset/logo/documents.png" type="image/x-icon">
 	</head>
-	<body data-color-scheme="dark">
+	<body>
         <div class="flex min-h-screen">
             <aside id="sidebar-container"class="bg-[#353A3E] h-auto w-auto pt-6 pb-6 pl-6 pr-6">
                 <div class="flex space-x-5">
@@ -47,14 +47,7 @@
                 <!-- calender -->
                 <div class="flex space-x-5 pt-8">
                     <img src="src/asset/logo/calendar.png" alt="" class="h-auto max-w-8">
-                    <h1 id="aside-calendar" class="navbar-font text-white pt-2"></h1>
-                    <button id="prevMonth" class="cursor-pointer">
-                        <img src="src/asset/logo/prev.png" alt="" class="">
-                    </button>
-                    <button id="nextMonth" class="cursor-pointer">
-                        <img src="src/asset/logo/next.png" alt="" class="">
-
-                    </button>
+                    <h1 id="aside-calendar" class="navbar-font text-white pt-2 text-lg">Calendar</h1>
                 </div>
                 <div id="calendar-wrapper" class="pt-2" >
                     <div id="navbar-content-calendar" class="cursor-pointer">
@@ -65,27 +58,31 @@
                             const calendarEl = document.getElementById("navbar-content-calendar");
                             calendar = new FullCalendar.Calendar(calendarEl, {
                                 initialView: "dayGridMonth",
+
+                                headerToolbar: {
+                                    left: "title",
+                                    center: "prev",
+                                    right: "next"
+                                },
+
+                                titleFormat: {
+                                    year: "numeric",
+                                    month: "short"
+                                }
                             });
                             calendar.render();
-                            const dateNow = document.getElementById('aside-calendar');
+                            const dateNow = document.getElementById('today-date');
 
                             const dateFormatting = calendar.getDate()
-                                dateNow.textContent = dateFormatting.toLocaleDateString('id-ID', 
-                                    {month: 'long', year: 'numeric' })
-
-                                document.getElementById('prevMonth').addEventListener('click', function () {
-                                    calendar.prev();
-                                    });
-                                document.getElementById('nextMonth').addEventListener('click', function () {
-                                    calendar.next();
-                                    });
+                                dateNow.textContent ="Tanggal : "+ dateFormatting.toLocaleDateString('id-ID', 
+                                    {weekday: 'long',day: "numeric", month: 'long', year: 'numeric' })
                             });
                         </script>
                     </div>
                 </div>
                 <div id="" class="flex space-x-5 pt-8">
                     <img src="src/asset/logo/shift.png" alt="" class="max-w-10">
-                    <select id="aside-shift" name="Shift" class="border border-1 border-white rounded-xl p-2 text-white">
+                    <select id="aside-shift" name="Shift" class="border-1 border-white p-2 text-white">
                         <option value="pagi" class="text-black">Pagi</option>
                         <option value="siang" class="text-black">Siang</option>
                         <option value="malam" class="text-black">Malam</option>
@@ -110,7 +107,8 @@
             </aside>
 
             <main class="min-w-0 flex-1" id="">
-                <h1 id="report-title-dashboard" class="navbar-font text-4xl text-center p-4">SABR Shift's Report</h1>
+                <h1 id="report-title-dashboard" class="navbar-font text-4xl text-center p-2">SABR Shift's Report</h1>
+                <h1 id="today-date" class="navbar-font text-sm text-center p-2"></h1>
                 <div id="table-header-dashboard" class="bg-[#BFBFBF] p-4 grid grid-cols-7 gap-4 w-full">
                     <h2 class="">No</h2>
                     <h2 class="">Name</h2>
@@ -251,6 +249,7 @@
             document.getElementById('report-title-pasien').classList.add('hidden')
             document.getElementById('table-header-pasien').classList.add('hidden')
             document.getElementById('table-data-daftar-pasien').classList.add('hidden')
+            document.getElementById('today-date').classList.add('hidden')
         }
         function dashboard(){
             document.getElementById('daftar-pegawai').classList.add('hidden')
@@ -265,7 +264,8 @@
             document.getElementById('daftar-pasien').classList.add('hidden')
             document.getElementById('report-title-pasien').classList.add('hidden')
             document.getElementById('table-header-pasien').classList.add('hidden')
-            document.getElementById('table-data-daftar-pasien').classList.add('hidden')
+            document.getElementById('table-data-daftar-pasien').classList.add('hidden')            
+            document.getElementById('today-date').classList.remove('hidden')
         }
         function daftarPasien(){
             document.getElementById('daftar-pegawai').classList.add('hidden')
@@ -281,6 +281,7 @@
             document.getElementById('report-title-pasien').classList.remove('hidden')
             document.getElementById('table-header-pasien').classList.remove('hidden')
             document.getElementById('table-data-daftar-pasien').classList.remove('hidden')
+            document.getElementById('today-date').classList.add('hidden')
         }
         
         let currentKeyword ="";
