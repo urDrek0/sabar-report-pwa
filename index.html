@@ -62,7 +62,7 @@
                             const calendarEl = document.getElementById("navbar-content-calendar");
                             calendar = new FullCalendar.Calendar(calendarEl, {
                                 initialView: "dayGridMonth",
-                                height: 310,
+                                height: 315,
                                 headerToolbar: {
                                     left: "prev",
                                     center: "title",
@@ -164,7 +164,7 @@
             </main>
         </div>
 
-        <div id="modal-add-data" class="scroll-smooth overflow-y-scroll fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden">
+        <div id="modal-add-data" class="overflow-y-scroll fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden">
             <div id="modal-content" class="bg-white w-1/2 h-auto rounded-xl p-4 justify-center place-self-center">
                 <button id="close-modal" class="cursor-pointer place-self-end" onclick="document.getElementById('modal-add-data').classList.add('hidden')">
                     <img src="src/asset/logo/delete.png" alt="" class="max-w-5 h-auto">
@@ -266,8 +266,17 @@
                 const eachName = data_pasien.find((pasien) => pasien.id_pasien === nama_pasien.pasien_id)
                 return eachName
             })
+
+            const shiftSelect = document.getElementById('aside-shift')
+            const selectedShift = shiftSelect.value
+            shiftSelect.addEventListener("change", dashboard);
+
             const target = document.getElementById('table-data-pasien-sabr')
-                target.innerHTML = data_sabr.map((sabr) => `
+            if (selectedShift) {
+                const filteredData = data_sabr.filter((sabr) => sabr.shift === selectedShift)
+                const date = document.getElementById('auto-fill-date').value
+                const filteredDataByDate = filteredData.filter((sabr) => sabr.date === date)
+                target.innerHTML = filteredData.map((sabr) => `
                     <div id="data-sabr-wrapper" class="pt-1 pb-1">
                         <div id="" class="bg-white p-4 grid grid-cols-8 gap-4 w-full">
                             <h2 class="">${sabr.id_report}</h2>
@@ -293,7 +302,14 @@
             namaPasienElements.forEach((element, index) => {
                 element.textContent = nama_pasien[index].nama
             })
+        }else{
+            const date = document.getElementById('auto-fill-date').value
+            console.log(`Shift yang dipilih : ${selectedShift} dan tanggal : ${date}`)
+            target.innerHTML = '<h1 class="text-center text-gray-500">Tidak ada data pada shift ' + selectedShift + ' dan tanggal ' + date + '</h1>'
         }
+    }
+
+
         dashboard()
         
         async function daftarPegawai(){
