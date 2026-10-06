@@ -128,7 +128,7 @@
                     </form>
                 </div>
                 <div id="table-header-dashboard" class="bg-[#BFBFBF] p-4 grid grid-cols-8 gap-4 w-full">
-                    <h2 class="">No</h2>
+                    <h2 class="">Date</h2>
                     <h2 class="">Name</h2>
                     <h2 class="">Shift</h2>
                     <h2 class="">Situation</h2>
@@ -279,7 +279,7 @@
                 target.innerHTML = filteredData.map((sabr) => `
                     <div id="data-sabr-wrapper" class="pt-1 pb-1">
                         <div id="" class="bg-white p-4 grid grid-cols-8 gap-4 w-full">
-                            <h2 class="">${sabr.id_report}</h2>
+                            <h2 class="">${sabr.tanggal_shift}</h2>
                             <h2 id="nama-pasien" class=""></h2>
                             <h2 class="">${sabr.shift}</h2>
                             <h2 class="">${sabr.situation}</h2>
@@ -400,8 +400,60 @@
         }
         searchName()
 
-        function readKey(keyword){
+        async function readKey(keyword){
+            let data_sabr = await fetchDataSabr()
+            let data_pasien = await fetchDataPasien()
+            const nama_pasien = data_sabr.map((nama_pasien) => {
+                const eachName = data_pasien.find((pasien) => pasien.id_pasien === nama_pasien.pasien_id)
+                return eachName
+            })
+
+            const shiftSelect = document.getElementById('aside-shift')
+            const selectedShift = shiftSelect.value
+            shiftSelect.addEventListener("change", dashboard);
+
+            const target = document.getElementById('table-data-pasien-sabr')
             console.log(`Filter yang apply : ${keyword}`)
+
+            if(keyword === ""){
+                await dashboard()
+            } else if(keyword !== ""){
+                if (selectedShift) {
+                    const filteredData = data_sabr.filter((sabr) => sabr.shift === selectedShift)
+                    const date = document.getElementById('auto-fill-date').value
+                    const filteredDataByDate = filteredData.filter((sabr) => sabr.date === date)
+                    target.innerHTML = filteredData.map((sabr) => `
+                        <div id="data-sabr-wrapper" class="pt-1 pb-1">
+                            <div id="" class="bg-white p-4 grid grid-cols-8 gap-4 w-full">
+                                <h2 class="">${sabr.tanggal_shift}</h2>
+                                <h2 id="nama-pasien" class=""></h2>
+                                <h2 class="">${sabr.shift}</h2>
+                                <h2 class="">${sabr.situation}</h2>
+                                <h2 class="">${sabr.background}</h2>
+                                <h2 class="">${sabr.assessment}</h2>
+                                <h2 class="">${sabr.recommendation}</h2>
+                                <div id="action" class="flex space-x-4 justify-center place-self-start">
+                                    <button class="max-w-5 h-auto cursor-pointer" id="" onclick="">
+                                        <img src="src/asset/logo/edit.png" alt="" class="">
+                                    </button>
+                                    <button class="max-w-5 h-auto cursor-pointer" id="" onclick="">
+                                        <img src="src/asset/logo/delete.png" alt="" class="">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>    
+                    `).join('') 
+
+                const namaPasienElements = document.querySelectorAll('#nama-pasien')
+                namaPasienElements.forEach((element, index) => {
+                    element.textContent = nama_pasien[index].nama
+                })
+            }else{
+                const date = document.getElementById('auto-fill-date').value
+                console.log(`Shift yang dipilih : ${selectedShift} dan tanggal : ${date}`)
+                target.innerHTML = '<h1 class="text-center text-gray-500">Tidak ada data pada shift ' + selectedShift + ' dan tanggal ' + date + '</h1>'
+            }
+            }
         }
 
         function addNewReport(){
