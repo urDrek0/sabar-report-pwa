@@ -172,12 +172,14 @@
                 <h1 class="text-center text-2xl">Add Data</h1>
                 <div id="modal-form-name-shift" class="grid grid-cols-2 gap-4 pt-4">
                     <div id="modal-form-name" class="flex flex-col space-y-4">
-                        <h2 class="text-left">Name</h2>
-                        <input type="text" name="" id="" class="border border-1 rounded-xl p-2 w-full" placeholder="Name">
+                        <h2 class="text-left">Name <button id="" onclick="daftarPasien()" class="text-gray-500 cursor-pointer">(klik untuk menambah data pasien)</button> </h2>
+                        <select name="name-select" id="pasien-name" class="cursor-pointer border-1 p-2">
+
+                        </select>
                     </div>
                     <div id="modal-form-shift" class="flex flex-col space-y-4">
                         <h2 class="text-left">Shift</h2>
-                        <select id="modal-shift-selector" name="Shift" class="cursor-pointer border-1 p-2">
+                        <select id="modal-shift-selector" name="shift-select" class="cursor-pointer border-1 p-2">
                             <option value="pagi" class="text-black">Pagi</option>
                             <option value="siang" class="text-black">Siang</option>
                             <option value="malam" class="text-black">Malam</option>
@@ -186,7 +188,7 @@
                 </div>
                 <div id="modal-form-date" class="flex flex-col space-y-4 pt-4">
                     <h2 class="text-left">Date</h2>
-                    <input type="text" name="" id="auto-fill-date" class="border border-1 rounded-xl p-2 w-full" placeholder="Date">
+                    <input type="text" name="" id="auto-fill-date" class="border border-1 rounded-xl p-2 w-full" placeholder="Hari, Tanggal Bulan Tahun">
                 </div>
                 <div id="modal-form-situation" class="flex flex-col space-y-4 pt-4">
                     <h2 class="text-left">Situation</h2>
@@ -348,6 +350,7 @@
             `).join('')
         }
         async function daftarPasien(){
+            document.getElementById('modal-add-data').classList.add('hidden')
             document.getElementById('daftar-pegawai').classList.add('hidden')
             document.getElementById('table-data-daftar-pegawai').classList.add('hidden')
             document.getElementById('report-title-pegawai').classList.add('hidden')
@@ -456,8 +459,11 @@
             }
         }
 
-        function addNewReport(){
+        async function addNewReport(){
+            let data_pasien = await fetchDataPasien()
             document.getElementById('modal-add-data').classList.remove('hidden')
+            const nameSelect = document.getElementById('pasien-name')
+            nameSelect.innerHTML = data_pasien.map((pasien) => `<option value="${pasien.nama}">${pasien.nama}</option>`).join('')
         }
         </script>
 </html>

@@ -201,6 +201,9 @@
   .hidden {
     display: none;
   }
+  .h-24 {
+    height: calc(var(--spacing) * 24);
+  }
   .h-auto {
     height: auto;
   }
