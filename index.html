@@ -215,6 +215,21 @@
                 </div>  
             </div>
         </div>
+
+        <div class="fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden" id="modal-delete">
+            <div class="bg-white p-6 rounded-xl w-2/5 justify-center place-self-center">
+                <h2 class="text-center">Apakah anda yakin ingin menghapus data ini?</h2>
+                <div class="grid grid-cols-2 gap-4 pt-4">
+                    <button class="cursor-pointer bg-red-500 rounded-xl p-2 hover:bg-red-600 transition duration-200" onclick="document.getElementById('modal-delete').classList.add('hidden')">
+                        <h2 class="text-white text-center">Ya</h2>
+                    </button>
+                    <button class="cursor-pointer bg-gray-500 rounded-xl p-2 hover:bg-gray-600 transition duration-200" onclick="document.getElementById('modal-delete').classList.add('hidden')">
+                        <h2 class="text-white text-center">Tidak</h2>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
 	</body>
     <script>
         // alert("Aplikasi Masih dalam Pengembangan, untuk segala kendala silahkan dilaporkan, diperhatikan juga untuk aplikasi tidak sampai ke ke tangan lain")
@@ -289,10 +304,10 @@
                             <h2 class="">${sabr.assessment}</h2>
                             <h2 class="">${sabr.recommendation}</h2>
                             <div id="action" class="flex space-x-4 justify-center place-self-start">
-                                <button class="max-w-5 h-auto cursor-pointer" id="" onclick="">
+                                <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData()">
                                     <img src="src/asset/logo/edit.png" alt="" class="">
                                 </button>
-                                <button class="max-w-5 h-auto cursor-pointer" id="" onclick="">
+                                <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData()">
                                     <img src="src/asset/logo/delete.png" alt="" class="">
                                 </button>
                             </div>
@@ -338,10 +353,10 @@
                             <h2 class="">${pegawai.nama}</h2>
                             <h2 class="">${pegawai.kode}</h2>
                             <div id="action" class="flex space-x-4 justify-center place-self-end">
-                                <button class="max-w-5 h-auto cursor-pointer" id="" onclick="">
+                                <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData()">
                                     <img src="src/asset/logo/edit.png" alt="" class="">
                                 </button>
-                                <button class="max-w-5 h-auto cursor-pointer" id="" onclick="">
+                                <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData()">
                                     <img src="src/asset/logo/delete.png" alt="" class="">
                                 </button>
                             </div>
@@ -374,10 +389,10 @@
                             <h2 class="">${pasien.nama}</h2>
                             <h2 class="">${pasien.umur}</h2>
                             <div id="action" class="flex space-x-4 justify-center place-self-end">
-                                <button class="max-w-5 h-auto cursor-pointer" id="" onclick="">
+                                <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData()">
                                     <img src="src/asset/logo/edit.png" alt="" class="">
                                 </button>
-                                <button class="max-w-5 h-auto cursor-pointer" id="" onclick="">
+                                <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData()">
                                     <img src="src/asset/logo/delete.png" alt="" class="">
                                 </button>
                             </div>
@@ -436,10 +451,10 @@
                                 <h2 class="">${sabr.assessment}</h2>
                                 <h2 class="">${sabr.recommendation}</h2>
                                 <div id="action" class="flex space-x-4 justify-center place-self-start">
-                                    <button class="max-w-5 h-auto cursor-pointer" id="" onclick="">
+                                    <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData()">
                                         <img src="src/asset/logo/edit.png" alt="" class="">
                                     </button>
-                                    <button class="max-w-5 h-auto cursor-pointer" id="" onclick="">
+                                    <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData()">
                                         <img src="src/asset/logo/delete.png" alt="" class="">
                                     </button>
                                 </div>
@@ -464,6 +479,17 @@
             document.getElementById('modal-add-data').classList.remove('hidden')
             const nameSelect = document.getElementById('pasien-name')
             nameSelect.innerHTML = data_pasien.map((pasien) => `<option value="${pasien.nama}">${pasien.nama}</option>`).join('')
+        }
+
+        async function modalEditData(){
+            let data_pasien = await fetchDataPasien()
+            document.getElementById('modal-add-data').classList.remove('hidden')
+            const nameSelect = document.getElementById('pasien-name')
+            nameSelect.innerHTML = data_pasien.map((pasien) => `<option value="${pasien.nama}">${pasien.nama}</option>`).join('')
+        }
+
+        async function modalDeleteData(){
+            document.getElementById('modal-delete').classList.remove('hidden')
         }
         </script>
 </html>
