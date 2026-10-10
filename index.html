@@ -94,8 +94,7 @@
                 <div id="table-header-dashboard" class="bg-[#BFBFBF] p-4 grid grid-cols-8 gap-4 w-full">
                     <h2 class="">Date</h2>
                     <h2 class="">Name</h2>
-                    <h2 class="">Shift</h2>
-                    <h2 class="">Situation</h2>
+                    <h2 class="col-span-2">Situation</h2>
                     <h2 class="">Background</h2>
                     <h2 class="">Assessment</h2>
                     <h2 class="">Recommendation</h2>
@@ -105,8 +104,7 @@
                 </div>
 
                 <div id="daftar-pegawai" class="hidden">
-                    <div id="table-header-pegawai" class="bg-[#BFBFBF] p-4 grid grid-cols-4 gap-4 w-full">
-                        <h2 class="">No</h2>
+                    <div id="table-header-pegawai" class="bg-[#BFBFBF] p-4 grid grid-cols-3 gap-4 w-full">
                         <h2 class="">Name</h2>
                         <h2 class="">Kode</h2>
                         <h2 class=""></h2>
@@ -128,9 +126,9 @@
             </main>
         </div>
 
-        <div id="modal-add-data" class="overflow-y-scroll fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden">
+        <div id="modal-add-data-report" class="overflow-y-scroll fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden">
             <div id="modal-content" class="bg-white w-1/2 h-auto rounded-xl p-4 justify-center place-self-center">
-                <button id="close-modal" class="cursor-pointer place-self-end" onclick="document.getElementById('modal-add-data').classList.add('hidden')">
+                <button id="close-modal" class="cursor-pointer place-self-end" onclick="document.getElementById('modal-add-data-report').classList.add('hidden')">
                     <img src="src/asset/logo/delete.png" alt="" class="max-w-5 h-auto">
                 </button>
                 <h1 class="text-center text-2xl">Add Data</h1>

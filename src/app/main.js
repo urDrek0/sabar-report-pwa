@@ -74,8 +74,7 @@ async function dashboard() {
                             <div id="" class="bg-white p-4 grid grid-cols-8 gap-4 w-full">
                                 <h2 class="text-left">${sabr.tanggal_shift}</h2>
                                 <h2 id="nama-pasien" class="text-left"></h2>
-                                <h2 class="text-left">${sabr.shift}</h2>
-                                <h2 class="text-justify">${sabr.situation}</h2>
+                                <h2 class="text-justify col-span-2">${sabr.situation}</h2>
                                 <h2 class="text-justify">${sabr.background}</h2>
                                 <h2 class="text-justify">${sabr.assessment}</h2>
                                 <h2 class="text-justify">${sabr.recommendation}</h2>
@@ -132,10 +131,9 @@ async function daftarPegawai() {
         .map(
         (pegawai) => `
                         <div id="data-pegawai-wrapper" class="pt-1 pb-1">
-                            <div id="" class="bg-white p-4 grid grid-cols-4 gap-4 w-full">
-                                <h2 class="text-center">${pegawai.id_pegawai}</h2>
-                                <h2 class="text-center">${pegawai.nama}</h2>
-                                <h2 class="text-center">${pegawai.kode}</h2>
+                            <div id="" class="bg-white p-4 grid grid-cols-3 gap-4 w-full">
+                                <h2 class="text-left">${pegawai.nama}</h2>
+                                <h2 class="text-left">${pegawai.kode}</h2>
                                 <div id="action" class="flex space-x-4 justify-center place-self-end">
                                     <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData()">
                                         <img src="src/asset/logo/edit.png" alt="" class="">
@@ -151,7 +149,7 @@ async function daftarPegawai() {
         .join('');
 }
 async function daftarPasien() {
-    document.getElementById('modal-add-data').classList.add('hidden');
+    document.getElementById('modal-add-data-report').classList.add('hidden');
     document.getElementById('daftar-pegawai').classList.add('hidden');
     document.getElementById('table-data-daftar-pegawai').classList.add('hidden');
     document.getElementById('report-title-pegawai').classList.add('hidden');
@@ -173,9 +171,9 @@ async function daftarPasien() {
         (pasien) => `
                         <div id="data-pasien-wrapper" class="pt-1 pb-1">
                             <div id="" class="bg-white p-4 grid grid-cols-4 gap-4 w-full">
-                                <h2 class="text-center">${pasien.id_pasien}</h2>
-                                <h2 class="text-center">${pasien.nama}</h2>
-                                <h2 class="text-center">${pasien.umur}</h2>
+                                <h2 class="text-left">${pasien.id_pasien}</h2>
+                                <h2 class="text-left">${pasien.nama}</h2>
+                                <h2 class="text-left">${pasien.umur}</h2>
                                 <div id="action" class="flex space-x-4 justify-center place-self-end">
                                     <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData()">
                                         <img src="src/asset/logo/edit.png" alt="" class="">
@@ -273,7 +271,7 @@ async function readKey(keyword) {
 
 async function addNewReport() {
     let data_pasien = await fetchDataPasien();
-    document.getElementById('modal-add-data').classList.remove('hidden');
+    document.getElementById('modal-add-data-report').classList.remove('hidden');
     const nameSelect = document.getElementById('pasien-name');
     nameSelect.innerHTML = data_pasien
         .map((pasien) => `<option value="${pasien.nama}">${pasien.nama}</option>`)
@@ -282,7 +280,7 @@ async function addNewReport() {
 
 async function modalEditData() {
     let data_pasien = await fetchDataPasien();
-    document.getElementById('modal-add-data').classList.remove('hidden');
+    document.getElementById('modal-add-data-report').classList.remove('hidden');
     const nameSelect = document.getElementById('pasien-name');
     nameSelect.innerHTML = data_pasien
         .map((pasien) => `<option value="${pasien.nama}">${pasien.nama}</option>`)
