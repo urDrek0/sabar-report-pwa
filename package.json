@@ -17,6 +17,7 @@
     "tailwindcss": "^4.3.3"
   },
   "dependencies": {
+    "dotenv": "^18.0.7",
     "fullcalendar": "^7.1.0",
     "temporal-polyfill": "^1.0.5"
   }
