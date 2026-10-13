@@ -136,20 +136,20 @@ async function daftarPegawai() {
     target.innerHTML = data_pegawai
         .map(
         (pegawai) => `
-                        <div id="data-pegawai-wrapper" class="pt-1 pb-1">
-                            <div id="" class="bg-white p-4 grid grid-cols-3 gap-4 w-full">
-                                <h2 id="${pegawai.id_pegawai + '-nama'}" class="text-left">${pegawai.nama}</h2>
-                                <h2 id="${pegawai.id_pegawai + '-kode'}" class="text-left">${pegawai.kode}</h2>
-                                <div id="action" class="flex space-x-4 justify-center place-self-end">
-                                    <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${pegawai.id_pegawai}')">
-                                        <img src="src/asset/logo/edit.png" alt="" class="">
-                                    </button>
-                                    <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${pegawai.id_pegawai}')">
-                                        <img src="src/asset/logo/delete.png" alt="" class="">
-                                    </button>
-                                </div>
-                            </div>
-                        </div>    
+            <div id="data-pegawai-wrapper" class="pt-1 pb-1">
+                <div id="" class="bg-white p-4 grid grid-cols-3 gap-4 w-full">
+                    <h2 id="${pegawai.id_pegawai + '-nama'}" class="text-left">${pegawai.nama}</h2>
+                    <h2 id="${pegawai.id_pegawai + '-kode'}" class="text-left">${pegawai.kode}</h2>
+                    <div id="action" class="flex space-x-4 justify-center place-self-end">
+                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${pegawai.id_pegawai}')">
+                            <img src="src/asset/logo/edit.png" alt="" class="">
+                        </button>
+                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${pegawai.id_pegawai}')">
+                            <img src="src/asset/logo/delete.png" alt="" class="">
+                        </button>
+                    </div>
+                </div>
+            </div>    
                 `,
         )
         .join('');
@@ -311,26 +311,16 @@ async function modalEditData(id) {
     }
     else if (state.currentPage === 'daftar-pegawai') {
         let editPegawai = data_pegawai.find((pegawai) => pegawai.id_pegawai === id);
-        console.log('editPegawai : ', editPegawai);
-        console.log('id : ', id);
-        console.log('state : ', state.currentPage);
-
         document.getElementById('pegawai-nama').value = editPegawai.nama;
         document.getElementById('pegawai-kode').value = editPegawai.kode;
         document.getElementById('pegawai-status').value = editPegawai.status;
-
         document.getElementById('modal-add-pegawai').classList.remove('hidden');
     } 
     else if (state.currentPage === 'daftar-pasien') {
         let editPasien = data_pasien.find((pasien) => pasien.id_pasien === id);
-        console.log('editPasien : ', editPasien);
-        console.log('id : ', id);
-        console.log('state : ', state.currentPage);
-
-        document.getElementById('pasien-name').value = editPasien.nama;
+        document.getElementById('pasien-nama').value = editPasien.nama;
         document.getElementById('pasien-umur').value = editPasien.umur;
         document.getElementById('pasien-status').value = editPasien.status;
-
         document.getElementById('modal-add-pasien').classList.remove('hidden');
     
     }
