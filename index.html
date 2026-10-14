@@ -33,7 +33,7 @@
                     </button>
                 </div>
                 <div id="shift-section" class="flex space-x-5 pt-5">
-                    <button class="cursor-pointer flex space-x-5" onclick="" id="">                    
+                    <button class="cursor-pointer flex space-x-5" onclick="showShift()" id="">                    
                         <img src="src/asset/logo/shift.png" alt="" class="max-w-10 place-self-left">
                         <h1 id="aside-shift-text" class="navbar-font text-white justify-center text-left mt-2">Shift</h1>
                     </button>
@@ -82,14 +82,29 @@
                     <h1 id="report-title-dashboard" class="navbar-font text-2xl text-center place-self-center">SBAR Shift's Report</h1>
                     <h1 id="report-title-pegawai" class="navbar-font text-2xl text-center hidden place-self-center">Daftar Pegawai</h1>
                     <h1 id="report-title-pasien" class="navbar-font text-2xl text-center hidden place-self-center">Daftar Pasien</h1>
-                    <form id="searchForm" class="flex space-x-2 top-0 place-self-end">
-                        <input id="aside-search" type="text" class="border border-1 rounded-xl p-2" placeholder="Cari Nama" value="">
-                        <button id="searchName" class="cursor-pointer" type="submit">
-                            <img src="src/asset/logo/search.png" class="h-auto max-w-8 invert" alt="">
-                        </button>
-                    </form>
+                    <h1 id="report-title-shift-handler" class="navbar-font text-2xl text-center hidden place-self-center">Daftar Shift Handler</h1>
+                    
+                    <div id="shift-handler-wrapper" class="bg-white rounded-lg">
+                        <h2 id="date-selected-data" class="p-2 font-bold text-lg text-center place-self-center w-full rounded-tl-lg rounded-tr-lg bg-[#BFBFBF]"></h2>
+                        <div id="" class="col-span-3 grid grid-cols-3 gap-4">
+                            <h2 id="" class="p-2 font-bold text-lg text-center place-self-center place-self-start">Name</h2>
+                            <h2 id="" class="p-2 font-bold text-lg text-center place-self-center">Kode</h2>
+                            <h2 id="" class="p-2 font-bold text-lg text-center place-self-center place-self-end">Role</h2>                    
+                        </div>
+                    </div>
                 </div>
-                <h1 id="date-selected-data" class="navbar-font text-xl text-center place-self-center"></h1>
+                <div id="shift-handler-join" class="hidden">
+                    <div id="shift-handler-join-content" class="bg-[#BFBFBF] w-full grid grid-cols-6 gap-4 p-4">
+                        <h2 id="" class="">Tanggal</h2>
+                        <h2 id="" class="">Shift</h2>
+                        <h2 id="" class="">Name</h2>
+                        <h2 id="" class="">Kode</h2>
+                        <h2 id="" class="">Role</h2>                    
+                        <h2 id="" class=""></h2>                    
+                    </div>
+                    <div id="table-data-shift-handler" class=""></div>
+                </div>
+
                 <div id="table-header-dashboard" class="bg-[#BFBFBF] p-4 grid grid-cols-8 gap-4 w-full">
                     <h2 class="">Date</h2>
                     <h2 class="">Name</h2>
@@ -99,8 +114,7 @@
                     <h2 class="">Recommendation</h2>
                     <h2 class=""></h2>
                 </div>
-                <div id="table-data-pasien-sabr" class="">
-                </div>
+                <div id="table-data-pasien-sabr" class=""></div>
 
                 <div id="daftar-pegawai" class="hidden">
                     <div id="table-header-pegawai" class="bg-[#BFBFBF] p-4 grid grid-cols-3 gap-4 w-full">
@@ -108,8 +122,7 @@
                         <h2 class="">Kode</h2>
                         <h2 class=""></h2>
                     </div>
-                    <div id="table-data-daftar-pegawai" class="">
-                    </div>
+                    <div id="table-data-daftar-pegawai" class=""></div>
                 </div>
 
                 <div id="daftar-pasien" class="hidden">
