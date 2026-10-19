@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded',
         height: 315,
         dateClick: function(info) {
             var dateFormatting = info.date;
-            document.getElementById('date-selected-data').innerHTML = 'PJ Tanggal : ' + dateFormatting.toLocaleDateString('id-ID', {
+            document.getElementById('date-selected-data').innerHTML = 'PJ pada : ' + dateFormatting.toLocaleDateString('id-ID', {
                 weekday: 'short',
                 day: 'numeric',
                 month: 'short',
@@ -75,15 +75,13 @@ document.addEventListener('DOMContentLoaded',
     const autoFillDate = document.getElementById('date-input');
     const dateFormatting = calendar.getDate();
     console.log("dateFormatting : " + dateFormatting);
-    document.getElementById('date-selected-data').innerHTML = 'PJ Tanggal : ' + dateFormatting.toLocaleDateString('id-ID', {
+    document.getElementById('date-selected-data').innerHTML = 'PJ pada : ' + dateFormatting.toLocaleDateString('id-ID', {
         weekday: 'short',
         day: 'numeric',
         month: 'short',
         year: 'numeric',
     });
-    dateNow.textContent =
-        'Hari Ini : ' +
-        dateFormatting.toLocaleDateString('id-ID', {
+    dateNow.textContent = 'Hari Ini : ' + dateFormatting.toLocaleDateString('id-ID', {
         weekday: 'short',
         day: 'numeric',
         month: 'short',
