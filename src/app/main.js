@@ -1,7 +1,102 @@
 // alert("Aplikasi Masih dalam Pengembangan, untuk segala kendala silahkan dilaporkan, diperhatikan juga untuk aplikasi tidak sampai ke ke tangan lain")
+async function fetchDataPasien() {
+    const resDaftarPasien = await fetch('http://localhost:3000/api/pasien');
+    const data_pasien = await resDaftarPasien.json();
+    return data_pasien;
+}
+async function fetchDataPegawai() {
+    const resDaftarPasien = await fetch('http://localhost:3000/api/pegawai');
+    const data_pegawai = await resDaftarPasien.json();
+    return data_pegawai;
+}
+async function fetchDataSabr() {
+    const resDaftarSabr = await fetch('http://localhost:3000/api/sabr_report');
+    const data_sabr = await resDaftarSabr.json();
+    return data_sabr;
+}
+async function fetchDataShiftHandler() {
+    const resDaftarShift = await fetch('http://localhost:3000/api/shift_handler');
+    const data_shift = await resDaftarShift.json();
+    return data_shift;
+}
+let todayDate = new Date().toLocaleDateString('en-CA')
 let state = {
     currentPage: 'dashboard',
+    selectedDate: todayDate
 }
+console.log('selectedDate:', state.selectedDate, typeof state.selectedDate);
+let calendar;
+
+document.addEventListener('DOMContentLoaded', 
+    function () {
+    const calendarEl = document.getElementById('navbar-content-calendar');
+    calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        height: 315,
+        dateClick: function(info) {
+            var dateFormatting = info.date;
+            document.getElementById('date-selected-data').innerHTML = 'Selected Date : ' + dateFormatting.toLocaleDateString('id-ID', {
+                weekday: 'short',
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric', 
+            });
+            calendarEl.querySelector('.chosen-date')?.classList.remove('chosen-date');
+            calendarEl.querySelector('.chosen-date-label')?.classList.remove('chosen-date-label');
+            info.dayEl.classList.add('chosen-date');
+            info.dayEl.querySelector('[aria-hidden="true"], a')?.classList.add('chosen-date-label');
+            state.selectedDate = info.dateStr
+            console.log("calendar click : " + state.selectedDate, typeof state.selectedDate)
+            if (state.currentPage === 'dashboard') {
+                dashboard();
+            }
+            else if (state.currentPage === 'daftar-shift-handler') {
+                showShift()
+            }
+            return state.selectedDate
+        },
+        headerToolbar: {
+        left: 'prev',
+        center: 'title',
+        right: 'next',
+        },
+        footerToolbar: {
+        left: 'prevYear',
+        center: 'today',
+        right: 'nextYear',
+        },
+        titleFormat: {
+        year: 'numeric',
+        month: 'short',
+        },
+    });
+    calendar.render();
+    const dateNow = document.getElementById('today-date');
+    const autoFillDate = document.getElementById('date-input');
+    const dateFormatting = calendar.getDate();
+    console.log("dateFormatting : " + dateFormatting);
+    document.getElementById('date-selected-data').innerHTML = 'Selected Date : ' + dateFormatting.toLocaleDateString('id-ID', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+    });
+    dateNow.textContent =
+        'Today : ' +
+        dateFormatting.toLocaleDateString('id-ID', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        });
+    autoFillDate.value = dateFormatting.toLocaleDateString('id-ID', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+    });
+});
+
 function toggleSideBar() {
     const idToggled = [
         'aside-home',
@@ -23,27 +118,6 @@ function toggleSideBar() {
     });
     document.getElementById('sidebar-container').classList.toggle('pr-4');
 }
-async function fetchDataPasien() {
-    const resDaftarPasien = await fetch('http://localhost:3000/api/pasien');
-    const data_pasien = await resDaftarPasien.json();
-    return data_pasien;
-}
-async function fetchDataPegawai() {
-    const resDaftarPasien = await fetch('http://localhost:3000/api/pegawai');
-    const data_pegawai = await resDaftarPasien.json();
-    return data_pegawai;
-}
-async function fetchDataSabr() {
-    const resDaftarSabr = await fetch('http://localhost:3000/api/sabr_report');
-    const data_sabr = await resDaftarSabr.json();
-    return data_sabr;
-}
-async function fetchDataShiftHandler() {
-    const resDaftarShift = await fetch('http://localhost:3000/api/shift_handler');
-    const data_shift = await resDaftarShift.json();
-    return data_shift;
-}
-
 async function dashboard() {
     state.currentPage = 'dashboard';
     console.log('state : ', state.currentPage);
@@ -76,14 +150,14 @@ async function dashboard() {
     const target = document.getElementById('table-data-pasien-sabr');
     if (selectedShift) {
         const filteredData = data_sabr.filter((sabr) => sabr.shift === selectedShift);
-        const date = document.getElementById('date-input').value;
-        const filteredDataByDate = filteredData.filter((sabr) => sabr.date === date);
-        target.innerHTML = filteredData
+        const filteredDataByDate = filteredData.filter((sabr) => sabr.tanggal_shift.slice(0,10) === state.selectedDate);
+        console.log("inside dashboard : ", state.selectedDate)
+        target.innerHTML = filteredDataByDate
         .map(
             (sabr) => `
                         <div id="data-sabr-wrapper" class="pt-1 pb-1">
                             <div id="" class="bg-white p-4 grid grid-cols-8 gap-4 w-full">
-                                <h2 id="${sabr.id_report + '-tanggal'}" class="text-left">${sabr.tanggal_shift}</h2>
+                                <h2 id="${sabr.id_report + '-tanggal'}" class="text-left">${sabr.tanggal_shift.slice(0,10)}</h2>
                                 <h2 id="${sabr.id_report + '-nama'}" class="text-left">${data_pasien.find((pasien) => pasien.id_pasien === sabr.pasien_id)?.nama || 'N/A'}</h2>
                                 <h2 id="${sabr.id_report + '-situation'}" class="text-justify col-span-2">${sabr.situation}</h2>
                                 <h2 id="${sabr.id_report + '-background'}" class="text-justify">${sabr.background}</h2>
@@ -119,7 +193,7 @@ dashboard();
 async function daftarPegawai() {
     state.currentPage = 'daftar-pegawai';    
     console.log('state : ', state.currentPage);
-
+    console.log("inside daftarPegawai : ", state.selectedDate)
     document.getElementById('add-data-guidance').textContent = 'Add Pegawai +';
     document.getElementById('table-data-pasien-sabr').classList.add('hidden');
     document.getElementById('report-title-dashboard').classList.add('hidden');
@@ -280,9 +354,8 @@ async function modalEditData(id) {
             .map((pegawai) => `<option value="${pegawai.nama}">${pegawai.nama}</option>`)
             .join('');
         document.getElementById('shift-handler-nama').value = data_pegawai.find((p) => p.id_pegawai === editShiftHandler.pegawai_id)?.nama;
-        document.getElementById('shift-handler-kode').value = data_pegawai.find((p) => p.id_pegawai === editShiftHandler.pegawai_id)?.kode;
         document.getElementById('shift-handler-shift').value = editShiftHandler.shift
-        document.getElementById('shift-handler-role').value = editShiftHandler.role;
+        document.getElementById('shift-handler-role').value = editShiftHandler.shift_leader;
         document.getElementById('modal-add-shift-handler').classList.remove('hidden');
     }
     else if (state.currentPage === 'daftar-pasien') {
@@ -303,69 +376,6 @@ async function modalEditData(id) {
 async function modalDeleteData(id) {
     document.getElementById('modal-delete').classList.remove('hidden');
 }
-
-// calendar
-let calendar;
-
-document.addEventListener('DOMContentLoaded', function () {
-    const calendarEl = document.getElementById('navbar-content-calendar');
-    calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        height: 315,
-        dateClick: function(info) {
-            var dateFormatting = info.date;
-            console.log(dateFormatting);
-            document.getElementById('date-selected-data').innerHTML = 'Selected Date : ' + dateFormatting.toLocaleDateString('id-ID', {
-                weekday: 'short',
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric', 
-            });
-            calendarEl.querySelector('.chosen-date')?.classList.remove('chosen-date');                        
-            info.dayEl.classList.add('chosen-date');
-            return dateFormatting;
-        },
-        headerToolbar: {
-        left: 'prev',
-        center: 'title',
-        right: 'next',
-        },
-        footerToolbar: {
-        left: 'prevYear',
-        center: 'today',
-        right: 'nextYear',
-        },
-        titleFormat: {
-        year: 'numeric',
-        month: 'short',
-        },
-    });
-    calendar.render();
-    const dateNow = document.getElementById('today-date');
-    const autoFillDate = document.getElementById('date-input');
-    const dateFormatting = calendar.getDate();
-    console.log(dateFormatting);
-    document.getElementById('date-selected-data').innerHTML = 'Selected Date : ' + dateFormatting.toLocaleDateString('id-ID', {
-        weekday: 'short',
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-    });
-    dateNow.textContent =
-        'Today : ' +
-        dateFormatting.toLocaleDateString('id-ID', {
-        weekday: 'short',
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-        });
-    autoFillDate.value = dateFormatting.toLocaleDateString('id-ID', {
-        weekday: 'short',
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-    });
-});
 
 async function showShift() {
     state.currentPage = 'daftar-shift-handler';
@@ -408,17 +418,18 @@ async function showShift() {
 
     if (selectedShift) {
         const filterdataShift = roleConverter.filter((shift) => shift.shift === selectedShift);
+        const filterdataShiftbyDate = filterdataShift.filter((shift) => shift.tanggal_shift.slice(0,10) === state.selectedDate)
         const shiftHandlerJoin = document.getElementById('table-data-shift-handler');
-        shiftHandlerJoin.innerHTML = filterdataShift
+        shiftHandlerJoin.innerHTML = filterdataShiftbyDate
             .map(
                 (shift) => `
             <div id="data-shift-wrapper" class="pt-1 pb-1">
                 <div id="" class="bg-white p-4 grid grid-cols-6 gap-4 w-full">
-                    <h1 id="${shift.id_shift + '-tanggal'}" class="text-lg text-left">${shift.tanggal_shift}</h1>
-                    <h1 id="${shift.id_shift + '-shift'}" class="text-lg text-left">${shift.shift}</h1>
-                    <h1 id="${shift.id_shift + '-nama'}" class="text-lg text-left">${data_pegawai.find(p => p.id_pegawai === shift.pegawai_id)?.nama || 'N/A'}</h1>
-                    <h1 id="${shift.id_shift + '-kode'}" class="text-lg text-left">${data_pegawai.find(p => p.id_pegawai === shift.pegawai_id)?.kode || 'N/A'}</h1>
-                    <h1 id="${shift.id_shift + '-role'}" class="text-lg text-left">${shift.shift_leader}</h1>
+                    <h1 id="${shift.id_shift + '-tanggal'}" class="text-md text-left">${shift.tanggal_shift.slice(0,10)}</h1>
+                    <h1 id="${shift.id_shift + '-shift'}" class="text-md text-left">${shift.shift}</h1>
+                    <h1 id="${shift.id_shift + '-nama'}" class="text-md text-left">${data_pegawai.find(p => p.id_pegawai === shift.pegawai_id)?.nama || 'N/A'}</h1>
+                    <h1 id="${shift.id_shift + '-kode'}" class="text-md text-left">${data_pegawai.find(p => p.id_pegawai === shift.pegawai_id)?.kode || 'N/A'}</h1>
+                    <h1 id="${shift.id_shift + '-role'}" class="text-md text-left">${shift.shift_leader}</h1>
                     <div id="action" class="flex space-x-4 justify-center">
                         <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${shift.id_shift}')">
                             <img src="src/asset/logo/edit.png" alt="" class="">
