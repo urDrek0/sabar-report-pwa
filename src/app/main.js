@@ -124,6 +124,7 @@ async function daftarPegawai() {
     document.getElementById('table-data-pasien-sabr').classList.add('hidden');
     document.getElementById('report-title-dashboard').classList.add('hidden');
     document.getElementById('table-header-dashboard').classList.add('hidden');
+    document.getElementById('modal-add-shift-handler').classList.add('hidden');
 
     document.getElementById('daftar-pegawai').classList.remove('hidden');
     document.getElementById('table-data-daftar-pegawai').classList.remove('hidden');
@@ -171,6 +172,7 @@ async function daftarPasien() {
     document.getElementById('table-data-daftar-pegawai').classList.add('hidden');
     document.getElementById('report-title-pegawai').classList.add('hidden');
     document.getElementById('table-header-pegawai').classList.add('hidden');
+    document.getElementById('modal-add-data-report').classList.add('hidden');
 
     document.getElementById('table-data-pasien-sabr').classList.add('hidden');
     document.getElementById('report-title-dashboard').classList.add('hidden');
@@ -213,11 +215,11 @@ async function daftarPasien() {
 async function addNewReport() {
     console.log('state : ', state.currentPage);
     let data_pasien = await fetchDataPasien();
+    let data_pegawai = await fetchDataPegawai();
     if (state.currentPage === 'dashboard') {
-        // Handle the case for other pages
         document.getElementById('modal-add-data-report').classList.remove('hidden');
-        const nameSelect = document.getElementById('pasien-name');
-        nameSelect.innerHTML = data_pasien
+        let nameSelectPasien = document.getElementById('pasien-name');
+        nameSelectPasien.innerHTML = data_pasien
             .map((pasien) => `<option value="${pasien.nama}">${pasien.nama}</option>`)
             .join('');
     }
@@ -227,12 +229,20 @@ async function addNewReport() {
     else if (state.currentPage === 'daftar-pasien') {
         document.getElementById('modal-add-pasien').classList.remove('hidden');
     }
+    else if (state.currentPage === 'daftar-shift-handler') {
+        document.getElementById('modal-add-shift-handler').classList.remove('hidden');
+        let nameSelectPegawai = document.getElementById('shift-handler-nama');
+        nameSelectPegawai.innerHTML = data_pegawai
+            .map((pegawai) => `<option value="${pegawai.nama}">${pegawai.nama}</option>`)
+            .join('');
+    }
 }
 
 async function modalEditData(id) {
     let data_pasien = await fetchDataPasien();
     let data_sabr = await fetchDataSabr();        
     let data_pegawai = await fetchDataPegawai();
+    let data_shift = await fetchDataShiftHandler();
     if (state.currentPage === 'dashboard') {
         document.getElementById('modal-add-data-report').classList.remove('hidden');
         const nameOptionList = document.getElementById('pasien-name'); 
@@ -263,6 +273,18 @@ async function modalEditData(id) {
         document.getElementById('pegawai-status').value = editPegawai.aktif;
         document.getElementById('modal-add-pegawai').classList.remove('hidden');
     } 
+    else if (state.currentPage === 'daftar-shift-handler') {
+        let editShiftHandler = data_shift.find((handler) => handler.id_shift === id);
+        let nameSelectPegawai = document.getElementById('shift-handler-nama');
+        nameSelectPegawai.innerHTML = data_pegawai
+            .map((pegawai) => `<option value="${pegawai.nama}">${pegawai.nama}</option>`)
+            .join('');
+        document.getElementById('shift-handler-nama').value = data_pegawai.find((p) => p.id_pegawai === editShiftHandler.pegawai_id)?.nama;
+        document.getElementById('shift-handler-kode').value = data_pegawai.find((p) => p.id_pegawai === editShiftHandler.pegawai_id)?.kode;
+        document.getElementById('shift-handler-shift').value = editShiftHandler.shift
+        document.getElementById('shift-handler-role').value = editShiftHandler.role;
+        document.getElementById('modal-add-shift-handler').classList.remove('hidden');
+    }
     else if (state.currentPage === 'daftar-pasien') {
         let editPasien = data_pasien.find((pasien) => pasien.id_pasien === id);
         if (editPasien.aktif === true) {
@@ -345,13 +367,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-async function updateShiftHandler() {
-    let data_shift = await fetchDataShiftHandler();
-    console.log('data shift : ', data_shift);
-    
-}
-updateShiftHandler();
-
 async function showShift() {
     state.currentPage = 'daftar-shift-handler';
     console.log('state : ', state.currentPage);
@@ -380,9 +395,9 @@ async function showShift() {
     let data_pegawai = await fetchDataPegawai();
     const roleConverter = data_shift.map((shift) => {
         if (shift.shift_leader === true) {
-            shift.shift_leader = 'Leader';
+            shift.shift_leader = 'Shift Leader';
         }else if (shift.shift_leader === false) {
-            shift.shift_leader = 'Member';
+            shift.shift_leader = 'Shift Member';
         }
         return shift;
     });

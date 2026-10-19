@@ -249,6 +249,47 @@
                     </button>
                 </div>  
             </div>
+        </div>
+
+        <div id="modal-add-shift-handler" class="overflow-y-scroll fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden">
+            <div id="modal-content-shift-handler" class="bg-white w-1/2 h-auto rounded-xl p-4 justify-center place-self-center">
+                <button id="close-modal" class="cursor-pointer place-self-end" onclick="document.getElementById('modal-add-shift-handler').classList.add('hidden')">
+                    <img src="src/asset/logo/delete.png" alt="" class="max-w-5 h-auto">
+                </button>
+                <h1 class="text-center text-2xl p-4">Tambahkan Petugas Shift Hari ini</h1>
+                <div class="flex flex-col space-y-4 pt-4">
+                    <h2 class="text-left">Nama Petugas <button id="" onclick="daftarPegawai()" class="text-gray-500 cursor-pointer">(klik untuk menambah Pegawai)</button> </h2>
+                    <select name="shift-handler-nama-select" id="shift-handler-nama" class="text-pretty border border-1 rounded-xl p-2 w-full">
+                    </select>
+                </div>
+                <div class="flex flex-col space-y-4 pt-4">
+                    <h2 class="text-left">Kode</h2>
+                    <input type="text" name="" id="shift-handler-kode" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Kode" >
+                </div>
+                <div class="flex flex-col space-y-4 pt-4">
+                    <h2 class="text-left">Role</h2>
+                    <select type="text" name="" id="shift-handler-shift" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Role">
+                        <option value="pagi">Pagi</option>
+                        <option value="siang">Siang</option>
+                        <option value="malam">Malam</option>
+                    </select>
+                </div>
+                <div class="flex flex-col space-y-4 pt-4">
+                    <h2 class="text-left">Role</h2>
+                    <select type="text" name="" id="shift-handler-role" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Role">
+                        <option value="true">Shift Leader</option>
+                        <option value="false">Shift Member</option>
+                    </select>
+                </div>
+                <div id="modal-form-submit-pasien" class="pt-4 place-self-end">
+                    <button id="" class="cursor-pointer bg-[#353A3E] rounded-xl  w-auto hover:bg-black transition duration-200">
+                        <div class="justify-center place-self-center p-2">
+                            <h2 class="text-white text-center">Submit</h2>
+                        </div>
+                    </button>
+                </div>  
+            </div>
+        </div>
 
         <div class="fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden" id="modal-delete">
             <div class="bg-white p-6 rounded-xl w-2/5 justify-center place-self-center">
