@@ -16,11 +16,9 @@ body{
 
 #navbar-content-calendar .chosen-date:not(.fc-day-today) .chosen-date-label {
     display: inline-flex;
-    width: 2rem;
-    height: 2rem;
     align-items: center;
     justify-content: center;
-    background-color: #c8a27c;
+    background-color: #de8c63;
     color: white;
     border-radius: 50%;
 }

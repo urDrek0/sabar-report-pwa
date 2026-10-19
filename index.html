@@ -49,7 +49,7 @@
                     <img src="src/asset/logo/calendar.png" alt="" class="h-auto max-w-8 place-self-left">
                     <h1 id="aside-calendar" class="navbar-font text-white pt-2 text-lg">Calendar</h1>
                 </div>
-                <div id="calendar-wrapper" class="pt-2" >
+                <div id="calendar-wrapper" class="pt-2 cursor-pointer" >
                     <div id="navbar-content-calendar" class="">
                     </div>
                 </div>
@@ -72,25 +72,33 @@
             </aside>
 
             <main class="min-w-0 flex-1" id="">
-                <div class="grid grid-cols-3 p-4">
+                <div class="grid grid-cols-4 p-4">
                     <button id="" onclick="addNewReport()" class="cursor-pointer bg-[#353A3E] rounded-xl place-self-start w-auto hover:bg-black transition duration-200">
                         <div class="justify-center place-self-center p-2">
                             <h2 id="add-data-guidance" class="text-white text-xl text-center"></h2>
                         </div>
                     </button>
 
-                    <h1 id="report-title-dashboard" class="navbar-font text-2xl text-center place-self-center">Laporan SABR</h1>
-                    <h1 id="report-title-pegawai" class="navbar-font text-2xl text-center hidden place-self-center">Daftar Pegawai</h1>
-                    <h1 id="report-title-pasien" class="navbar-font text-2xl text-center hidden place-self-center">Daftar Pasien</h1>
-                    <h1 id="report-title-shift-handler" class="navbar-font text-2xl text-center hidden place-self-center">Daftar Shift Handler</h1>
+                    <h1 id="report-title-dashboard" class="col-span-2 navbar-font text-2xl text-center place-self-center">Laporan SABR</h1>
+                    <h1 id="report-title-pegawai" class="col-span-2 navbar-font text-2xl text-center hidden place-self-center">Daftar Pegawai</h1>
+                    <h1 id="report-title-pasien" class="col-span-2 navbar-font text-2xl text-center hidden place-self-center">Daftar Pasien</h1>
+                    <h1 id="report-title-shift-handler" class="col-span-2 navbar-font text-2xl text-center hidden place-self-center">Daftar Shift Handler</h1>
                     
-                    <div id="shift-handler-wrapper" class="bg-white rounded-lg">
-                        <h2 id="date-selected-data" class="p-2 font-bold text-lg text-center place-self-center w-full rounded-tl-lg rounded-tr-lg bg-[#BFBFBF]"></h2>
-                        <div id="" class="col-span-3 grid grid-cols-3 gap-4">
-                            <h2 id="" class="p-2 font-bold text-lg text-center place-self-center place-self-start">Name</h2>
-                            <h2 id="" class="p-2 font-bold text-lg text-center place-self-center">Kode</h2>
-                            <h2 id="" class="p-2 font-bold text-lg text-center place-self-center place-self-end">Role</h2>                    
+                    <div id="shift-handler-wrapper" class="bg-white rounded-md">
+                        <div class="p-2 font-bold text-md text-center place-self-center w-full rounded-tl-lg rounded-tr-lg bg-[#BFBFBF] flex space-x-5">
+                            <h2 id="date-selected-data" class=""></h2>
+                            <button id="" class="cursor-pointer" 
+                                onclick="document.getElementById('shift-handler-on-dashboard').classList.toggle('hidden'); 
+                                document.getElementById('shift-handler-based-on-date').classList.toggle('hidden')">
+                                <img src="src/asset/logo/menu.png" class="w-5 h-auto" alt="">
+                            </button>
                         </div>
+                        <div id="shift-handler-based-on-date" class="grid grid-cols-5 gap-4">
+                            <h2 id="" class="p-2 col-span-2 font-bold text-sm text-left">Name</h2>
+                            <h2 id="" class="p-2 font-bold text-sm text-left">Shift</h2>
+                            <h2 id="" class="p-2 col-span-2 font-bold text-sm text-left">Peran</h2>                    
+                        </div>
+                        <div id="shift-handler-on-dashboard" class=""></div>
                     </div>
                 </div>
                 <div id="shift-handler-join" class="hidden">
@@ -106,11 +114,10 @@
                 </div>
 
                 <div id="table-header-dashboard" class="bg-[#BFBFBF] p-4 grid grid-cols-8 gap-4 w-full">
-                    <h2 class="">Tanggal</h2>
                     <h2 class="">Name</h2>
                     <h2 class="col-span-2">Situation</h2>
                     <h2 class="">Background</h2>
-                    <h2 class="">Assessment</h2>
+                    <h2 class="col-span-2">Assessment</h2>
                     <h2 class="">Recommendation</h2>
                     <h2 class=""></h2>
                 </div>
@@ -143,16 +150,16 @@
                 <button id="close-modal" class="cursor-pointer place-self-end" onclick="document.getElementById('modal-add-data-report').classList.add('hidden')">
                     <img src="src/asset/logo/delete.png" alt="" class="max-w-5 h-auto">
                 </button>
-                <h1 class="text-center text-2xl">Add Data</h1>
+                <h1 class="text-center text-2xl">Tambahkan Laporan</h1>
                 <div id="modal-form-name-shift" class="grid grid-cols-2 gap-4 pt-4">
                     <div id="modal-form-name" class="flex flex-col space-y-4">
-                        <h2 class="text-left">Name <button id="" onclick="daftarPasien()" class="text-gray-500 cursor-pointer">(klik untuk menambah data pasien)</button> </h2>
+                        <h2 class="text-left">Nama <button id="" onclick="daftarPasien()" class="text-gray-500 cursor-pointer">(klik untuk menambah data pasien)</button> </h2>
                         <select name="name-select" id="pasien-name" class="cursor-pointer border-1 p-2 text-pretty"></select>
                     </div>
                     <div id="modal-form-shift" class="flex flex-col space-y-4">
                         <h2 class="text-left">Shift</h2>
                         <select id="modal-shift-selector" name="shift-select" class="cursor-pointer border-1 p-2">
-                            <option value="" selected disabled hidden>Choose here</option>
+                            <option value="" selected disabled hidden>Pilih Shift</option>
                             <option value="pagi" class="text-black">Pagi</option>
                             <option value="siang" class="text-black">Siang</option>
                             <option value="malam" class="text-black">Malam</option>
@@ -160,7 +167,7 @@
                     </div>
                 </div>
                 <div id="modal-form-date" class="flex flex-col space-y-4 pt-4">
-                    <h2 class="text-left">Date</h2>
+                    <h2 class="text-left">Tanggal</h2>
                     <input type="date" name="" id="date-input" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Date" value="">
                 </div>
                 <div id="modal-form-situation" class="flex flex-col space-y-4 pt-4">
@@ -194,7 +201,7 @@
                 <button id="close-modal" class="cursor-pointer place-self-end" onclick="document.getElementById('modal-add-pegawai').classList.add('hidden')">
                     <img src="src/asset/logo/delete.png" alt="" class="max-w-5 h-auto">
                 </button>
-                <h1 class="text-center text-2xl p-4">Add Pegawai</h1>
+                <h1 class="text-center text-2xl p-4">Tambahkan Pegawai</h1>
                 <div class="flex flex-col space-y-4 pt-4">
                     <h2 class="text-left">Nama Pegawai</h2>
                     <input type="text" name="" id="pegawai-nama" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Nama Pegawai">
@@ -225,7 +232,7 @@
                 <button id="close-modal" class="cursor-pointer place-self-end" onclick="document.getElementById('modal-add-pasien').classList.add('hidden')">
                     <img src="src/asset/logo/delete.png" alt="" class="max-w-5 h-auto">
                 </button>
-                <h1 class="text-center text-2xl p-4">Add Pasien</h1>
+                <h1 class="text-center text-2xl p-4">Tambahkan Pasien</h1>
                 <div class="flex flex-col space-y-4 pt-4">
                     <h2 class="text-left">Nama Pasien</h2>
                     <input type="text" name="" id="pasien-nama" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Nama Pasien" >
@@ -263,16 +270,16 @@
                     </select>
                 </div>
                 <div class="flex flex-col space-y-4 pt-4">
-                    <h2 class="text-left">Role</h2>
-                    <select type="text" name="" id="shift-handler-shift" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Role">
+                    <h2 class="text-left">Shift</h2>
+                    <select type="text" name="" id="shift-handler-shift" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Shift">
                         <option value="pagi">Pagi</option>
                         <option value="siang">Siang</option>
                         <option value="malam">Malam</option>
                     </select>
                 </div>
                 <div class="flex flex-col space-y-4 pt-4">
-                    <h2 class="text-left">Role</h2>
-                    <select type="text" name="" id="shift-handler-role" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Role">
+                    <h2 class="text-left">Peran</h2>
+                    <select type="text" name="" id="shift-handler-role" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Peran">
                         <option value="true">Shift Leader</option>
                         <option value="false">Shift Member</option>
                     </select>

@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded',
         height: 315,
         dateClick: function(info) {
             var dateFormatting = info.date;
-            document.getElementById('date-selected-data').innerHTML = 'Selected Date : ' + dateFormatting.toLocaleDateString('id-ID', {
+            document.getElementById('date-selected-data').innerHTML = 'PJ Tanggal : ' + dateFormatting.toLocaleDateString('id-ID', {
                 weekday: 'short',
                 day: 'numeric',
                 month: 'short',
@@ -75,14 +75,14 @@ document.addEventListener('DOMContentLoaded',
     const autoFillDate = document.getElementById('date-input');
     const dateFormatting = calendar.getDate();
     console.log("dateFormatting : " + dateFormatting);
-    document.getElementById('date-selected-data').innerHTML = 'Selected Date : ' + dateFormatting.toLocaleDateString('id-ID', {
+    document.getElementById('date-selected-data').innerHTML = 'PJ Tanggal : ' + dateFormatting.toLocaleDateString('id-ID', {
         weekday: 'short',
         day: 'numeric',
         month: 'short',
         year: 'numeric',
     });
     dateNow.textContent =
-        'Today : ' +
+        'Hari Ini : ' +
         dateFormatting.toLocaleDateString('id-ID', {
         weekday: 'short',
         day: 'numeric',
@@ -142,12 +142,15 @@ async function dashboard() {
 
     let data_sabr = await fetchDataSabr();
     let data_pasien = await fetchDataPasien();
+    let data_pegawai= await fetchDataPegawai();
+    let data_shift= await fetchDataShiftHandler()
 
     const shiftSelect = document.getElementById('aside-shift');
     const selectedShift = shiftSelect.value;
     shiftSelect.addEventListener('change', dashboard);
 
     const target = document.getElementById('table-data-pasien-sabr');
+    const targetShift = document.getElementById('shift-handler-on-dashboard')
     if (selectedShift) {
         const filteredData = data_sabr.filter((sabr) => sabr.shift === selectedShift);
         const filteredDataByDate = filteredData.filter((sabr) => sabr.tanggal_shift.slice(0,10) === state.selectedDate);
@@ -157,11 +160,10 @@ async function dashboard() {
             (sabr) => `
                         <div id="data-sabr-wrapper" class="pt-1 pb-1">
                             <div id="" class="bg-white p-4 grid grid-cols-8 gap-4 w-full">
-                                <h2 id="${sabr.id_report + '-tanggal'}" class="text-left">${sabr.tanggal_shift.slice(0,10)}</h2>
                                 <h2 id="${sabr.id_report + '-nama'}" class="text-left">${data_pasien.find((pasien) => pasien.id_pasien === sabr.pasien_id)?.nama || 'N/A'}</h2>
                                 <h2 id="${sabr.id_report + '-situation'}" class="text-justify col-span-2">${sabr.situation}</h2>
                                 <h2 id="${sabr.id_report + '-background'}" class="text-justify">${sabr.background}</h2>
-                                <h2 id="${sabr.id_report + '-assessment'}" class="text-justify">${sabr.assessment}</h2>
+                                <h2 id="${sabr.id_report + '-assessment'}" class="text-justify col-span-2">${sabr.assessment}</h2>
                                 <h2 id="${sabr.id_report + '-recommendation'}" class="text-justify">${sabr.recommendation}</h2>
                                 <div id="action" class="flex space-x-4 justify-center place-self-start">
                                     <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${sabr.id_report}')">
@@ -174,8 +176,26 @@ async function dashboard() {
                             </div>
                         </div>    
                     `,
-        )
-        .join('');
+        ).join('');
+        const roleConverter = data_shift.map((shift) => {
+            if (shift.shift_leader === true) {
+                shift.shift_leader = 'Shift Leader';
+            }else if (shift.shift_leader === false) {
+                shift.shift_leader = 'Shift Member';
+            }
+            return shift;
+        });
+        const filterdataShift = roleConverter.filter((shift) => shift.shift === selectedShift);
+        const filterdataShiftbyDate = filterdataShift.filter((shift) => shift.tanggal_shift.slice(0,10) === state.selectedDate)
+        targetShift.innerHTML = filterdataShiftbyDate.map(
+            (shift) => `
+                <div id="" class="grid grid-cols-5 gap-4">
+                    <h1 id="${shift.id_shift + '-nama'}" class="col-span-2 text-sm text-left p-2">${data_pegawai.find(p => p.id_pegawai === shift.pegawai_id)?.nama || 'N/A'}</h1>
+                    <h1 id="${shift.id_shift + '-shift'}" class="text-sm text-left p-2">${shift.shift}</h1>
+                    <h1 id="${shift.id_shift + '-role'}" class="col-span-2 text-sm text-left p-2">${shift.shift_leader}</h1>
+                </div>
+            `
+        ).join('');
     } else {
         const date = document.getElementById('date-input').value;
         console.log(`Shift yang dipilih : ${selectedShift} dan tanggal : ${date}`);
