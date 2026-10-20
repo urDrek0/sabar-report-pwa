@@ -180,9 +180,9 @@ async function dashboard() {
         ).join('');
         const roleConverter = data_shift.map((shift) => {
             if (shift.shift_leader === true) {
-                shift.shift_leader = 'Shift Leader';
+                shift.shift_leader = 'Ketua Shift';
             }else if (shift.shift_leader === false) {
-                shift.shift_leader = 'Shift Member';
+                shift.shift_leader = 'Anggota Shift';
             }
             return shift;
         });
@@ -241,9 +241,9 @@ async function showShift() {
 
     const roleConverter = data_shift.map((shift) => {
         if (shift.shift_leader === true) {
-            shift.shift_leader = 'Shift Leader';
+            shift.shift_leader = 'Ketua Shift';
         }else if (shift.shift_leader === false) {
-            shift.shift_leader = 'Shift Member';
+            shift.shift_leader = 'Anggota Shift';
         }
         return shift;
     });
