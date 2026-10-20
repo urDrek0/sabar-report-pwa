@@ -259,38 +259,160 @@
         </div>
 
         <div id="modal-add-shift-handler" class="overflow-y-scroll fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden">
-            <div id="modal-content-shift-handler" class="bg-white w-1/2 h-auto rounded-xl p-4 justify-center place-self-center">
+            <div id="modal-content-shift-handler" class="bg-white w-4/5 h-auto rounded-xl p-4 justify-center place-self-center">
                 <button id="close-modal" class="cursor-pointer place-self-end" onclick="document.getElementById('modal-add-shift-handler').classList.add('hidden')">
                     <img src="src/asset/logo/delete.png" alt="" class="max-w-5 h-auto">
                 </button>
                 <h1 class="text-center text-2xl p-4">Tambahkan Petugas Shift Hari ini</h1>
-                <div class="flex flex-col space-y-4 pt-4">
-                    <h2 class="text-left">Nama Petugas <button id="" onclick="daftarPegawai()" class="text-gray-500 cursor-pointer">(klik untuk menambah Pegawai)</button> </h2>
-                    <select name="shift-handler-nama-select" id="shift-handler-nama" class="text-pretty border border-1 rounded-xl p-2 w-full">
+                <div id="" class="flex flex-col space-y-4 pt-4">
+                    <h2 class="text-left">Jumlah Pegawai Shift ini (Maksimal 5)</h2>
+                    <select type ="number" name="" id="shift-handler-team" class="text-pretty border border-1 rounded-xl p-2 w-full">
+                        <option value="" selected disabled hidden>Pilih disini</option>
+                        <option value=1>Satu</option>
+                        <option value=2>Dua</option>
+                        <option value=3>Tiga</option>
+                        <option value=4>Empat</option>
+                        <option value=5>Lima</option>
                     </select>
                 </div>
-                <div class="flex flex-col space-y-4 pt-4">
-                    <h2 class="text-left">Shift</h2>
-                    <select type="text" name="" id="shift-handler-shift" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Shift">
-                        <option value="pagi">Pagi</option>
-                        <option value="siang">Siang</option>
-                        <option value="malam">Malam</option>
-                    </select>
+
+                <div class="grid grid-cols-3 gap-5">
+
+                    <div id="field-form-shift-handler-one" class="pt-3 hidden">
+                        <h1 class="text-center text-2xl pt-2">Pegawai 1</h1>
+                        <div class="flex flex-col space-y-4 pt-2">
+                            <h2 class="text-left">Nama Petugas <button id="" onclick="daftarPegawai()" class="text-gray-500 cursor-pointer">(klik untuk menambah Pegawai)</button></h2>
+                            <select name="shift-handler-nama-select" id="shift-handler-nama-one" class="text-pretty border border-1 rounded-xl p-2 w-full">
+                            </select>
+                        </div>
+                        <div class="flex flex-col space-y-4 pt-4">
+                            <h2 class="text-left">Shift</h2>
+                            <select type="text" name="" id="shift-handler-shift-one" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Shift">
+                                <option value="" selected disabled hidden>Pilih Shift</option>
+                                <option value="pagi">Pagi</option>
+                                <option value="siang">Siang</option>
+                                <option value="malam">Malam</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col space-y-4 pt-4">
+                            <h2 class="text-left">Peran</h2>
+                            <select type="text" name="" id="shift-handler-role-one" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Peran">
+                                <option value="true">Shift Leader</option>
+                                <option value="false">Shift Member</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="field-form-shift-handler-two" class="pt-3 hidden">
+                        <h1 class="text-center text-2xl pt-2">Pegawai 2</h1>
+                        <div class="flex flex-col space-y-4 pt-2">
+                            <h2 class="text-left">Nama Petugas <button id="" onclick="daftarPegawai()" class="text-gray-500 cursor-pointer">(klik untuk menambah Pegawai)</button></h2>
+                            <select name="shift-handler-nama-select" id="shift-handler-nama-two" class="text-pretty border border-1 rounded-xl p-2 w-full">
+                            </select>
+                        </div>
+                        <div class="flex flex-col space-y-4 pt-4">
+                            <h2 class="text-left">Shift</h2>
+                            <select type="text" name="" id="shift-handler-shift-two" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Shift">
+                                <option value="" selected disabled hidden>Pilih Shift</option>
+                                <option value="pagi">Pagi</option>
+                                <option value="siang">Siang</option>
+                                <option value="malam">Malam</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col space-y-4 pt-4">
+                            <h2 class="text-left">Peran</h2>
+                            <select type="text" name="" id="shift-handler-role-two" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Peran">
+                                <option value="true">Shift Leader</option>
+                                <option value="false">Shift Member</option>
+                            </select>
+                        </div>                         
+                    </div>
+                    
+                    <div id="field-form-shift-handler-three" class="pt-3 hidden">
+                        <h1 class="text-center text-2xl pt-2">Pegawai 3</h1>
+                        <div class="flex flex-col space-y-4 pt-2">
+                            <h2 class="text-left">Nama Petugas <button id="" onclick="daftarPegawai()" class="text-gray-500 cursor-pointer">(klik untuk menambah Pegawai)</button></h2>
+                            <select name="shift-handler-nama-select" id="shift-handler-nama-three" class="text-pretty border border-1 rounded-xl p-2 w-full">
+                            </select>
+                        </div>
+                        <div class="flex flex-col space-y-4 pt-4">
+                            <h2 class="text-left">Shift</h2>
+                            <select type="text" name="" id="shift-handler-shift-three" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Shift">
+                                <option value="" selected disabled hidden>Pilih Shift</option>
+                                <option value="pagi">Pagi</option>
+                                <option value="siang">Siang</option>
+                                <option value="malam">Malam</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col space-y-4 pt-4">
+                            <h2 class="text-left">Peran</h2>
+                            <select type="text" name="" id="shift-handler-role-three" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Peran">
+                                <option value="true">Shift Leader</option>
+                                <option value="false">Shift Member</option>
+                            </select>
+                        </div>                         
+                    </div>
+
+                    <div id="field-form-shift-handler-four" class="pt-3 hidden">
+                        <h1 class="text-center text-2xl pt-2">Pegawai 4</h1>
+                        <div class="flex flex-col space-y-4 pt-2">
+                            <h2 class="text-left">Nama Petugas <button id="" onclick="daftarPegawai()" class="text-gray-500 cursor-pointer">(klik untuk menambah Pegawai)</button></h2>
+                            <select name="shift-handler-nama-select" id="shift-handler-nama-four" class="text-pretty border border-1 rounded-xl p-2 w-full">
+                            </select>
+                        </div>
+                        <div class="flex flex-col space-y-4 pt-4">
+                            <h2 class="text-left">Shift</h2>
+                            <select type="text" name="" id="shift-handler-shift-four" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Shift">
+                                <option value="" selected disabled hidden>Pilih Shift</option>
+                                <option value="pagi">Pagi</option>
+                                <option value="siang">Siang</option>
+                                <option value="malam">Malam</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col space-y-4 pt-4">
+                            <h2 class="text-left">Peran</h2>
+                            <select type="text" name="" id="shift-handler-role-four" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Peran">
+                                <option value="true">Shift Leader</option>
+                                <option value="false">Shift Member</option>
+                            </select>
+                        </div>                         
+                    </div>
+
+                    <div id="field-form-shift-handler-five" class="pt-3 hidden">
+                        <h1 class="text-center text-2xl pt-2">Pegawai 5</h1>
+                        <div class="flex flex-col space-y-4 pt-2">
+                            <h2 class="text-left">Nama Petugas <button id="" onclick="daftarPegawai()" class="text-gray-500 cursor-pointer">(klik untuk menambah Pegawai)</button></h2>
+                            <select name="shift-handler-nama-select" id="shift-handler-nama-five" class="text-pretty border border-1 rounded-xl p-2 w-full">
+                            </select>
+                        </div>
+                        <div class="flex flex-col space-y-4 pt-4">
+                            <h2 class="text-left">Shift</h2>
+                            <select type="text" name="" id="shift-handler-shift-five" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Shift">
+                                <option value="" selected disabled hidden>Pilih Shift</option>
+                                <option value="pagi">Pagi</option>
+                                <option value="siang">Siang</option>
+                                <option value="malam">Malam</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col space-y-4 pt-4">
+                            <h2 class="text-left">Peran</h2>
+                            <select type="text" name="" id="shift-handler-role-five" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Peran">
+                                <option value="true">Shift Leader</option>
+                                <option value="false">Shift Member</option>
+                            </select>
+                        </div>                         
+                    </div>
+                    
+
                 </div>
-                <div class="flex flex-col space-y-4 pt-4">
-                    <h2 class="text-left">Peran</h2>
-                    <select type="text" name="" id="shift-handler-role" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Peran">
-                        <option value="true">Shift Leader</option>
-                        <option value="false">Shift Member</option>
-                    </select>
-                </div>
+
                 <div id="modal-form-submit-pasien" class="pt-4 place-self-end">
                     <button id="" class="cursor-pointer bg-[#353A3E] rounded-xl  w-auto hover:bg-black transition duration-200">
                         <div class="justify-center place-self-center p-2">
                             <h2 class="text-white text-center">Submit</h2>
                         </div>
                     </button>
-                </div>  
+                </div>
             </div>
         </div>
 

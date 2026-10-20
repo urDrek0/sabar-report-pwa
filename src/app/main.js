@@ -208,6 +208,74 @@ async function dashboard() {
 
 dashboard();
 
+async function showShift() {
+    state.currentPage = 'daftar-shift-handler';
+    console.log('state : ', state.currentPage);
+    document.getElementById('add-data-guidance').textContent = 'Add Shift Handler +';
+    document.getElementById('modal-add-data-report').classList.add('hidden');
+    document.getElementById('daftar-pegawai').classList.add('hidden');
+    document.getElementById('table-data-daftar-pegawai').classList.add('hidden');
+    document.getElementById('report-title-pegawai').classList.add('hidden');
+    document.getElementById('table-header-pegawai').classList.add('hidden');
+
+    document.getElementById('table-data-pasien-sabr').classList.add('hidden');
+    document.getElementById('report-title-dashboard').classList.add('hidden');
+    document.getElementById('table-header-dashboard').classList.add('hidden');
+
+    document.getElementById('daftar-pasien').classList.add('hidden');
+    document.getElementById('report-title-pasien').classList.add('hidden');
+    document.getElementById('table-header-pasien').classList.add('hidden');
+    document.getElementById('table-data-daftar-pasien').classList.add('hidden');
+    
+    document.getElementById('shift-handler-wrapper').classList.add('hidden');
+    document.getElementById('report-title-shift-handler').classList.remove('hidden');
+    document.getElementById('shift-handler-join').classList.remove('hidden');
+
+
+    let data_shift = await fetchDataShiftHandler();
+    let data_pegawai = await fetchDataPegawai();
+    const roleConverter = data_shift.map((shift) => {
+        if (shift.shift_leader === true) {
+            shift.shift_leader = 'Shift Leader';
+        }else if (shift.shift_leader === false) {
+            shift.shift_leader = 'Shift Member';
+        }
+        return shift;
+    });
+
+    const shiftSelect = document.getElementById('aside-shift');
+    const selectedShift = shiftSelect.value;
+    shiftSelect.addEventListener('change', showShift);
+
+    if (selectedShift) {
+        const filterdataShift = roleConverter.filter((shift) => shift.shift === selectedShift);
+        const filterdataShiftbyDate = filterdataShift.filter((shift) => shift.tanggal_shift.slice(0,10) === state.selectedDate)
+        const shiftHandlerJoin = document.getElementById('table-data-shift-handler');
+        shiftHandlerJoin.innerHTML = filterdataShiftbyDate
+            .map(
+                (shift) => `
+            <div id="data-shift-wrapper" class="pt-1 pb-1">
+                <div id="" class="bg-white p-4 grid grid-cols-6 gap-4 w-full">
+                    <h1 id="${shift.id_shift + '-tanggal'}" class="text-md text-left">${shift.tanggal_shift.slice(0,10)}</h1>
+                    <h1 id="${shift.id_shift + '-shift'}" class="text-md text-left">${shift.shift}</h1>
+                    <h1 id="${shift.id_shift + '-nama'}" class="text-md text-left">${data_pegawai.find(p => p.id_pegawai === shift.pegawai_id)?.nama || 'N/A'}</h1>
+                    <h1 id="${shift.id_shift + '-kode'}" class="text-md text-left">${data_pegawai.find(p => p.id_pegawai === shift.pegawai_id)?.kode || 'N/A'}</h1>
+                    <h1 id="${shift.id_shift + '-role'}" class="text-md text-left">${shift.shift_leader}</h1>
+                    <div id="action" class="flex space-x-4 justify-center">
+                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${shift.id_shift}')">
+                            <img src="src/asset/logo/edit.png" alt="" class="">
+                        </button>
+                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${shift.id_shift}')">
+                            <img src="src/asset/logo/delete.png" alt="" class="">
+                        </button>
+                    </div>
+                </div>
+            </div>
+                `,
+            )
+            .join('');
+}}
+
 async function daftarPegawai() {
     state.currentPage = 'daftar-pegawai';    
     console.log('state : ', state.currentPage);
@@ -308,6 +376,7 @@ async function addNewReport() {
     console.log('state : ', state.currentPage);
     let data_pasien = await fetchDataPasien();
     let data_pegawai = await fetchDataPegawai();
+    const shiftHandlerEvent = document.getElementById('shift-handler-team')
     if (state.currentPage === 'dashboard') {
         document.getElementById('modal-add-data-report').classList.remove('hidden');
         let nameSelectPasien = document.getElementById('pasien-name');
@@ -323,13 +392,36 @@ async function addNewReport() {
     }
     else if (state.currentPage === 'daftar-shift-handler') {
         document.getElementById('modal-add-shift-handler').classList.remove('hidden');
-        let nameSelectPegawai = document.getElementById('shift-handler-nama');
-        nameSelectPegawai.innerHTML = data_pegawai
-            .map((pegawai) => `<option value="${pegawai.nama}">${pegawai.nama}</option>`)
-            .join('');
-    }
-}
+        let idPuller = [
+            'shift-handler-nama-one', 
+            'shift-handler-nama-two', 
+            'shift-handler-nama-three', 
+            'shift-handler-nama-four', 
+            'shift-handler-nama-five']
+        idPuller.forEach((idPlaceHolder) => 
+            document.getElementById(idPlaceHolder).innerHTML = data_pegawai
+            .map((pegawai) => `<option value="${pegawai.nama}">${pegawai.nama}</option>`).join('')
+        )
 
+        let fieldFormId = [
+            'field-form-shift-handler-one',
+            'field-form-shift-handler-two',
+            'field-form-shift-handler-three',
+            'field-form-shift-handler-four',
+            'field-form-shift-handler-five',]
+            
+        function renderingFieldFrom(){
+            const valueTeamOnShift = shiftHandlerEvent.value
+            fieldFormId.forEach((id, index) => {
+                console.log('id : ', id)
+                console.log('index : ', index)
+                document.getElementById(id).classList.toggle('hidden', index >= valueTeamOnShift)
+            })
+        }
+    }
+    shiftHandlerEvent.addEventListener('change', renderingFieldFrom)               
+}
+ 
 async function modalEditData(id) {
     let data_pasien = await fetchDataPasien();
     let data_sabr = await fetchDataSabr();        
@@ -394,71 +486,3 @@ async function modalEditData(id) {
 async function modalDeleteData(id) {
     document.getElementById('modal-delete').classList.remove('hidden');
 }
-
-async function showShift() {
-    state.currentPage = 'daftar-shift-handler';
-    console.log('state : ', state.currentPage);
-    document.getElementById('add-data-guidance').textContent = 'Add Shift Handler +';
-    document.getElementById('modal-add-data-report').classList.add('hidden');
-    document.getElementById('daftar-pegawai').classList.add('hidden');
-    document.getElementById('table-data-daftar-pegawai').classList.add('hidden');
-    document.getElementById('report-title-pegawai').classList.add('hidden');
-    document.getElementById('table-header-pegawai').classList.add('hidden');
-
-    document.getElementById('table-data-pasien-sabr').classList.add('hidden');
-    document.getElementById('report-title-dashboard').classList.add('hidden');
-    document.getElementById('table-header-dashboard').classList.add('hidden');
-
-    document.getElementById('daftar-pasien').classList.add('hidden');
-    document.getElementById('report-title-pasien').classList.add('hidden');
-    document.getElementById('table-header-pasien').classList.add('hidden');
-    document.getElementById('table-data-daftar-pasien').classList.add('hidden');
-    
-    document.getElementById('shift-handler-wrapper').classList.add('hidden');
-    document.getElementById('report-title-shift-handler').classList.remove('hidden');
-    document.getElementById('shift-handler-join').classList.remove('hidden');
-
-
-    let data_shift = await fetchDataShiftHandler();
-    let data_pegawai = await fetchDataPegawai();
-    const roleConverter = data_shift.map((shift) => {
-        if (shift.shift_leader === true) {
-            shift.shift_leader = 'Shift Leader';
-        }else if (shift.shift_leader === false) {
-            shift.shift_leader = 'Shift Member';
-        }
-        return shift;
-    });
-
-    const shiftSelect = document.getElementById('aside-shift');
-    const selectedShift = shiftSelect.value;
-    shiftSelect.addEventListener('change', showShift);
-
-    if (selectedShift) {
-        const filterdataShift = roleConverter.filter((shift) => shift.shift === selectedShift);
-        const filterdataShiftbyDate = filterdataShift.filter((shift) => shift.tanggal_shift.slice(0,10) === state.selectedDate)
-        const shiftHandlerJoin = document.getElementById('table-data-shift-handler');
-        shiftHandlerJoin.innerHTML = filterdataShiftbyDate
-            .map(
-                (shift) => `
-            <div id="data-shift-wrapper" class="pt-1 pb-1">
-                <div id="" class="bg-white p-4 grid grid-cols-6 gap-4 w-full">
-                    <h1 id="${shift.id_shift + '-tanggal'}" class="text-md text-left">${shift.tanggal_shift.slice(0,10)}</h1>
-                    <h1 id="${shift.id_shift + '-shift'}" class="text-md text-left">${shift.shift}</h1>
-                    <h1 id="${shift.id_shift + '-nama'}" class="text-md text-left">${data_pegawai.find(p => p.id_pegawai === shift.pegawai_id)?.nama || 'N/A'}</h1>
-                    <h1 id="${shift.id_shift + '-kode'}" class="text-md text-left">${data_pegawai.find(p => p.id_pegawai === shift.pegawai_id)?.kode || 'N/A'}</h1>
-                    <h1 id="${shift.id_shift + '-role'}" class="text-md text-left">${shift.shift_leader}</h1>
-                    <div id="action" class="flex space-x-4 justify-center">
-                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${shift.id_shift}')">
-                            <img src="src/asset/logo/edit.png" alt="" class="">
-                        </button>
-                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${shift.id_shift}')">
-                            <img src="src/asset/logo/delete.png" alt="" class="">
-                        </button>
-                    </div>
-                </div>
-            </div>
-                `,
-            )
-            .join('');
-}}
