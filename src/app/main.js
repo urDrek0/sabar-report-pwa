@@ -21,7 +21,7 @@ async function fetchDataShiftHandler() {
 }
 let todayDate = new Date().toLocaleDateString('en-CA')
 let state = {
-    currentPage: 'dashboard',
+    currentPage: '',
     selectedDate: todayDate
 }
 console.log('selectedDate:', state.selectedDate, typeof state.selectedDate);
@@ -116,32 +116,35 @@ function toggleSideBar() {
     });
     document.getElementById('sidebar-container').classList.toggle('pr-4');
 }
+
 async function dashboard() {
     state.currentPage = 'dashboard';
-    console.log('state : ', state.currentPage);
-    document.getElementById('add-data-guidance').textContent = 'Add Report +';
-    document.getElementById('daftar-pegawai').classList.add('hidden');
-    document.getElementById('table-data-daftar-pegawai').classList.add('hidden');
-    document.getElementById('report-title-pegawai').classList.add('hidden');
-    document.getElementById('table-header-pegawai').classList.add('hidden');
-
-    document.getElementById('table-data-pasien-sabr').classList.remove('hidden');
-    document.getElementById('report-title-dashboard').classList.remove('hidden');
-    document.getElementById('table-header-dashboard').classList.remove('hidden');
-
-    document.getElementById('daftar-pasien').classList.add('hidden');
-    document.getElementById('report-title-pasien').classList.add('hidden');
-    document.getElementById('table-header-pasien').classList.add('hidden');
-    document.getElementById('table-data-daftar-pasien').classList.add('hidden');
-
-    document.getElementById('shift-handler-wrapper').classList.remove('hidden');
-    document.getElementById('report-title-shift-handler').classList.add('hidden');
-    document.getElementById('shift-handler-join').classList.add('hidden');
-
     let data_sabr = await fetchDataSabr();
     let data_pasien = await fetchDataPasien();
     let data_pegawai= await fetchDataPegawai();
     let data_shift= await fetchDataShiftHandler()
+
+    let hideElementbyId = [
+        'daftar-pegawai', 
+        'table-data-daftar-pegawai',
+        'report-title-pegawai',
+        'table-header-pegawai',
+        'daftar-pasien',
+        'report-title-pasien',
+        'table-header-pasien',
+        'table-data-daftar-pasien',
+        'report-title-shift-handler',
+        'shift-handler-join'
+    ]
+    let shownElementbyId = [
+        'table-data-pasien-sabr',
+        'report-title-dashboard',
+        'table-header-dashboard',
+        'shift-handler-wrapper'
+    ]
+    document.getElementById('add-data-guidance').textContent = 'Add Report +';
+    hideElementbyId.forEach(id => document.getElementById(id)?.classList.add('hidden'))
+    shownElementbyId.forEach(id => document.getElementById(id)?.classList.remove('hidden'))
 
     const shiftSelect = document.getElementById('aside-shift');
     const selectedShift = shiftSelect.value;
@@ -205,35 +208,37 @@ async function dashboard() {
         '</h1>';
     }
 }
-
-dashboard();
+dashboard()
 
 async function showShift() {
     state.currentPage = 'daftar-shift-handler';
-    console.log('state : ', state.currentPage);
-    document.getElementById('add-data-guidance').textContent = 'Add Shift Handler +';
-    document.getElementById('modal-add-data-report').classList.add('hidden');
-    document.getElementById('daftar-pegawai').classList.add('hidden');
-    document.getElementById('table-data-daftar-pegawai').classList.add('hidden');
-    document.getElementById('report-title-pegawai').classList.add('hidden');
-    document.getElementById('table-header-pegawai').classList.add('hidden');
-
-    document.getElementById('table-data-pasien-sabr').classList.add('hidden');
-    document.getElementById('report-title-dashboard').classList.add('hidden');
-    document.getElementById('table-header-dashboard').classList.add('hidden');
-
-    document.getElementById('daftar-pasien').classList.add('hidden');
-    document.getElementById('report-title-pasien').classList.add('hidden');
-    document.getElementById('table-header-pasien').classList.add('hidden');
-    document.getElementById('table-data-daftar-pasien').classList.add('hidden');
-    
-    document.getElementById('shift-handler-wrapper').classList.add('hidden');
-    document.getElementById('report-title-shift-handler').classList.remove('hidden');
-    document.getElementById('shift-handler-join').classList.remove('hidden');
-
-
     let data_shift = await fetchDataShiftHandler();
     let data_pegawai = await fetchDataPegawai();
+    
+    let hideElementbyId = [
+        'modal-add-data-report',
+        'daftar-pegawai',
+        'table-data-daftar-pegawai',
+        'report-title-pegawai',
+        'table-header-pegawai',
+        'table-data-pasien-sabr',
+        'report-title-dashboard',
+        'table-header-dashboard',
+        'daftar-pasien',
+        'report-title-pasien',
+        'table-header-pasien',
+        'table-data-daftar-pasien',
+        'shift-handler-wrapper'
+    ]
+    let shownElementbyId = ['report-title-shift-handler', 'shift-handler-join']
+    document.getElementById('add-data-guidance').textContent = 'Add Shift Handler +';
+    hideElementbyId.forEach(id => document.getElementById(id)?.classList.add('hidden'))
+    shownElementbyId.forEach(id => document.getElementById(id)?.classList.remove('hidden'))
+
+    const shiftSelect = document.getElementById('aside-shift');
+    const selectedShift = shiftSelect.value;
+    shiftSelect.addEventListener('change', showShift);
+
     const roleConverter = data_shift.map((shift) => {
         if (shift.shift_leader === true) {
             shift.shift_leader = 'Shift Leader';
@@ -242,11 +247,6 @@ async function showShift() {
         }
         return shift;
     });
-
-    const shiftSelect = document.getElementById('aside-shift');
-    const selectedShift = shiftSelect.value;
-    shiftSelect.addEventListener('change', showShift);
-
     if (selectedShift) {
         const filterdataShift = roleConverter.filter((shift) => shift.shift === selectedShift);
         const filterdataShiftbyDate = filterdataShift.filter((shift) => shift.tanggal_shift.slice(0,10) === state.selectedDate)
@@ -279,26 +279,28 @@ async function showShift() {
 async function daftarPegawai() {
     state.currentPage = 'daftar-pegawai';    
     console.log('state : ', state.currentPage);
-    console.log("inside daftarPegawai : ", state.selectedDate)
+    let hideElementbyId = [
+        'table-data-pasien-sabr', 
+        'report-title-dashboard', 
+        'table-header-dashboard', 
+        'modal-add-shift-handler', 
+        'daftar-pasien', 
+        'report-title-pasien', 
+        'table-header-pasien',
+        'table-data-daftar-pasien', 
+        'shift-handler-wrapper', 
+        'report-title-shift-handler',
+        'shift-handler-join'
+    ]
+    let shownElementbyId = [
+        'daftar-pegawai', 
+        'table-data-daftar-pegawai', 
+        'report-title-pegawai', 
+        'table-header-pegawai'
+    ] 
     document.getElementById('add-data-guidance').textContent = 'Add Pegawai +';
-    document.getElementById('table-data-pasien-sabr').classList.add('hidden');
-    document.getElementById('report-title-dashboard').classList.add('hidden');
-    document.getElementById('table-header-dashboard').classList.add('hidden');
-    document.getElementById('modal-add-shift-handler').classList.add('hidden');
-
-    document.getElementById('daftar-pegawai').classList.remove('hidden');
-    document.getElementById('table-data-daftar-pegawai').classList.remove('hidden');
-    document.getElementById('report-title-pegawai').classList.remove('hidden');
-    document.getElementById('table-header-pegawai').classList.remove('hidden');
-
-    document.getElementById('daftar-pasien').classList.add('hidden');
-    document.getElementById('report-title-pasien').classList.add('hidden');
-    document.getElementById('table-header-pasien').classList.add('hidden');
-    document.getElementById('table-data-daftar-pasien').classList.add('hidden');
-    
-    document.getElementById('shift-handler-wrapper').classList.add('hidden');
-    document.getElementById('report-title-shift-handler').classList.add('hidden');
-    document.getElementById('shift-handler-join').classList.add('hidden');
+    hideElementbyId.forEach(id => document.getElementById(id)?.classList.add('hidden'))
+    shownElementbyId.forEach(id => document.getElementById(id)?.classList.remove('hidden'))
 
     let data_pegawai = await fetchDataPegawai();
     const target = document.getElementById('table-data-daftar-pegawai');
@@ -323,29 +325,33 @@ async function daftarPegawai() {
         )
         .join('');
 }
+
 async function daftarPasien() {
     state.currentPage = 'daftar-pasien';
     console.log('state : ', state.currentPage);
+    let hideElementbyId = [
+        'modal-add-data-report', 
+        'daftar-pegawai', 
+        'table-data-daftar-pegawai', 
+        'report-title-pegawai', 
+        'table-header-pegawai', 
+        'modal-add-data-report', 
+        'table-data-pasien-sabr', 
+        'report-title-dashboard', 
+        'table-header-dashboard', 
+        'shift-handler-wrapper', 
+        'report-title-shift-handler', 
+        'shift-handler-join'
+    ]
+    let shownElementbyId = [
+        'daftar-pasien', 
+        'report-title-pasien', 
+        'table-header-pasien', 
+        'table-data-daftar-pasien'
+    ] 
+    hideElementbyId.forEach(id => document.getElementById(id)?.classList.add('hidden'))
+    shownElementbyId.forEach(id => document.getElementById(id)?.classList.remove('hidden'))
     document.getElementById('add-data-guidance').textContent = 'Add Pasien +';
-    document.getElementById('modal-add-data-report').classList.add('hidden');
-    document.getElementById('daftar-pegawai').classList.add('hidden');
-    document.getElementById('table-data-daftar-pegawai').classList.add('hidden');
-    document.getElementById('report-title-pegawai').classList.add('hidden');
-    document.getElementById('table-header-pegawai').classList.add('hidden');
-    document.getElementById('modal-add-data-report').classList.add('hidden');
-
-    document.getElementById('table-data-pasien-sabr').classList.add('hidden');
-    document.getElementById('report-title-dashboard').classList.add('hidden');
-    document.getElementById('table-header-dashboard').classList.add('hidden');
-    
-    document.getElementById('shift-handler-wrapper').classList.add('hidden');
-    document.getElementById('report-title-shift-handler').classList.add('hidden');
-    document.getElementById('shift-handler-join').classList.add('hidden');
-
-    document.getElementById('daftar-pasien').classList.remove('hidden');
-    document.getElementById('report-title-pasien').classList.remove('hidden');
-    document.getElementById('table-header-pasien').classList.remove('hidden');
-    document.getElementById('table-data-daftar-pasien').classList.remove('hidden');
 
     let data_pasien = await fetchDataPasien();
     const target = document.getElementById('table-data-daftar-pasien');
