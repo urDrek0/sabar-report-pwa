@@ -19,12 +19,14 @@ async function fetchDataShiftHandler() {
     const data_shift = await resDaftarShift.json();
     return data_shift;
 }
-let todayDate = new Date().toLocaleDateString('en-CA')
+var todayDate = new Date().toLocaleDateString('en-CA')
+
 let state = {
     currentPage: '',
-    selectedDate: todayDate
+    selectedDate: todayDate,
+    selectedShift: ''
 }
-console.log('selectedDate:', state.selectedDate, typeof state.selectedDate);
+
 let calendar;
 
 document.addEventListener('DOMContentLoaded', 
@@ -41,19 +43,28 @@ document.addEventListener('DOMContentLoaded',
                 month: 'short',
                 year: 'numeric', 
             });
+            const shiftSelect = document.getElementById('aside-shift')
+            console.log('shiftSelected : ', shiftSelect.value)
+            function renderCurrentPage(){
+                if (state.currentPage === 'dashboard') {
+                    dashboard()
+                }
+                else if (state.currentPage === 'daftar-shift-handler') {
+                    showShift()
+                }
+            }
+            state.selectedShift = shiftSelect.value
+            shiftSelect.addEventListener('change', () => {
+                state.selectedShift = shiftSelect.value
+                renderCurrentPage()
+            })
             calendarEl.querySelector('.chosen-date')?.classList.remove('chosen-date');
             calendarEl.querySelector('.chosen-date-label')?.classList.remove('chosen-date-label');
             info.dayEl.classList.add('chosen-date');
             info.dayEl.querySelector('[aria-hidden="true"], a')?.classList.add('chosen-date-label');
             state.selectedDate = info.dateStr
+            renderCurrentPage()
             console.log("calendar click : " + state.selectedDate, typeof state.selectedDate)
-            if (state.currentPage === 'dashboard') {
-                dashboard();
-            }
-            else if (state.currentPage === 'daftar-shift-handler') {
-                showShift()
-            }
-            return state.selectedDate
         },
         headerToolbar: {
         left: 'prev',
@@ -114,14 +125,9 @@ async function dashboard() {
     hideElementbyId.forEach(id => document.getElementById(id)?.classList.add('hidden'))
     shownElementbyId.forEach(id => document.getElementById(id)?.classList.remove('hidden'))
 
-    const shiftSelect = document.getElementById('aside-shift');
-    const selectedShift = shiftSelect.value;
-    shiftSelect.addEventListener('change', dashboard);
-
     const target = document.getElementById('table-data-pasien-sabr');
     const targetShift = document.getElementById('shift-handler-on-dashboard')
-    if (selectedShift) {
-        const filteredData = data_sabr.filter((sabr) => sabr.shift === selectedShift);
+        const filteredData = data_sabr.filter((sabr) => sabr.shift === state.selectedShift);
         const filteredDataByDate = filteredData.filter((sabr) => sabr.tanggal_shift.slice(0,10) === state.selectedDate);
         console.log("inside dashboard : ", state.selectedDate)
         target.innerHTML = filteredDataByDate
@@ -154,7 +160,7 @@ async function dashboard() {
             }
             return shift;
         });
-        const filterdataShift = roleConverter.filter((shift) => shift.shift === selectedShift);
+        const filterdataShift = roleConverter.filter((shift) => shift.shift === state.selectedShift);
         const filterdataShiftbyDate = filterdataShift.filter((shift) => shift.tanggal_shift.slice(0,10) === state.selectedDate)
         targetShift.innerHTML = filterdataShiftbyDate.map(
             (shift) => `
@@ -165,19 +171,8 @@ async function dashboard() {
                 </div>
             `
         ).join('');
-    } else {
-        const date = document.getElementById('date-input').value;
-        console.log(`Shift yang dipilih : ${selectedShift} dan tanggal : ${date}`);
-        target.innerHTML =
-        '<h1 class="text-center text-gray-500">Tidak ada data pada shift ' +
-        selectedShift +
-        ' dan tanggal ' +
-        date +
-        '</h1>';
-    }
 }
 dashboard()
-
 async function showShift() {
     state.currentPage = 'daftar-shift-handler';
     let data_shift = await fetchDataShiftHandler();
@@ -189,10 +184,6 @@ async function showShift() {
     hideElementbyId.forEach(id => document.getElementById(id)?.classList.add('hidden'))
     shownElementbyId.forEach(id => document.getElementById(id)?.classList.remove('hidden'))
 
-    const shiftSelect = document.getElementById('aside-shift');
-    const selectedShift = shiftSelect.value;
-    shiftSelect.addEventListener('change', showShift);
-
     const roleConverter = data_shift.map((shift) => {
         if (shift.shift_leader === true) {
             shift.shift_leader = 'Ketua Shift';
@@ -201,8 +192,7 @@ async function showShift() {
         }
         return shift;
     });
-    if (selectedShift) {
-        const filterdataShift = roleConverter.filter((shift) => shift.shift === selectedShift);
+        const filterdataShift = roleConverter.filter((shift) => shift.shift === state.selectedShift);
         const filterdataShiftbyDate = filterdataShift.filter((shift) => shift.tanggal_shift.slice(0,10) === state.selectedDate)
         const shiftHandlerJoin = document.getElementById('table-data-shift-handler');
         shiftHandlerJoin.innerHTML = filterdataShiftbyDate
@@ -228,7 +218,7 @@ async function showShift() {
                 `,
             )
             .join('');
-}}
+}
 
 async function daftarPegawai() {
     state.currentPage = 'daftar-pegawai';    
