@@ -96,24 +96,8 @@ document.addEventListener('DOMContentLoaded',
 });
 
 function toggleSideBar() {
-    const idToggled = [
-        'aside-home',
-        'today-date',
-        'aside-calendar',
-        'calendar-wrapper',
-        'aside-shift',
-        'aside-shift-text',
-        'aside-pegawai',
-        'aside-pasien',
-        'prevMonth',
-        'nextMonth',
-    ];
-    idToggled.forEach((id) => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.classList.toggle('hidden');
-        }
-    });
+    const idToggled = ['aside-home','today-date','aside-calendar', 'calendar-wrapper', 'aside-shift','aside-shift-text','aside-pegawai','aside-pasien','prevMonth','nextMonth',];
+    idToggled.forEach(id => document.getElementById(id)?.classList.toggle('hidden'))
     document.getElementById('sidebar-container').classList.toggle('pr-4');
 }
 
@@ -123,25 +107,9 @@ async function dashboard() {
     let data_pasien = await fetchDataPasien();
     let data_pegawai= await fetchDataPegawai();
     let data_shift= await fetchDataShiftHandler()
+    let hideElementbyId = ['daftar-pegawai', 'table-data-daftar-pegawai','report-title-pegawai','table-header-pegawai','daftar-pasien','report-title-pasien','table-header-pasien','table-data-daftar-pasien','report-title-shift-handler','shift-handler-join']
+    let shownElementbyId = ['table-data-pasien-sabr','report-title-dashboard','table-header-dashboard','shift-handler-wrapper']
 
-    let hideElementbyId = [
-        'daftar-pegawai', 
-        'table-data-daftar-pegawai',
-        'report-title-pegawai',
-        'table-header-pegawai',
-        'daftar-pasien',
-        'report-title-pasien',
-        'table-header-pasien',
-        'table-data-daftar-pasien',
-        'report-title-shift-handler',
-        'shift-handler-join'
-    ]
-    let shownElementbyId = [
-        'table-data-pasien-sabr',
-        'report-title-dashboard',
-        'table-header-dashboard',
-        'shift-handler-wrapper'
-    ]
     document.getElementById('add-data-guidance').textContent = 'Add Report +';
     hideElementbyId.forEach(id => document.getElementById(id)?.classList.add('hidden'))
     shownElementbyId.forEach(id => document.getElementById(id)?.classList.remove('hidden'))
@@ -214,23 +182,9 @@ async function showShift() {
     state.currentPage = 'daftar-shift-handler';
     let data_shift = await fetchDataShiftHandler();
     let data_pegawai = await fetchDataPegawai();
-    
-    let hideElementbyId = [
-        'modal-add-data-report',
-        'daftar-pegawai',
-        'table-data-daftar-pegawai',
-        'report-title-pegawai',
-        'table-header-pegawai',
-        'table-data-pasien-sabr',
-        'report-title-dashboard',
-        'table-header-dashboard',
-        'daftar-pasien',
-        'report-title-pasien',
-        'table-header-pasien',
-        'table-data-daftar-pasien',
-        'shift-handler-wrapper'
-    ]
+    let hideElementbyId = ['modal-add-data-report','daftar-pegawai','table-data-daftar-pegawai','report-title-pegawai','table-header-pegawai','table-data-pasien-sabr','report-title-dashboard','table-header-dashboard','daftar-pasien','report-title-pasien','table-header-pasien','table-data-daftar-pasien','shift-handler-wrapper']
     let shownElementbyId = ['report-title-shift-handler', 'shift-handler-join']
+
     document.getElementById('add-data-guidance').textContent = 'Add Shift Handler +';
     hideElementbyId.forEach(id => document.getElementById(id)?.classList.add('hidden'))
     shownElementbyId.forEach(id => document.getElementById(id)?.classList.remove('hidden'))
@@ -279,25 +233,8 @@ async function showShift() {
 async function daftarPegawai() {
     state.currentPage = 'daftar-pegawai';    
     console.log('state : ', state.currentPage);
-    let hideElementbyId = [
-        'table-data-pasien-sabr', 
-        'report-title-dashboard', 
-        'table-header-dashboard', 
-        'modal-add-shift-handler', 
-        'daftar-pasien', 
-        'report-title-pasien', 
-        'table-header-pasien',
-        'table-data-daftar-pasien', 
-        'shift-handler-wrapper', 
-        'report-title-shift-handler',
-        'shift-handler-join'
-    ]
-    let shownElementbyId = [
-        'daftar-pegawai', 
-        'table-data-daftar-pegawai', 
-        'report-title-pegawai', 
-        'table-header-pegawai'
-    ] 
+    let hideElementbyId = ['table-data-pasien-sabr', 'report-title-dashboard', 'table-header-dashboard', 'modal-add-shift-handler', 'daftar-pasien', 'report-title-pasien', 'table-header-pasien','table-data-daftar-pasien', 'shift-handler-wrapper', 'report-title-shift-handler','shift-handler-join']
+    let shownElementbyId = ['daftar-pegawai', 'table-data-daftar-pegawai', 'report-title-pegawai', 'table-header-pegawai'] 
     document.getElementById('add-data-guidance').textContent = 'Add Pegawai +';
     hideElementbyId.forEach(id => document.getElementById(id)?.classList.add('hidden'))
     shownElementbyId.forEach(id => document.getElementById(id)?.classList.remove('hidden'))
@@ -329,26 +266,8 @@ async function daftarPegawai() {
 async function daftarPasien() {
     state.currentPage = 'daftar-pasien';
     console.log('state : ', state.currentPage);
-    let hideElementbyId = [
-        'modal-add-data-report', 
-        'daftar-pegawai', 
-        'table-data-daftar-pegawai', 
-        'report-title-pegawai', 
-        'table-header-pegawai', 
-        'modal-add-data-report', 
-        'table-data-pasien-sabr', 
-        'report-title-dashboard', 
-        'table-header-dashboard', 
-        'shift-handler-wrapper', 
-        'report-title-shift-handler', 
-        'shift-handler-join'
-    ]
-    let shownElementbyId = [
-        'daftar-pasien', 
-        'report-title-pasien', 
-        'table-header-pasien', 
-        'table-data-daftar-pasien'
-    ] 
+    let hideElementbyId = ['modal-add-data-report', 'daftar-pegawai', 'table-data-daftar-pegawai', 'report-title-pegawai', 'table-header-pegawai', 'modal-add-data-report', 'table-data-pasien-sabr', 'report-title-dashboard', 'table-header-dashboard', 'shift-handler-wrapper', 'report-title-shift-handler', 'shift-handler-join']
+    let shownElementbyId = ['daftar-pasien', 'report-title-pasien', 'table-header-pasien', 'table-data-daftar-pasien'] 
     hideElementbyId.forEach(id => document.getElementById(id)?.classList.add('hidden'))
     shownElementbyId.forEach(id => document.getElementById(id)?.classList.remove('hidden'))
     document.getElementById('add-data-guidance').textContent = 'Add Pasien +';
@@ -373,9 +292,7 @@ async function daftarPasien() {
                     </div>
                 </div>
             </div>    
-        `,
-        )
-        .join('');
+        `,).join('');
 }
 
 async function addNewReport() {
@@ -398,24 +315,12 @@ async function addNewReport() {
     }
     else if (state.currentPage === 'daftar-shift-handler') {
         document.getElementById('modal-add-shift-handler').classList.remove('hidden');
-        let idPuller = [
-            'shift-handler-nama-one', 
-            'shift-handler-nama-two', 
-            'shift-handler-nama-three', 
-            'shift-handler-nama-four', 
-            'shift-handler-nama-five']
+        let idPuller = ['shift-handler-nama-one', 'shift-handler-nama-two', 'shift-handler-nama-three', 'shift-handler-nama-four', 'shift-handler-nama-five']
         idPuller.forEach((idPlaceHolder) => 
             document.getElementById(idPlaceHolder).innerHTML = data_pegawai
             .map((pegawai) => `<option value="${pegawai.nama}">${pegawai.nama}</option>`).join('')
         )
-
-        let fieldFormId = [
-            'field-form-shift-handler-one',
-            'field-form-shift-handler-two',
-            'field-form-shift-handler-three',
-            'field-form-shift-handler-four',
-            'field-form-shift-handler-five',]
-            
+        let fieldFormId = ['field-form-shift-handler-one','field-form-shift-handler-two','field-form-shift-handler-three','field-form-shift-handler-four','field-form-shift-handler-five',]  
         function renderingFieldFrom(){
             const valueTeamOnShift = shiftHandlerEvent.value
             fieldFormId.forEach((id, index) => {
