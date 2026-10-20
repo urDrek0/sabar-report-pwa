@@ -277,7 +277,6 @@
                 </div>
 
                 <div class="grid grid-cols-3 gap-5">
-
                     <div id="field-form-shift-handler-one" class="pt-3 hidden">
                         <h1 class="text-center text-2xl pt-2">Pegawai 1</h1>
                         <div class="flex flex-col space-y-4 pt-2">
@@ -302,7 +301,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div id="field-form-shift-handler-two" class="pt-3 hidden">
                         <h1 class="text-center text-2xl pt-2">Pegawai 2</h1>
                         <div class="flex flex-col space-y-4 pt-2">
@@ -326,8 +324,7 @@
                                 <option value="false">Shift Member</option>
                             </select>
                         </div>                         
-                    </div>
-                    
+                    </div>                    
                     <div id="field-form-shift-handler-three" class="pt-3 hidden">
                         <h1 class="text-center text-2xl pt-2">Pegawai 3</h1>
                         <div class="flex flex-col space-y-4 pt-2">
@@ -352,7 +349,6 @@
                             </select>
                         </div>                         
                     </div>
-
                     <div id="field-form-shift-handler-four" class="pt-3 hidden">
                         <h1 class="text-center text-2xl pt-2">Pegawai 4</h1>
                         <div class="flex flex-col space-y-4 pt-2">
@@ -377,7 +373,6 @@
                             </select>
                         </div>                         
                     </div>
-
                     <div id="field-form-shift-handler-five" class="pt-3 hidden">
                         <h1 class="text-center text-2xl pt-2">Pegawai 5</h1>
                         <div class="flex flex-col space-y-4 pt-2">
@@ -402,11 +397,46 @@
                             </select>
                         </div>                         
                     </div>
-                    
-
                 </div>
 
-                <div id="modal-form-submit-pasien" class="pt-4 place-self-end">
+                <div id="modal-form-submit-add-shift" class="pt-4 place-self-end">
+                    <button id="" class="cursor-pointer bg-[#353A3E] rounded-xl  w-auto hover:bg-black transition duration-200">
+                        <div class="justify-center place-self-center p-2">
+                            <h2 class="text-white text-center">Submit</h2>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-edit-shift-singular" class="overflow-y-scroll fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden">
+            <div id="modal-content-shift-handler" class="bg-white w-1/2 h-auto rounded-xl p-4 justify-center place-self-center">
+                <button id="close-modal" class="cursor-pointer place-self-end" onclick="document.getElementById('modal-edit-shift-singular').classList.add('hidden')">
+                    <img src="src/asset/logo/delete.png" alt="" class="max-w-5 h-auto">
+                </button>
+                <h1 class="text-center text-2xl p-4">Edit Petugas</h1>
+                <div class="flex flex-col space-y-4 pt-2">
+                    <h2 class="text-left">Nama Petugas <button id="" onclick="daftarPegawai()" class="text-gray-500 cursor-pointer">(klik untuk menambah Pegawai)</button></h2>
+                    <select name="shift-handler-nama-edit" id="shift-handler-nama-edit" class="text-pretty border border-1 rounded-xl p-2 w-full">
+                    </select>
+                </div>
+                <div class="flex flex-col space-y-4 pt-4">
+                    <h2 class="text-left">Shift</h2>
+                    <select type="text" name="" id="shift-handler-shift-edit" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Shift">
+                        <option value="" selected disabled hidden>Pilih Shift</option>
+                        <option value="pagi">Pagi</option>
+                        <option value="siang">Siang</option>
+                        <option value="malam">Malam</option>
+                    </select>
+                </div>
+                <div class="flex flex-col space-y-4 pt-4">
+                    <h2 class="text-left">Peran</h2>
+                    <select type="text" name="" id="shift-handler-role-edit" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Peran">
+                        <option value="true">Shift Leader</option>
+                        <option value="false">Shift Member</option>
+                    </select>
+                </div>
+                <div id="modal-form-submit-edit-shift" class="pt-4 place-self-end">
                     <button id="" class="cursor-pointer bg-[#353A3E] rounded-xl  w-auto hover:bg-black transition duration-200">
                         <div class="justify-center place-self-center p-2">
                             <h2 class="text-white text-center">Submit</h2>

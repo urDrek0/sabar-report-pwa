@@ -427,6 +427,7 @@ async function modalEditData(id) {
     let data_sabr = await fetchDataSabr();        
     let data_pegawai = await fetchDataPegawai();
     let data_shift = await fetchDataShiftHandler();
+    console.log('current page : ',state.currentPage)
     if (state.currentPage === 'dashboard') {
         document.getElementById('modal-add-data-report').classList.remove('hidden');
         const nameOptionList = document.getElementById('pasien-name'); 
@@ -458,15 +459,16 @@ async function modalEditData(id) {
         document.getElementById('modal-add-pegawai').classList.remove('hidden');
     } 
     else if (state.currentPage === 'daftar-shift-handler') {
+        console.log("ini aktif")
+        document.getElementById('modal-edit-shift-singular').classList.remove('hidden');
         let editShiftHandler = data_shift.find((handler) => handler.id_shift === id);
-        let nameSelectPegawai = document.getElementById('shift-handler-nama');
-        nameSelectPegawai.innerHTML = data_pegawai
-            .map((pegawai) => `<option value="${pegawai.nama}">${pegawai.nama}</option>`)
+        let nameSelectPegawai = document.getElementById('shift-handler-nama-edit');
+        nameSelectPegawai.innerHTML = data_pegawai.map((pegawai) => 
+            `<option value="${pegawai.nama}">${pegawai.nama}</option>`)
             .join('');
-        document.getElementById('shift-handler-nama').value = data_pegawai.find((p) => p.id_pegawai === editShiftHandler.pegawai_id)?.nama;
-        document.getElementById('shift-handler-shift').value = editShiftHandler.shift
-        document.getElementById('shift-handler-role').value = editShiftHandler.shift_leader;
-        document.getElementById('modal-add-shift-handler').classList.remove('hidden');
+        document.getElementById('shift-handler-nama-edit').value = data_pegawai.find((p) => p.id_pegawai === editShiftHandler.pegawai_id)?.nama;
+        document.getElementById('shift-handler-shift-edit').value = editShiftHandler.shift
+        document.getElementById('shift-handler-role-edit').value = editShiftHandler.shift_leader;
     }
     else if (state.currentPage === 'daftar-pasien') {
         let editPasien = data_pasien.find((pasien) => pasien.id_pasien === id);
