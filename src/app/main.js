@@ -164,9 +164,8 @@ async function dashboard() {
         const filterdataShiftbyDate = filterdataShift.filter((shift) => shift.tanggal_shift.slice(0,10) === state.selectedDate)
         targetShift.innerHTML = filterdataShiftbyDate.map(
             (shift) => `
-                <div id="" class="grid grid-cols-5 gap-4">
+                <div id="" class="grid grid-cols-4 gap-4">
                     <h1 id="${shift.id_shift + '-nama'}" class="col-span-2 text-sm text-left p-2">${data_pegawai.find(p => p.id_pegawai === shift.pegawai_id)?.nama || 'N/A'}</h1>
-                    <h1 id="${shift.id_shift + '-shift'}" class="text-sm text-left p-2">${shift.shift}</h1>
                     <h1 id="${shift.id_shift + '-role'}" class="col-span-2 text-sm text-left p-2">${shift.shift_leader}</h1>
                 </div>
             `

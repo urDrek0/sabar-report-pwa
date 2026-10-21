@@ -18,6 +18,30 @@
         <link rel="icon" href="src/asset/logo/documents.png" type="image/x-icon">
 	</head>
 	<body>
+        <div id="app-guide" class="fixed top-38/40 left-48/50 transform -translate-x-1/2 -translate-y-1/2">
+            <button id="open-guide" class="cursor-pointer" onclick="document.getElementById('app-guide-content').classList.remove('hidden')">
+                <img src="src/asset/logo/question-mark.png" alt="" class="max-h-10 w-auto opacity-45 hover:opacity-100 transform duration-200">
+            </button>
+        </div>
+
+        <div id="app-guide-content" class="overflow-y-scroll fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden">
+            <div class="bg-white w-1/2 h-auto rounded-xl p-4 justify-center place-self-center">
+                <button id="close-modal" class="cursor-pointer place-self-end" onclick="document.getElementById('app-guide-content').classList.add('hidden')">
+                    <img src="src/asset/logo/delete.png" alt="" class="max-w-5 h-auto">
+                </button>
+                <h1 class="text-center font-bold text-xl">Panduan Penggunaan Aplikasi Laporan SABR</h1>
+                <h2 class="font-bold text-lg"><br>1. Melihat laporan</h2>
+                <p class="text-md">Buka Dashboard. Pilih tanggal pada kalender dan pilih shift Pagi, Siang, atau Malam untuk melihat laporan pada tanggal dan shift tersebut.</p>
+                <h2 class="font-bold text-lg"><br>2. Menambahkan laporan</h2>
+                <p class="text-md">Di Dashboard, klik Add Report +. Pilih nama pasien, shift, dan tanggal, lalu isi Situation, Background, Assessment, dan Recommendation. Periksa kembali isian sebelum menekan Submit.</p>
+                <h2 class="font-bold text-lg"><br>3. Mengelola data pasien dan pegawai</h2>
+                <p class="text-md">Buka Daftar Pasien atau Daftar Pegawai untuk melihat datanya. Gunakan tombol Add pada halaman tersebut untuk menambahkan data. Ikon pensil digunakan untuk mengedit; ikon tempat sampah untuk menghapus.</p>
+                <h2 class="font-bold text-lg"><br>4. Mengatur petugas shift</h2>
+                <p class="text-md">Buka menu Shift, pilih tanggal dan shift, lalu tambahkan petugas. Pilih jumlah pegawai—maksimal lima—kemudian tentukan nama dan peran masing-masing.</p>
+                <p class="text-md"><br><b>Catatan: </b>Pastikan data yang dimasukkan sudah benar. Karena aplikasi memuat data pasien, jangan membagikan tangkapan layar atau informasi pasien kepada pihak yang tidak berwenang.</p>
+            </div>            
+        </div>
+
         <div class="flex min-h-screen">
             <aside id="sidebar-container"class="bg-[#353A3E] h-auto w-auto pt-6 pr-4 pl-4 pb-4">
                 <div class="flex space-x-5">
@@ -88,14 +112,12 @@
                         <div class="p-2 font-bold text-md text-center place-self-center w-full rounded-tl-lg rounded-tr-lg bg-[#BFBFBF] grid grid-cols-5">
                             <h2 id="date-selected-data" class="col-span-4 text-left"></h2>
                             <button id="" class="cursor-pointer place-self-end" 
-                                onclick="document.getElementById('shift-handler-on-dashboard').classList.toggle('hidden'); 
-                                document.getElementById('shift-handler-based-on-date').classList.toggle('hidden')">
+                                onclick="document.getElementById('shift-handler-on-dashboard').classList.toggle('hidden')">
                                 <img src="src/asset/logo/menu.png" class="w-5 h-auto" alt="">
                             </button>
                         </div>
-                        <div id="shift-handler-based-on-date" class="grid grid-cols-5 gap-4">
-                            <h2 id="" class="p-2 col-span-2 font-bold text-sm text-left">Name</h2>
-                            <h2 id="" class="p-2 font-bold text-sm text-left">Shift</h2>
+                        <div id="shift-handler-based-on-date" class="grid grid-cols-4 gap-4">
+                            <h2 id="" class="p-2 col-span-2 font-bold text-sm text-left">Nama</h2>
                             <h2 id="" class="p-2 col-span-2 font-bold text-sm text-left">Peran</h2>                    
                         </div>
                         <div id="shift-handler-on-dashboard" class=""></div>
