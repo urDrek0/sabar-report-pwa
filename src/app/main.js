@@ -28,7 +28,9 @@ let state = {
     dataReport: [],
     dataShift: [],
     dataPegawai: [],
-    dataPasien: []
+    dataPasien: [],
+    idToDelete: null,
+    deleteType: null
 }
 
 async function initData() {
@@ -47,6 +49,8 @@ let calendar;
 function renderCurrentPage(){
     if (state.currentPage === 'dashboard') {dashboard()}
     else if (state.currentPage === 'daftar-shift-handler') {showShift()}
+    else if (state.currentPage === 'daftar-pegawai') {daftarPegawai()}
+    else if (state.currentPage === 'daftar-pasien') {daftarPasien()}
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
@@ -148,7 +152,7 @@ function dashboard() {
                     <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${sabr.id_report}')">
                         <img src="src/asset/logo/edit.png" alt="" class="">
                     </button>
-                    <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${sabr.id_report}')">
+                    <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${sabr.id_report}', type = "sabr")">
                         <img src="src/asset/logo/delete.png" alt="" class="">
                     </button>
                     </div>
@@ -384,61 +388,149 @@ function modalEditData(id) {
 }
 
 async function submitNewReport() {
-    const namaPasien = document.getElementById('pasien-name').value
-    const shift = document.getElementById('modal-shift-selector').value
-    const tanggalShift = document.getElementById('date-input').value
-    const situation = document.getElementById('situation-input').value
-    const background = document.getElementById('background-input').value
-    const assessment = document.getElementById('assessment-input').value
-    const recommendation = document.getElementById('recommendation-input').value
+    if (state.currentPage === "dashboard"){
+        const namaPasien = document.getElementById('pasien-name').value
+        const shift = document.getElementById('modal-shift-selector').value
+        const tanggalShift = document.getElementById('date-input').value
+        const situation = document.getElementById('situation-input').value
+        const background = document.getElementById('background-input').value
+        const assessment = document.getElementById('assessment-input').value
+        const recommendation = document.getElementById('recommendation-input').value
 
-    if (!namaPasien || !shift || !tanggalShift){
-        alert("Nama Pasien, Shift, dan Tanggal harus diisi!")
-        return;
-    }
-
-    let data_pasien = await fetchDataPasien()
-    const pasien = data_pasien.find(p => p.nama === namaPasien)
-
-    if(!pasien){
-        alert("Pasien Tidak Ditemukan!")
-        return;
-    }
-
-    const payload = {
-        tanggal_shift: tanggalShift,
-        shift: shift,
-        pasien_id: pasien.id_pasien,
-        situation: situation,
-        background: background,
-        assessment: assessment,
-        recommendation: recommendation
-    }
-
-    try{
-        const response = await fetch('http://localhost:3000/api/sabr_report', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        })
-
-        if(response.ok){
-            document.getElementById('modal-add-data-report').classList.add('hidden')
-            state.dataSabr = await fetchDataSabr();
-            dashboard()
-            document.getElementById('situation-input').value = '';
-            document.getElementById('background-input').value = '';
-            document.getElementById('assessment-input').value = '';
-            document.getElementById('recommendation-input').value = '';
+        if (!namaPasien || !shift || !tanggalShift){
+            alert("Nama Pasien, Shift, dan Tanggal harus diisi!")
+            return;
         }
-    }catch (error){
-        console.error("Error Sumbiting Report", error)
-        alert("Terjadi Kesalahan Jaringan.")
+
+        let data_pasien = state.dataPasien
+        const pasien = data_pasien.find(p => p.nama === namaPasien)
+
+        if(!pasien){
+            alert("Pasien Tidak Ditemukan!")
+            return;
+        }
+
+        const payload = {
+            tanggal_shift: tanggalShift,
+            shift: shift,
+            pasien_id: pasien.id_pasien,
+            situation: situation,
+            background: background,
+            assessment: assessment,
+            recommendation: recommendation
+        }
+
+        try{
+            const response = await fetch('http://localhost:3000/api/sabr_report', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+
+            if(response.ok){
+                document.getElementById('modal-add-data-report').classList.add('hidden')
+                state.dataReport = await fetchDataSabr();
+                renderCurrentPage()
+                document.getElementById('situation-input').value = '';
+                document.getElementById('background-input').value = '';
+                document.getElementById('assessment-input').value = '';
+                document.getElementById('recommendation-input').value = '';
+            }
+        }catch (error){
+            console.error("Error Sumbiting Report", error)
+            alert("Terjadi Kesalahan Jaringan.")
+        }
+    }
+    else if (state.currentPage === "daftar-shift-handler"){
+        const shiftHandlerCount = document.getElementById('shift-handler-team').value
+        const tanggalShift = document.getElementById('shift-handler-date-input').value
+        const shiftPegawai = document.getElementById('shift-handler-shift').value
+        console.log("Jumlah Pegawai Shift ini : ", shiftHandlerCount)
+        if (!shiftHandlerCount || !shiftPegawai || !tanggalShift) {
+            alert("Waktu Shift, Tanggal Shift, dan Jumlah Pegawai pada shift ini tidak boleh kosong")
+            return;
+        }
+    }
+    else if (state.currentPage === 'daftar-pegawai'){
+        const namaPegawai = document.getElementById('pegawai-nama').value
+        const kodePegawai = document.getElementById('pegawai-kode').value
+        const statusPegawai = document.getElementById('pegawai-status').value
+        if (!namaPegawai || !kodePegawai || !statusPegawai) {
+            alert("Nama Pegawai, Kode Pegawai, dan Status tidak boleh kosong")
+            return;
+        }
+
+        const payload = {
+            nama: namaPegawai,
+            kode: kodePegawai,
+            aktif: statusPegawai
+        }
+
+        try{
+            const response = await fetch('http://localhost:3000/api/pegawai', {
+                method: 'POST',
+                headers:{'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            })
+            if (response.ok){
+                document.getElementById('modal-add-pegawai').classList.add('hidden')
+                state.dataPegawai = await fetchDataPegawai()
+                renderCurrentPage()
+                document.getElementById('pegawai-nama').value = ""
+                document.getElementById('pegawai-kode').value = ""
+                document.getElementById('pegawai-status').value = "true"
+            }
+        }catch (error){
+            console.error("Error Sumbiting Employee", error)
+            alert("Terjadi Kesalahan Jaringan.")
+        }
+    }
+    else if (state.currentPage === 'daftar-pasien'){
+        const namaPasien = document.getElementById('pasien-nama').value
+        const umurPasien = document.getElementById('pasien-umur').value
+        const statusPasien = document.getElementById('pasien-status').value
+        if (!namaPasien || !umurPasien || !statusPasien) {
+            alert("Nama Pasien, Umur Pasien, dan Status tidak boleh kosong")
+            return;
+        }
+
+        const payload = {
+            nama: namaPasien,
+            umur: umurPasien,
+            aktif: statusPasien
+        }
+
+        try{
+            const response = await fetch('http://localhost:3000/api/pasien', {
+                method: 'POST',
+                headers:{'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            })
+            if (response.ok){
+                document.getElementById('modal-add-pasien').classList.add('hidden')
+                state.dataPasien = await fetchDataPasien()
+                renderCurrentPage()
+                document.getElementById('pasien-nama').value = ""
+                document.getElementById('pasien-umur').value = ""
+                document.getElementById('pasien-status').value = "true"
+            }
+        }catch (error){
+            console.error("Error Sumbiting Patient", error)
+            alert("Terjadi Kesalahan Jaringan.")
+        }
     }
 }
 
-async function modalDeleteData(id) {
+state.idToDelete = null
+state.deleteType = null
+async function modalDeleteData(id, type = 'sabr') {
+    state.idToDelete = id
+    state.deleteType = type
     document.getElementById('modal-delete').classList.remove('hidden');
+}
+
+async function executeDelete() {
+    
 }

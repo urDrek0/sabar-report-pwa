@@ -235,12 +235,12 @@
                 <div class="flex flex-col space-y-4 pt-4">
                     <h2 class="text-left">Status</h2>
                     <select type="text" name="" id="pegawai-status" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Status Pegawai">
-                        <option value="Aktif">Aktif</option>
-                        <option value="Tidak Aktif">Tidak Aktif</option>
+                        <option value="true">Aktif</option>
+                        <option value="false">Tidak Aktif</option>
                     </select>
                 </div>
                 <div id="modal-form-submit-pegawai" class="pt-4 place-self-end">
-                    <button id="" class="cursor-pointer bg-[#353A3E] rounded-xl  w-auto hover:bg-black transition duration-200">
+                    <button id="" class="cursor-pointer bg-[#353A3E] rounded-xl  w-auto hover:bg-black transition duration-200" onclick="submitNewReport()">
                         <div class="justify-center place-self-center p-2">
                             <h2 class="text-white text-center">Submit</h2>
                         </div>
@@ -266,12 +266,12 @@
                 <div class="flex flex-col space-y-4 pt-4">
                     <h2 class="text-left">Status</h2>
                     <select type="text" name="" id="pasien-status" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Status Pasien">
-                        <option value="Aktif">Aktif</option>
-                        <option value="Tidak Aktif">Tidak Aktif</option>
+                        <option value="true">Aktif</option>
+                        <option value="false">Tidak Aktif</option>
                     </select>
                 </div>
                 <div id="modal-form-submit-pasien" class="pt-4 place-self-end">
-                    <button id="" class="cursor-pointer bg-[#353A3E] rounded-xl  w-auto hover:bg-black transition duration-200">
+                    <button id="" class="cursor-pointer bg-[#353A3E] rounded-xl  w-auto hover:bg-black transition duration-200" onclick="submitNewReport()">
                         <div class="justify-center place-self-center p-2">
                             <h2 class="text-white text-center">Submit</h2>
                         </div>
@@ -286,7 +286,7 @@
                     <img src="src/asset/logo/delete.png" alt="" class="max-w-5 h-auto">
                 </button>
                 <h1 class="text-center text-2xl p-4">Tambahkan Petugas Shift Hari ini</h1>
-                <div class="grid grid-cols-2 gap-5">
+                <div class="grid grid-cols-3 gap-5">
                     <div id="" class="flex flex-col space-y-4 pt-4">
                         <h2 class="text-left">Jumlah Pegawai Shift ini (Max 5)</h2>
                         <select type ="number" name="" id="shift-handler-team" class="text-pretty border border-1 rounded-xl p-2 w-full cursor-pointer">
@@ -300,12 +300,16 @@
                     </div>
                     <div class="flex flex-col space-y-4 pt-4">
                         <h2 class="text-left">Shift</h2>
-                        <select type="text" name="" id="shift-handler-shift-one" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Shift">
+                        <select type="text" name="" id="shift-handler-shift" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Shift">
                             <option value="" selected disabled hidden>Pilih Shift</option>
                             <option value="pagi">Pagi</option>
                             <option value="siang">Siang</option>
                             <option value="malam">Malam</option>
                         </select>
+                    </div>
+                    <div id="modal-form-date" class="flex flex-col space-y-4 pt-4">
+                        <h2 class="text-left">Tanggal</h2>
+                        <input type="date" name="" id="shift-handler-date-input" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Date" value="">
                     </div>
                 </div>
                 <div class="grid grid-cols-3 gap-5">
@@ -313,7 +317,7 @@
                         <h1 class="text-center text-2xl pt-2">Pegawai 1</h1>
                         <div class="flex flex-col space-y-4 pt-2">
                             <h2 class="text-left">Nama Petugas <button id="" onclick="daftarPegawai()" class="text-gray-500 cursor-pointer">(klik untuk menambah Pegawai)</button></h2>
-                            <select name="shift-handler-nama-select" id="shift-handler-nama-one" class="text-pretty border border-1 rounded-xl p-2 w-full">
+                            <select name="shift-handler-nama-select-one" id="shift-handler-nama-one" class="text-pretty border border-1 rounded-xl p-2 w-full">
                             </select>
                         </div>
                         <div class="flex flex-col space-y-4 pt-4">
@@ -392,7 +396,7 @@
                 </div>
 
                 <div id="modal-form-submit-add-shift" class="pt-4 place-self-end">
-                    <button id="" class="cursor-pointer bg-[#353A3E] rounded-xl  w-auto hover:bg-black transition duration-200">
+                    <button id="" class="cursor-pointer bg-[#353A3E] rounded-xl  w-auto hover:bg-black transition duration-200" onclick="submitNewReport()">
                         <div class="justify-center place-self-center p-2">
                             <h2 class="text-white text-center">Submit</h2>
                         </div>
