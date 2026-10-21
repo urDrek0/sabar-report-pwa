@@ -22,65 +22,67 @@ async function fetchDataShiftHandler() {
 var todayDate = new Date().toLocaleDateString('en-CA')
 
 let state = {
-    currentPage: '',
+    currentPage: 'dashboard',
     selectedDate: todayDate,
-    selectedShift: 'pagi'
+    selectedShift: 'pagi',
+    dataReport: [],
+    dataShift: [],
+    dataPegawai: [],
+    dataPasien: []
 }
-console.log("date default: ",state.selectedDate)
+
+async function initData() {
+    try {
+        state.dataReport = await fetchDataSabr()
+        state.dataShift = await fetchDataShiftHandler()
+        state.dataPegawai = await fetchDataPegawai()
+        state.dataPasien = await fetchDataPasien()
+    }catch(error){
+        console.error("Gagal Inisialisasi Data : ", error)
+    }
+}
+
 let calendar;
 
-document.addEventListener('DOMContentLoaded', 
-    function () {
+function renderCurrentPage(){
+    if (state.currentPage === 'dashboard') {dashboard()}
+    else if (state.currentPage === 'daftar-shift-handler') {showShift()}
+}
+
+document.addEventListener('DOMContentLoaded', async function () {
     const calendarEl = document.getElementById('navbar-content-calendar');
     const shiftSelect = document.getElementById('aside-shift')
+
+    shiftSelect.addEventListener('change', () => {
+        state.selectedShift = shiftSelect.value
+        renderCurrentPage()
+    })
+
     calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        height: 315,
-        dateClick: function(info) {
-            var dateFormatting = info.date;
-            document.getElementById('date-selected-data').innerHTML = 'PJ pada : ' + dateFormatting.toLocaleDateString('id-ID', {
-                weekday: 'short',
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric', 
-            });
-            console.log('shiftSelected : ', shiftSelect.value)
-            function renderCurrentPage(){
-                if (state.currentPage === 'dashboard') {
-                    dashboard()
-                }
-                else if (state.currentPage === 'daftar-shift-handler') {
-                    showShift()
-                }
-            }
-            shiftSelect.addEventListener('change', () => {
-                state.selectedShift = shiftSelect.value
-                renderCurrentPage()
-            })
-            calendarEl.querySelector('.chosen-date')?.classList.remove('chosen-date');
-            calendarEl.querySelector('.chosen-date-label')?.classList.remove('chosen-date-label');
-            info.dayEl.classList.add('chosen-date');
-            info.dayEl.querySelector('[aria-hidden="true"], a')?.classList.add('chosen-date-label');
-            state.selectedDate = info.dateStr
-            renderCurrentPage()
-            console.log("calendar click : " + state.selectedDate, typeof state.selectedDate)
+    initialView: 'dayGridMonth',
+    height: 315,
+    dateClick: function(info) {
+        var dateFormatting = info.date;
+        document.getElementById('date-selected-data').innerHTML = 'PJ pada : ' + dateFormatting.toLocaleDateString('id-ID', {
+            weekday: 'short',
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric', 
+        });
+        console.log('shiftSelected : ', shiftSelect.value)
+
+        calendarEl.querySelector('.chosen-date')?.classList.remove('chosen-date');
+        calendarEl.querySelector('.chosen-date-label')?.classList.remove('chosen-date-label');
+        info.dayEl.classList.add('chosen-date');
+        info.dayEl.querySelector('[aria-hidden="true"], a')?.classList.add('chosen-date-label');
+        state.selectedDate = info.dateStr
+        renderCurrentPage()
         },
-        headerToolbar: {
-        left: 'prev',
-        center: 'title',
-        right: 'next',
-        },
-        footerToolbar: {
-        left: 'prevYear',
-        center: 'today',
-        right: 'nextYear',
-        },
-        titleFormat: {
-        year: 'numeric',
-        month: 'short',
-        },
-    });
-    calendar.render();
+    headerToolbar: {left: 'prev', center: 'title',right: 'next'},
+    footerToolbar: {left: 'prevYear', center: 'today', right: 'nextYear'},
+    titleFormat: { year: 'numeric', month: 'short'},
+});
+calendar.render();
     const dateNow = document.getElementById('today-date');
     const autoFillDate = document.getElementById('date-input');
     const dateFormatting = calendar.getDate();
@@ -103,6 +105,8 @@ document.addEventListener('DOMContentLoaded',
         month: 'short',
         year: 'numeric',
     });
+    await initData()
+    renderCurrentPage()
 });
 
 function toggleSideBar() {
@@ -111,12 +115,14 @@ function toggleSideBar() {
     document.getElementById('sidebar-container').classList.toggle('pr-4');
 }
 
-async function dashboard() {
+function dashboard() {
     state.currentPage = 'dashboard';
-    let data_sabr = await fetchDataSabr();
-    let data_pasien = await fetchDataPasien();
-    let data_pegawai= await fetchDataPegawai();
-    let data_shift= await fetchDataShiftHandler()
+
+    let data_sabr = state.dataReport;
+    let data_pasien = state.dataPasien;
+    let data_pegawai = state.dataPegawai;
+    let data_shift = state.dataShift;
+
     let hideElementbyId = ['daftar-pegawai', 'table-data-daftar-pegawai','report-title-pegawai','table-header-pegawai','daftar-pasien','report-title-pasien','table-header-pasien','table-data-daftar-pasien','report-title-shift-handler','shift-handler-join']
     let shownElementbyId = ['table-data-pasien-sabr','report-title-dashboard','table-header-dashboard','shift-handler-wrapper']
 
@@ -128,7 +134,7 @@ async function dashboard() {
     const targetShift = document.getElementById('shift-handler-on-dashboard')
     const filteredData = data_sabr.filter((sabr) => sabr.shift === state.selectedShift);
     const filteredDataByDate = filteredData.filter((sabr) => sabr.tanggal_shift.slice(0,10) === state.selectedDate);
-    console.log("inside dashboard : ", state.selectedDate)
+
     target.innerHTML = filteredDataByDate.map(
         (sabr) => `
             <div id="data-sabr-wrapper" class="pt-1 pb-1">
@@ -165,11 +171,12 @@ async function dashboard() {
                 <h1 id="${shift.id_shift + '-role'}" class="col-span-2 text-sm text-left p-2">${shift.shift_leader}</h1>
             </div>`).join('');
 }
-dashboard()
-async function showShift() {
+
+function showShift() {
     state.currentPage = 'daftar-shift-handler';
-    let data_shift = await fetchDataShiftHandler();
-    let data_pegawai = await fetchDataPegawai();
+
+    let data_shift = state.dataShift
+    let data_pegawai = state.dataPegawai
     let hideElementbyId = ['modal-add-data-report','daftar-pegawai','table-data-daftar-pegawai','report-title-pegawai','table-header-pegawai','table-data-pasien-sabr','report-title-dashboard','table-header-dashboard','daftar-pasien','report-title-pasien','table-header-pasien','table-data-daftar-pasien','shift-handler-wrapper']
     let shownElementbyId = ['report-title-shift-handler', 'shift-handler-join']
 
@@ -207,13 +214,10 @@ async function showShift() {
                         </button>
                     </div>
                 </div>
-            </div>
-                `,
-            )
-            .join('');
+            </div>`,).join('');
 }
 
-async function daftarPegawai() {
+function daftarPegawai() {
     state.currentPage = 'daftar-pegawai';    
     console.log('state : ', state.currentPage);
     let hideElementbyId = ['table-data-pasien-sabr', 'report-title-dashboard', 'table-header-dashboard', 'modal-add-shift-handler', 'daftar-pasien', 'report-title-pasien', 'table-header-pasien','table-data-daftar-pasien', 'shift-handler-wrapper', 'report-title-shift-handler','shift-handler-join']
@@ -222,7 +226,7 @@ async function daftarPegawai() {
     hideElementbyId.forEach(id => document.getElementById(id)?.classList.add('hidden'))
     shownElementbyId.forEach(id => document.getElementById(id)?.classList.remove('hidden'))
 
-    let data_pegawai = await fetchDataPegawai();
+    let data_pegawai = state.dataPegawai
     const target = document.getElementById('table-data-daftar-pegawai');
     target.innerHTML = data_pegawai
         .map(
@@ -246,7 +250,7 @@ async function daftarPegawai() {
         .join('');
 }
 
-async function daftarPasien() {
+function daftarPasien() {
     state.currentPage = 'daftar-pasien';
     console.log('state : ', state.currentPage);
     let hideElementbyId = ['modal-add-data-report', 'daftar-pegawai', 'table-data-daftar-pegawai', 'report-title-pegawai', 'table-header-pegawai', 'modal-add-data-report', 'table-data-pasien-sabr', 'report-title-dashboard', 'table-header-dashboard', 'shift-handler-wrapper', 'report-title-shift-handler', 'shift-handler-join']
@@ -255,7 +259,7 @@ async function daftarPasien() {
     shownElementbyId.forEach(id => document.getElementById(id)?.classList.remove('hidden'))
     document.getElementById('add-data-guidance').textContent = 'Add Pasien +';
 
-    let data_pasien = await fetchDataPasien();
+    let data_pasien = state.dataPasien
     const target = document.getElementById('table-data-daftar-pasien');
     target.innerHTML = data_pasien
         .map(
@@ -278,10 +282,10 @@ async function daftarPasien() {
         `,).join('');
 }
 
-async function addNewReport() {
+function addNewReport() {
     console.log('state : ', state.currentPage);
-    let data_pasien = await fetchDataPasien();
-    let data_pegawai = await fetchDataPegawai();
+    let data_pasien = state.dataPasien
+    let data_pegawai = state.dataPegawai
     const shiftHandlerEvent = document.getElementById('shift-handler-team')
     if (state.currentPage === 'dashboard') {
         document.getElementById('modal-add-data-report').classList.remove('hidden');
@@ -316,11 +320,11 @@ async function addNewReport() {
     shiftHandlerEvent.addEventListener('change', renderingFieldFrom)               
 }
  
-async function modalEditData(id) {
-    let data_pasien = await fetchDataPasien();
-    let data_sabr = await fetchDataSabr();        
-    let data_pegawai = await fetchDataPegawai();
-    let data_shift = await fetchDataShiftHandler();
+function modalEditData(id) {
+    let data_pasien = state.dataPasien
+    let data_sabr = state.dataReport     
+    let data_pegawai = state.dataPegawai
+    let data_shift = state.dataShift
     console.log('current page : ',state.currentPage)
     if (state.currentPage === 'dashboard') {
         document.getElementById('modal-add-data-report').classList.remove('hidden');
@@ -422,6 +426,7 @@ async function submitNewReport() {
 
         if(response.ok){
             document.getElementById('modal-add-data-report').classList.add('hidden')
+            state.dataSabr = await fetchDataSabr();
             dashboard()
             document.getElementById('situation-input').value = '';
             document.getElementById('background-input').value = '';
