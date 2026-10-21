@@ -24,14 +24,15 @@ var todayDate = new Date().toLocaleDateString('en-CA')
 let state = {
     currentPage: '',
     selectedDate: todayDate,
-    selectedShift: ''
+    selectedShift: 'pagi'
 }
-
+console.log("date default: ",state.selectedDate)
 let calendar;
 
 document.addEventListener('DOMContentLoaded', 
     function () {
     const calendarEl = document.getElementById('navbar-content-calendar');
+    const shiftSelect = document.getElementById('aside-shift')
     calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         height: 315,
@@ -43,7 +44,6 @@ document.addEventListener('DOMContentLoaded',
                 month: 'short',
                 year: 'numeric', 
             });
-            const shiftSelect = document.getElementById('aside-shift')
             console.log('shiftSelected : ', shiftSelect.value)
             function renderCurrentPage(){
                 if (state.currentPage === 'dashboard') {
@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded',
                     showShift()
                 }
             }
-            state.selectedShift = shiftSelect.value
             shiftSelect.addEventListener('change', () => {
                 state.selectedShift = shiftSelect.value
                 renderCurrentPage()
@@ -127,49 +126,44 @@ async function dashboard() {
 
     const target = document.getElementById('table-data-pasien-sabr');
     const targetShift = document.getElementById('shift-handler-on-dashboard')
-        const filteredData = data_sabr.filter((sabr) => sabr.shift === state.selectedShift);
-        const filteredDataByDate = filteredData.filter((sabr) => sabr.tanggal_shift.slice(0,10) === state.selectedDate);
-        console.log("inside dashboard : ", state.selectedDate)
-        target.innerHTML = filteredDataByDate
-        .map(
-            (sabr) => `
-                        <div id="data-sabr-wrapper" class="pt-1 pb-1">
-                            <div id="" class="bg-white p-4 grid grid-cols-8 gap-4 w-full">
-                                <h2 id="${sabr.id_report + '-nama'}" class="text-left">${data_pasien.find((pasien) => pasien.id_pasien === sabr.pasien_id)?.nama || 'N/A'}</h2>
-                                <h2 id="${sabr.id_report + '-situation'}" class="text-justify col-span-2">${sabr.situation}</h2>
-                                <h2 id="${sabr.id_report + '-background'}" class="text-justify">${sabr.background}</h2>
-                                <h2 id="${sabr.id_report + '-assessment'}" class="text-justify col-span-2">${sabr.assessment}</h2>
-                                <h2 id="${sabr.id_report + '-recommendation'}" class="text-justify">${sabr.recommendation}</h2>
-                                <div id="action" class="flex space-x-4 justify-center place-self-start">
-                                    <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${sabr.id_report}')">
-                                        <img src="src/asset/logo/edit.png" alt="" class="">
-                                    </button>
-                                    <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${sabr.id_report}')">
-                                        <img src="src/asset/logo/delete.png" alt="" class="">
-                                    </button>
-                                </div>
-                            </div>
-                        </div>    
-                    `,
-        ).join('');
-        const roleConverter = data_shift.map((shift) => {
-            if (shift.shift_leader === true) {
-                shift.shift_leader = 'Ketua Shift';
-            }else if (shift.shift_leader === false) {
-                shift.shift_leader = 'Anggota Shift';
-            }
-            return shift;
-        });
-        const filterdataShift = roleConverter.filter((shift) => shift.shift === state.selectedShift);
-        const filterdataShiftbyDate = filterdataShift.filter((shift) => shift.tanggal_shift.slice(0,10) === state.selectedDate)
-        targetShift.innerHTML = filterdataShiftbyDate.map(
-            (shift) => `
-                <div id="" class="grid grid-cols-4 gap-4">
-                    <h1 id="${shift.id_shift + '-nama'}" class="col-span-2 text-sm text-left p-2">${data_pegawai.find(p => p.id_pegawai === shift.pegawai_id)?.nama || 'N/A'}</h1>
-                    <h1 id="${shift.id_shift + '-role'}" class="col-span-2 text-sm text-left p-2">${shift.shift_leader}</h1>
+    const filteredData = data_sabr.filter((sabr) => sabr.shift === state.selectedShift);
+    const filteredDataByDate = filteredData.filter((sabr) => sabr.tanggal_shift.slice(0,10) === state.selectedDate);
+    console.log("inside dashboard : ", state.selectedDate)
+    target.innerHTML = filteredDataByDate.map(
+        (sabr) => `
+            <div id="data-sabr-wrapper" class="pt-1 pb-1">
+                <div id="" class="bg-white p-4 grid grid-cols-8 gap-4 w-full">
+                    <h2 id="${sabr.id_report + '-nama'}" class="text-left">${data_pasien.find((pasien) => pasien.id_pasien === sabr.pasien_id)?.nama || 'N/A'}</h2>
+                    <h2 id="${sabr.id_report + '-situation'}" class="text-justify col-span-2">${sabr.situation}</h2>
+                    <h2 id="${sabr.id_report + '-background'}" class="text-justify">${sabr.background}</h2>
+                    <h2 id="${sabr.id_report + '-assessment'}" class="text-justify col-span-2">${sabr.assessment}</h2>
+                    <h2 id="${sabr.id_report + '-recommendation'}" class="text-justify">${sabr.recommendation}</h2>
+                    <div id="action" class="flex space-x-4 justify-center place-self-start">
+                    <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${sabr.id_report}')">
+                        <img src="src/asset/logo/edit.png" alt="" class="">
+                    </button>
+                    <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${sabr.id_report}')">
+                        <img src="src/asset/logo/delete.png" alt="" class="">
+                    </button>
+                    </div>
                 </div>
-            `
-        ).join('');
+            </div>    `,).join('');
+    const roleConverter = data_shift.map((shift) => {
+        if (shift.shift_leader === true) {
+            shift.shift_leader = 'Ketua Shift';
+        }else if (shift.shift_leader === false) {
+            shift.shift_leader = 'Anggota Shift';
+        }
+        return shift;
+    });
+    const filterdataShift = roleConverter.filter((shift) => shift.shift === state.selectedShift);
+    const filterdataShiftbyDate = filterdataShift.filter((shift) => shift.tanggal_shift.slice(0,10) === state.selectedDate)
+    targetShift.innerHTML = filterdataShiftbyDate.map(
+        (shift) => `
+            <div id="" class="grid grid-cols-4 gap-4">
+                <h1 id="${shift.id_shift + '-nama'}" class="col-span-2 text-sm text-left p-2">${data_pegawai.find(p => p.id_pegawai === shift.pegawai_id)?.nama || 'N/A'}</h1>
+                <h1 id="${shift.id_shift + '-role'}" class="col-span-2 text-sm text-left p-2">${shift.shift_leader}</h1>
+            </div>`).join('');
 }
 dashboard()
 async function showShift() {
@@ -382,6 +376,61 @@ async function modalEditData(id) {
         document.getElementById('pasien-status').value = editPasien.aktif;
         document.getElementById('modal-add-pasien').classList.remove('hidden');
     
+    }
+}
+
+async function submitNewReport() {
+    const namaPasien = document.getElementById('pasien-name').value
+    const shift = document.getElementById('modal-shift-selector').value
+    const tanggalShift = document.getElementById('date-input').value
+    const situation = document.getElementById('situation-input').value
+    const background = document.getElementById('background-input').value
+    const assessment = document.getElementById('assessment-input').value
+    const recommendation = document.getElementById('recommendation-input').value
+
+    if (!namaPasien || !shift || !tanggalShift){
+        alert("Nama Pasien, Shift, dan Tanggal harus diisi!")
+        return;
+    }
+
+    let data_pasien = await fetchDataPasien()
+    const pasien = data_pasien.find(p => p.nama === namaPasien)
+
+    if(!pasien){
+        alert("Pasien Tidak Ditemukan!")
+        return;
+    }
+
+    const payload = {
+        tanggal_shift: tanggalShift,
+        shift: shift,
+        pasien_id: pasien.id_pasien,
+        situation: situation,
+        background: background,
+        assessment: assessment,
+        recommendation: recommendation
+    }
+
+    try{
+        const response = await fetch('http://localhost:3000/api/sabr_report', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+
+        if(response.ok){
+            document.getElementById('modal-add-data-report').classList.add('hidden')
+            dashboard()
+            document.getElementById('situation-input').value = '';
+            document.getElementById('background-input').value = '';
+            document.getElementById('assessment-input').value = '';
+            document.getElementById('recommendation-input').value = '';
+        }
+    }catch (error){
+        console.error("Error Sumbiting Report", error)
+        alert("Terjadi Kesalahan Jaringan.")
     }
 }
 

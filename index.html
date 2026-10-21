@@ -37,7 +37,7 @@
                 <h2 class="font-bold text-lg"><br>3. Mengelola data pasien dan pegawai</h2>
                 <p class="text-md">Buka Daftar Pasien atau Daftar Pegawai untuk melihat datanya. Gunakan tombol Add pada halaman tersebut untuk menambahkan data. Ikon pensil digunakan untuk mengedit; ikon tempat sampah untuk menghapus.</p>
                 <h2 class="font-bold text-lg"><br>4. Mengatur petugas shift</h2>
-                <p class="text-md">Buka menu Shift, pilih tanggal dan shift, lalu tambahkan petugas. Pilih jumlah pegawai—maksimal lima—kemudian tentukan nama dan peran masing-masing.</p>
+                <p class="text-md">Buka menu Shift, pilih tanggal dan shift, lalu tambahkan petugas. Pilih jumlah pegawai—maksimal lima—kemudian tentukan nama dan peran masing-masing. Selain itu, Pastikan pada shift yang sama tentukan hanya 1 sebagai ketua shift.</p>
                 <p class="text-md"><br><b>Catatan: </b>Pastikan data yang dimasukkan sudah benar. Karena aplikasi memuat data pasien, jangan membagikan tangkapan layar atau informasi pasien kepada pihak yang tidak berwenang.</p>
             </div>            
         </div>
@@ -209,7 +209,7 @@
                     <textarea name="" id="recommendation-input" class="h-24 text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Recommendation"></textarea>
                 </div>
                 <div id="modal-form-submit-report" class="pt-4 place-self-end">
-                    <button id="" class="cursor-pointer bg-[#353A3E] rounded-xl  w-auto hover:bg-black transition duration-200">
+                    <button id="" class="cursor-pointer bg-[#353A3E] rounded-xl  w-auto hover:bg-black transition duration-200" onclick="submitNewReport()">
                         <div class="justify-center place-self-center p-2">
                             <h2 class="text-white text-center">Submit</h2>
                         </div>
