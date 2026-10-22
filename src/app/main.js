@@ -120,7 +120,7 @@ function toggleSideBar() {
 function dashboard() {
     state.currentPage = 'dashboard';
     document.getElementById('app-guide').classList.add('top-38/40')
-    document.getElementById('app-guide').classList.add('left-48/50')
+    document.getElementById('app-guide').classList.add('left-58/60')
 
     let data_sabr = state.dataReport;
     let data_pasien = state.dataPasien;
@@ -136,6 +136,7 @@ function dashboard() {
 
     const target = document.getElementById('table-data-pasien-sabr');
     const targetShift = document.getElementById('shift-handler-on-dashboard')
+
     const filteredData = data_sabr.filter((sabr) => sabr.shift === state.selectedShift);
     const filteredDataByDate = filteredData.filter((sabr) => sabr.tanggal_shift.slice(0,10) === state.selectedDate);
 
@@ -183,9 +184,9 @@ function showShift() {
     hideElementbyId.forEach(id => document.getElementById(id)?.classList.add('hidden'))
     shownElementbyId.forEach(id => document.getElementById(id)?.classList.remove('hidden'))
 
-        const filterdataShift = data_shift.filter((shift) => shift.shift === state.selectedShift);
-        const filterdataShiftbyDate = filterdataShift.filter((shift) => shift.tanggal_shift.slice(0,10) === state.selectedDate)
-        const shiftHandlerJoin = document.getElementById('table-data-shift-handler');
+    const filterdataShift = data_shift.filter((shift) => shift.shift === state.selectedShift);
+    const filterdataShiftbyDate = filterdataShift.filter((shift) => shift.tanggal_shift.slice(0,10) === state.selectedDate)
+    const shiftHandlerJoin = document.getElementById('table-data-shift-handler');
         shiftHandlerJoin.innerHTML = filterdataShiftbyDate
             .map(
                 (shift) => `
@@ -224,6 +225,7 @@ function daftarPegawai() {
     const target = document.getElementById('table-data-daftar-pegawai');
 
     target.innerHTML = data_pegawai
+    .filter((pegawai) => pegawai.aktif === true)
         .map(
         (pegawai) => `
             <div id="data-pegawai-wrapper" class="pt-1 pb-1">
@@ -262,6 +264,7 @@ function daftarPasien() {
     const target = document.getElementById('table-data-daftar-pasien');
 
     target.innerHTML = data_pasien
+        .filter((pasien) => pasien.aktif === true)
         .map(
         (pasien) => `
             <div id="data-pasien-wrapper" class="pt-1 pb-1">
