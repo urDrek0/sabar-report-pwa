@@ -149,10 +149,10 @@ function dashboard() {
                     <h2 id="${sabr.id_report + '-assessment'}" class="text-justify col-span-2">${sabr.assessment}</h2>
                     <h2 id="${sabr.id_report + '-recommendation'}" class="text-justify">${sabr.recommendation}</h2>
                     <div id="action" class="flex space-x-4 justify-center place-self-start">
-                    <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${sabr.id_report}')">
+                    <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${sabr.id_report}'), type = 'sabr'">
                         <img src="src/asset/logo/edit.png" alt="" class="">
                     </button>
-                    <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${sabr.id_report}', type = "sabr")">
+                    <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${sabr.id_report}', type = 'sabr')">
                         <img src="src/asset/logo/delete.png" alt="" class="">
                     </button>
                     </div>
@@ -210,10 +210,10 @@ function showShift() {
                     <h1 id="${shift.id_shift + '-kode'}" class="text-md text-left">${data_pegawai.find(p => p.id_pegawai === shift.pegawai_id)?.kode || 'N/A'}</h1>
                     <h1 id="${shift.id_shift + '-role'}" class="text-md text-left">${shift.shift_leader}</h1>
                     <div id="action" class="flex space-x-4 justify-center">
-                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${shift.id_shift}')">
+                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${shift.id_shift}'), type = 'shift-team'">
                             <img src="src/asset/logo/edit.png" alt="" class="">
                         </button>
-                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${shift.id_shift}')">
+                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${shift.id_shift}'), type = 'shift-team'">
                             <img src="src/asset/logo/delete.png" alt="" class="">
                         </button>
                     </div>
@@ -240,10 +240,10 @@ function daftarPegawai() {
                     <h2 id="${pegawai.id_pegawai + '-nama'}" class="text-left">${pegawai.nama}</h2>
                     <h2 id="${pegawai.id_pegawai + '-kode'}" class="text-left">${pegawai.kode}</h2>
                     <div id="action" class="flex space-x-4 justify-center place-self-end">
-                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${pegawai.id_pegawai}')">
+                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${pegawai.id_pegawai}', type ='pegawai')">
                             <img src="src/asset/logo/edit.png" alt="" class="">
                         </button>
-                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${pegawai.id_pegawai}')">
+                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${pegawai.id_pegawai}', type ='pegawai')">
                             <img src="src/asset/logo/delete.png" alt="" class="">
                         </button>
                     </div>
@@ -270,14 +270,13 @@ function daftarPasien() {
         (pasien) => `
             <div id="data-pasien-wrapper" class="pt-1 pb-1">
                 <div id="" class="bg-white p-4 grid grid-cols-4 gap-4 w-full">
-                    <h2 id="${pasien.id_pasien + '-id'}" class="text-left">${pasien.id_pasien}</h2>
-                    <h2 id="${pasien.id_pasien + '-nama'}" class="text-left">${pasien.nama}</h2>
+                    <h2 id="${pasien.id_pasien + '-nama'}" class="text-left col-span-2">${pasien.nama}</h2>
                     <h2 id="${pasien.id_pasien + '-umur'}" class="text-left">${pasien.umur}</h2>
                     <div id="action" class="flex space-x-4 justify-center place-self-end">
-                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${pasien.id_pasien}')">
+                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${pasien.id_pasien}', type = 'pasien')">
                             <img src="src/asset/logo/edit.png" alt="" class="">
                         </button>
-                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${pasien.id_pasien}')">
+                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${pasien.id_pasien}',type ='pasien')">
                             <img src="src/asset/logo/delete.png" alt="" class="">
                         </button>
                     </div>
@@ -452,6 +451,13 @@ async function submitNewReport() {
             alert("Waktu Shift, Tanggal Shift, dan Jumlah Pegawai pada shift ini tidak boleh kosong")
             return;
         }
+        
+        try{
+           
+        }catch (error){
+            console.error("Error Sumbiting Shift's Team", error)
+            alert("Terjadi Kesalahan Jaringan.")
+        }
     }
     else if (state.currentPage === 'daftar-pegawai'){
         const namaPegawai = document.getElementById('pegawai-nama').value
@@ -525,12 +531,83 @@ async function submitNewReport() {
 
 state.idToDelete = null
 state.deleteType = null
-async function modalDeleteData(id, type = 'sabr') {
+async function modalDeleteData(id, type) {
     state.idToDelete = id
     state.deleteType = type
     document.getElementById('modal-delete').classList.remove('hidden');
 }
 
 async function executeDelete() {
-    
+    if(state.currentPage === 'dashboard'){
+        if(!state.idToDelete) {return;}
+
+        try{
+            let endpoint = ''
+            if(state.deleteType === 'sabr'){
+                endpoint=`http://localhost:3000/api/sabr_report/${state.idToDelete}`
+            }
+            console.log({endpoint})
+            const response = await fetch(endpoint, {
+                method: 'DELETE'
+            })
+
+            if (response.ok){
+                alert('Laporan Berhasil Dihapus')
+                document.getElementById('modal-delete').classList.add('hidden')
+                state.dataReport = await fetchDataSabr();
+                dashboard()
+            }
+        }catch (error){
+            console.error("Error during deleting", error)
+            alert("Terjadi Kesalahan Jaringan.")
+        }
+    }else if (state.currentPage === 'daftar-shift-handler'){
+        if(!state.idToDelete) {return;}
+
+    }else if(state.currentPage === 'daftar-pegawai'){
+        if(!state.idToDelete) {return;}
+        try{
+            let endpoint = ''
+            if(state.deleteType === 'pegawai'){
+                endpoint=`http://localhost:3000/api/pegawai/${state.idToDelete}`
+            }
+            console.log({endpoint})
+            const response = await fetch(endpoint, {
+                method: 'DELETE'
+            })
+
+            if (response.ok){
+                alert('Pegawai Berhasil Dihapus')
+                document.getElementById('modal-delete').classList.add('hidden')
+                state.dataPegawai = await fetchDataPegawai();
+                daftarPegawai()
+            }
+        }catch (error){
+            console.error("Error during deleting", error)
+            alert("Terjadi Kesalahan Jaringan.")
+        }
+    }
+    else if (state.currentPage === 'daftar-pasien'){
+        if(!state.idToDelete) {return;}
+        try{
+            let endpoint = ''
+            if(state.deleteType === 'pasien'){
+                endpoint=`http://localhost:3000/api/pasien/${state.idToDelete}`
+            }
+            console.log({endpoint})
+            const response = await fetch(endpoint, {
+                method: 'DELETE'
+            })
+
+            if (response.ok){
+                alert('Pasien Berhasil Dihapus')
+                document.getElementById('modal-delete').classList.add('hidden')
+                state.dataPasien = await fetchDataPasien();
+                daftarPasien()
+            }
+        }catch (error){
+            console.error("Error during deleting", error)
+            alert("Terjadi Kesalahan Jaringan.")
+        }
+    }
 }

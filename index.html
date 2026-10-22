@@ -156,8 +156,7 @@
 
                 <div id="daftar-pasien" class="hidden">
                     <div id="table-header-pasien" class="bg-[#BFBFBF] p-4 grid grid-cols-4 gap-4 w-full">
-                        <h2 class="">No</h2>
-                        <h2 class="">Nama</h2>
+                        <h2 class="col-span-2">Nama</h2>
                         <h2 class="">Umur</h2>
                         <h2 class=""></h2>
                     </div>
@@ -446,7 +445,7 @@
             <div class="bg-white p-6 rounded-xl w-2/5 justify-center place-self-center">
                 <h2 class="text-center">Apakah anda yakin ingin menghapus data ini?</h2>
                 <div class="grid grid-cols-2 gap-4 pt-4">
-                    <button class="cursor-pointer bg-red-500 rounded-xl p-2 hover:bg-red-600 transition duration-200" onclick="document.getElementById('modal-delete').classList.add('hidden')">
+                    <button class="cursor-pointer bg-red-500 rounded-xl p-2 hover:bg-red-600 transition duration-200" onclick="executeDelete()">
                         <h2 class="text-white text-center">Ya</h2>
                     </button>
                     <button class="cursor-pointer bg-gray-500 rounded-xl p-2 hover:bg-gray-600 transition duration-200" onclick="document.getElementById('modal-delete').classList.add('hidden')">
