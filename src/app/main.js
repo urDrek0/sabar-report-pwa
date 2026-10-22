@@ -121,6 +121,8 @@ function toggleSideBar() {
 
 function dashboard() {
     state.currentPage = 'dashboard';
+    document.getElementById('app-guide').classList.add('top-38/40')
+    document.getElementById('app-guide').classList.add('left-48/50')
 
     let data_sabr = state.dataReport;
     let data_pasien = state.dataPasien;
@@ -178,6 +180,8 @@ function dashboard() {
 
 function showShift() {
     state.currentPage = 'daftar-shift-handler';
+    document.getElementById('app-guide').classList.add('top-38/40')
+    document.getElementById('app-guide').classList.add('left-48/50')
 
     let data_shift = state.dataShift
     let data_pegawai = state.dataPegawai
@@ -224,6 +228,9 @@ function showShift() {
 function daftarPegawai() {
     state.currentPage = 'daftar-pegawai';    
     console.log('state : ', state.currentPage);
+    document.getElementById('app-guide').classList.remove('top-38/40')
+    document.getElementById('app-guide').classList.add('top-1/30')
+    
     let hideElementbyId = ['table-data-pasien-sabr', 'report-title-dashboard', 'table-header-dashboard', 'modal-add-shift-handler', 'daftar-pasien', 'report-title-pasien', 'table-header-pasien','table-data-daftar-pasien', 'shift-handler-wrapper', 'report-title-shift-handler','shift-handler-join']
     let shownElementbyId = ['daftar-pegawai', 'table-data-daftar-pegawai', 'report-title-pegawai', 'table-header-pegawai'] 
     document.getElementById('add-data-guidance').textContent = 'Add Pegawai +';
@@ -232,13 +239,23 @@ function daftarPegawai() {
 
     let data_pegawai = state.dataPegawai
     const target = document.getElementById('table-data-daftar-pegawai');
-    target.innerHTML = data_pegawai
+
+    const roleConverter = data_pegawai.map((pegawai) => {
+        if (pegawai.aktif === true) {
+            pegawai.aktif = 'Aktif';
+        }else if (pegawai.aktif === false) {
+            pegawai.aktif = 'Tidak Aktif';
+        }
+        return pegawai;
+    });
+    target.innerHTML = roleConverter
         .map(
         (pegawai) => `
             <div id="data-pegawai-wrapper" class="pt-1 pb-1">
-                <div id="" class="bg-white p-4 grid grid-cols-3 gap-4 w-full">
-                    <h2 id="${pegawai.id_pegawai + '-nama'}" class="text-left">${pegawai.nama}</h2>
+                <div id="" class="bg-white p-4 grid grid-cols-5 gap-4 w-full">
+                    <h2 id="${pegawai.id_pegawai + '-nama'}" class="text-left col-span-2">${pegawai.nama}</h2>
                     <h2 id="${pegawai.id_pegawai + '-kode'}" class="text-left">${pegawai.kode}</h2>
+                    <h2 id="${pegawai.id_pegawai + '-aktif'}" class="text-left">${pegawai.aktif}</h2>
                     <div id="action" class="flex space-x-4 justify-center place-self-end">
                         <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${pegawai.id_pegawai}', type ='pegawai')">
                             <img src="src/asset/logo/edit.png" alt="" class="">
@@ -257,6 +274,9 @@ function daftarPegawai() {
 function daftarPasien() {
     state.currentPage = 'daftar-pasien';
     console.log('state : ', state.currentPage);
+    document.getElementById('app-guide').classList.remove('top-38/40')
+    document.getElementById('app-guide').classList.add('top-1/30')
+
     let hideElementbyId = ['modal-add-data-report', 'daftar-pegawai', 'table-data-daftar-pegawai', 'report-title-pegawai', 'table-header-pegawai', 'modal-add-data-report', 'table-data-pasien-sabr', 'report-title-dashboard', 'table-header-dashboard', 'shift-handler-wrapper', 'report-title-shift-handler', 'shift-handler-join']
     let shownElementbyId = ['daftar-pasien', 'report-title-pasien', 'table-header-pasien', 'table-data-daftar-pasien'] 
     hideElementbyId.forEach(id => document.getElementById(id)?.classList.add('hidden'))
@@ -265,13 +285,22 @@ function daftarPasien() {
 
     let data_pasien = state.dataPasien
     const target = document.getElementById('table-data-daftar-pasien');
-    target.innerHTML = data_pasien
+    const roleConverter = data_pasien.map((pasien) => {
+        if (pasien.aktif === true) {
+            pasien.aktif = 'Aktif';
+        }else if (pasien.aktif === false) {
+            pasien.aktif = 'Tidak Aktif';
+        }
+        return pasien;
+    });
+    target.innerHTML = roleConverter
         .map(
         (pasien) => `
             <div id="data-pasien-wrapper" class="pt-1 pb-1">
-                <div id="" class="bg-white p-4 grid grid-cols-4 gap-4 w-full">
+                <div id="" class="bg-white p-4 grid grid-cols-5 gap-4 w-full">
                     <h2 id="${pasien.id_pasien + '-nama'}" class="text-left col-span-2">${pasien.nama}</h2>
                     <h2 id="${pasien.id_pasien + '-umur'}" class="text-left">${pasien.umur}</h2>
+                    <h2 id="${pasien.id_pasien + '-aktif'}" class="text-left">${pasien.aktif}</h2>
                     <div id="action" class="flex space-x-4 justify-center place-self-end">
                         <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${pasien.id_pasien}', type = 'pasien')">
                             <img src="src/asset/logo/edit.png" alt="" class="">
@@ -294,6 +323,7 @@ function addNewReport() {
         document.getElementById('modal-add-data-report').classList.remove('hidden');
         let nameSelectPasien = document.getElementById('pasien-name');
         nameSelectPasien.innerHTML = data_pasien
+            .filter((pasien) => pasien.aktif === true)
             .map((pasien) => `<option value="${pasien.nama}">${pasien.nama}</option>`)
             .join('');
     }
@@ -308,14 +338,13 @@ function addNewReport() {
         let idPuller = ['shift-handler-nama-one', 'shift-handler-nama-two', 'shift-handler-nama-three', 'shift-handler-nama-four', 'shift-handler-nama-five']
         idPuller.forEach((idPlaceHolder) => 
             document.getElementById(idPlaceHolder).innerHTML = data_pegawai
+            .filter((pegawai) => pegawai.aktif === true)
             .map((pegawai) => `<option value="${pegawai.nama}">${pegawai.nama}</option>`).join('')
         )
         let fieldFormId = ['field-form-shift-handler-one','field-form-shift-handler-two','field-form-shift-handler-three','field-form-shift-handler-four','field-form-shift-handler-five',]  
         function renderingFieldFrom(){
             const valueTeamOnShift = shiftHandlerEvent.value
             fieldFormId.forEach((id, index) => {
-                console.log('id : ', id)
-                console.log('index : ', index)
                 document.getElementById(id).classList.toggle('hidden', index >= valueTeamOnShift)
             })
         }
@@ -358,9 +387,9 @@ function modalEditData(id) {
         document.getElementById('pegawai-kode').value = editPegawai.kode;
         document.getElementById('pegawai-status').value = editPegawai.aktif;
         document.getElementById('modal-add-pegawai').classList.remove('hidden');
+        console.log(editPegawai)
     } 
     else if (state.currentPage === 'daftar-shift-handler') {
-        console.log("ini aktif")
         document.getElementById('modal-edit-shift-singular').classList.remove('hidden');
         let editShiftHandler = data_shift.find((handler) => handler.id_shift === id);
         let nameSelectPegawai = document.getElementById('shift-handler-nama-edit');
@@ -382,7 +411,7 @@ function modalEditData(id) {
         document.getElementById('pasien-umur').value = editPasien.umur;
         document.getElementById('pasien-status').value = editPasien.aktif;
         document.getElementById('modal-add-pasien').classList.remove('hidden');
-    
+        console.log(editPasien)
     }
 }
 

@@ -18,7 +18,7 @@
         <link rel="icon" href="src/asset/logo/documents.png" type="image/x-icon">
 	</head>
 	<body>
-        <div id="app-guide" class="fixed top-38/40 left-48/50 transform -translate-x-1/2 -translate-y-1/2">
+        <div id="app-guide" class="fixed transform -translate-x-1/2 -translate-y-1/2">
             <button id="open-guide" class="cursor-pointer" onclick="document.getElementById('app-guide-content').classList.remove('hidden')">
                 <img src="src/asset/logo/question-mark.png" alt="" class="max-h-10 w-auto opacity-45 hover:opacity-100 transform duration-200">
             </button>
@@ -146,18 +146,20 @@
                 <div id="table-data-pasien-sabr" class=""></div>
 
                 <div id="daftar-pegawai" class="hidden">
-                    <div id="table-header-pegawai" class="bg-[#BFBFBF] p-4 grid grid-cols-3 gap-4 w-full">
-                        <h2 class="">Name</h2>
+                    <div id="table-header-pegawai" class="bg-[#BFBFBF] p-4 grid grid-cols-5 gap-4 w-full">
+                        <h2 class="col-span-2">Name</h2>
                         <h2 class="">Kode</h2>
+                        <h2 class="">Status</h2>
                         <h2 class=""></h2>
                     </div>
                     <div id="table-data-daftar-pegawai" class=""></div>
                 </div>
 
                 <div id="daftar-pasien" class="hidden">
-                    <div id="table-header-pasien" class="bg-[#BFBFBF] p-4 grid grid-cols-4 gap-4 w-full">
+                    <div id="table-header-pasien" class="bg-[#BFBFBF] p-4 grid grid-cols-5 gap-4 w-full">
                         <h2 class="col-span-2">Nama</h2>
                         <h2 class="">Umur</h2>
+                        <h2 class="">Status</h2>
                         <h2 class=""></h2>
                     </div>
                     <div id="table-data-daftar-pasien" class="">
