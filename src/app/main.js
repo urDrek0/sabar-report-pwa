@@ -349,16 +349,10 @@ function modalEditData(id) {
     }
     else if (state.currentPage === 'daftar-pegawai') {
         let editPegawai = data_pegawai.find((pegawai) => pegawai.id_pegawai === id);
-        if (editPegawai.aktif === true) {
-            editPegawai.aktif = 'Aktif';
-        } else {
-            editPegawai.aktif = 'Tidak Aktif';
-        }
         document.getElementById('pegawai-nama').value = editPegawai.nama;
         document.getElementById('pegawai-kode').value = editPegawai.kode;
-        document.getElementById('pegawai-status').value = editPegawai.aktif;
+        document.getElementById('pegawai-status').value = editPegawai.aktif
         document.getElementById('modal-add-pegawai').classList.remove('hidden');
-        console.log(editPegawai)
     } 
     else if (state.currentPage === 'daftar-shift-handler') {
         document.getElementById('modal-edit-shift-singular').classList.remove('hidden');
@@ -373,16 +367,10 @@ function modalEditData(id) {
     }
     else if (state.currentPage === 'daftar-pasien') {
         let editPasien = data_pasien.find((pasien) => pasien.id_pasien === id);
-        if (editPasien.aktif === true) {
-            editPasien.aktif = 'Aktif';
-        } else {
-            editPasien.aktif = 'Tidak Aktif';
-        }
         document.getElementById('pasien-nama').value = editPasien.nama;
         document.getElementById('pasien-umur').value = editPasien.umur;
         document.getElementById('pasien-status').value = editPasien.aktif;
         document.getElementById('modal-add-pasien').classList.remove('hidden');
-        console.log(editPasien)
     }
 }
 
