@@ -49,8 +49,6 @@ let calendar;
 function renderCurrentPage(){
     if (state.currentPage === 'dashboard') {dashboard()}
     else if (state.currentPage === 'daftar-shift-handler') {showShift()}
-    else if (state.currentPage === 'daftar-pegawai') {daftarPegawai()}
-    else if (state.currentPage === 'daftar-pasien') {daftarPasien()}
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
