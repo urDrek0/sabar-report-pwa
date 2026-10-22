@@ -24,22 +24,149 @@
             </button>
         </div>
 
-        <div id="app-guide-content" class="overflow-y-scroll fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden">
-            <div class="bg-white w-1/2 h-auto rounded-xl p-4 justify-center place-self-center">
-                <button id="close-modal" class="cursor-pointer place-self-end" onclick="document.getElementById('app-guide-content').classList.add('hidden')">
+        <div id="app-guide-content" role="dialog" aria-modal="true" aria-labelledby="guide-title" class="overflow-y-auto fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 grid place-items-center p-4 absolute hidden">
+            <div class="bg-white w-11/12 max-w-4xl max-h-[90vh] overflow-y-auto rounded-xl p-4 md:p-6 justify-center place-self-center">
+                <button id="close-guide" type="button" aria-label="Tutup panduan" class="cursor-pointer place-self-end" onclick="document.getElementById('app-guide-content').classList.add('hidden')">
                     <img src="src/asset/logo/delete.png" alt="" class="max-w-5 h-auto">
                 </button>
-                <h1 class="text-center font-bold text-xl">Panduan Penggunaan Aplikasi Laporan SABR</h1>
-                <h2 class="font-bold text-lg"><br>1. Melihat laporan</h2>
-                <p class="text-md">Buka Dashboard. Pilih tanggal pada kalender dan pilih shift Pagi, Siang, atau Malam untuk melihat laporan pada tanggal dan shift tersebut.</p>
-                <h2 class="font-bold text-lg"><br>2. Menambahkan laporan</h2>
-                <p class="text-md">Di Dashboard, klik Add Report +. Pilih nama pasien, shift, dan tanggal, lalu isi Situation, Background, Assessment, dan Recommendation. Periksa kembali isian sebelum menekan Submit.</p>
-                <h2 class="font-bold text-lg"><br>3. Mengelola data pasien dan pegawai</h2>
-                <p class="text-md">Buka Daftar Pasien atau Daftar Pegawai untuk melihat datanya. Gunakan tombol Add pada halaman tersebut untuk menambahkan data. Ikon pensil digunakan untuk mengedit; ikon tempat sampah untuk menghapus.</p>
-                <h2 class="font-bold text-lg"><br>4. Mengatur petugas shift</h2>
-                <p class="text-md">Buka menu Shift, pilih tanggal dan shift, lalu tambahkan petugas. Pilih jumlah pegawai—maksimal lima—kemudian tentukan nama dan peran masing-masing. Selain itu, Pastikan pada shift yang sama tentukan hanya 1 sebagai ketua shift.</p>
-                <p class="text-md"><br><b>Catatan: </b>Pastikan data yang dimasukkan sudah benar. Karena aplikasi memuat data pasien, jangan membagikan tangkapan layar atau informasi pasien kepada pihak yang tidak berwenang.</p>
-            </div>            
+                <h1 id="guide-title" class="text-center font-bold text-xl md:text-2xl">Panduan Penggunaan Aplikasi Laporan SABR</h1>
+                <p class="text-sm text-center pt-2">Gunakan panduan ini untuk melihat laporan, mengisi laporan SABR, dan mengelola data.</p>
+
+                <section class="pt-5">
+                    <h2 class="font-bold text-lg">Mengenal menu dan ikon</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3">
+                        <div class="flex items-center gap-3 rounded-lg bg-gray-500 p-3">
+                            <img src="src/asset/logo/home.png" alt="" class="w-8 h-8 object-contain">
+                            <p><b>Dashboard</b><br>Melihat laporan SABR dan petugas pada tanggal serta shift terpilih.</p>
+                        </div>
+                        <div class="flex items-center gap-3 rounded-lg bg-gray-500 p-3">
+                            <img src="src/asset/logo/shift.png" alt="" class="w-8 h-8 object-contain">
+                            <p><b>Shift</b><br>Membuka daftar petugas shift. Pilih tanggal di kalender dan shift pada pilihan di samping menu.</p>
+                        </div>
+                        <div class="flex items-center gap-3 rounded-lg bg-gray-500 p-3">
+                            <img src="src/asset/logo/calendar.png" alt="" class="w-8 h-8 object-contain">
+                            <p><b>Kalender</b><br>Klik tanggal untuk menampilkan data pada tanggal tersebut. Gunakan panah untuk berpindah bulan.</p>
+                        </div>
+                        <div class="flex items-center gap-3 rounded-lg bg-gray-500 p-3">
+                            <img src="src/asset/logo/pegawai.png" alt="" class="w-8 h-8 object-contain">
+                            <p><b>Daftar Pegawai</b><br>Melihat dan mengelola data pegawai yang dapat dipilih sebagai petugas shift.</p>
+                        </div>
+                        <div class="flex items-center gap-3 rounded-lg bg-gray-500 p-3">
+                            <img src="src/asset/logo/pasien.png" alt="" class="w-8 h-8 object-contain">
+                            <p><b>Daftar Pasien</b><br>Melihat dan mengelola daftar pasien yang dapat dipilih pada laporan.</p>
+                        </div>
+                        <div class="flex items-center gap-3 rounded-lg bg-gray-500 p-3">
+                            <img src="src/asset/logo/sidebar.png" alt="" class="w-8 h-8 object-contain">
+                            <p><b>Tombol menu samping</b><br>Menciutkan atau menampilkan kembali sidebar.</p>
+                        </div>
+                    </div>
+                    <p class="pt-3">Tombol <b>Add ... +</b> di bagian atas halaman mengikuti menu yang sedang dibuka: <b>Add Report +</b>, <b>Add Pegawai +</b>, <b>Add Pasien +</b>, atau <b>Add Shift Handler +</b>.</p>
+                </section>
+
+                <section class="pt-5">
+                    <h2 class="font-bold text-lg">1. Melihat laporan</h2>
+                    <ol class="list-decimal pl-6 pt-2 space-y-1">
+                        <li>Buka <b>Dashboard</b>.</li>
+                        <li>Klik tanggal yang diinginkan pada kalender.</li>
+                        <li>Pilih shift <b>Pagi</b>, <b>Siang</b>, atau <b>Malam</b> dari pilihan di sidebar.</li>
+                        <li>Dashboard menampilkan laporan SABR dan petugas untuk tanggal serta shift yang dipilih.</li>
+                    </ol>
+                    <p class="pt-2">Untuk berpindah bulan, gunakan panah pada kalender. Tombol menu pada panel petugas dapat digunakan untuk menampilkan atau menyembunyikan daftar petugas.</p>
+                </section>
+
+                <section class="pt-5">
+                    <h2 class="font-bold text-lg">2. Membuat laporan SABR</h2>
+                    <ol class="list-decimal pl-6 pt-2 space-y-1">
+                        <li>Pastikan pasien sudah tersedia di <b>Daftar Pasien</b>. Jika belum, tambahkan pasien terlebih dahulu, lalu kembali ke Dashboard.</li>
+                        <li>Di Dashboard, klik <b>Add Report +</b>.</li>
+                        <li>Isi identitas dan waktu laporan, kemudian lengkapi empat kolom SABR di bawah.</li>
+                        <li>Periksa kembali isi laporan, lalu klik <b>Submit</b>.</li>
+                    </ol>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3">
+                        <div class="rounded-lg border p-3">
+                            <h3 class="font-bold">Nama</h3>
+                            <p>Pilih pasien yang laporannya sedang dibuat. Nama diambil dari Daftar Pasien.</p>
+                        </div>
+                        <div class="rounded-lg border p-3">
+                            <h3 class="font-bold">Shift</h3>
+                            <p>Pilih shift yang sesuai dengan waktu serah terima atau pelaporan: Pagi, Siang, atau Malam.</p>
+                        </div>
+                        <div class="rounded-lg border p-3">
+                            <h3 class="font-bold">Tanggal</h3>
+                            <p>Masukkan tanggal laporan/serah terima. Pastikan tanggalnya sesuai dengan shift yang dipilih.</p>
+                        </div>
+                        <div class="rounded-lg border p-3">
+                            <h3 class="font-bold">Situation (Situasi)</h3>
+                            <p>Ringkas kondisi atau kejadian utama pasien saat ini dan alasan laporan atau serah terima dilakukan.</p>
+                        </div>
+                        <div class="rounded-lg border p-3">
+                            <h3 class="font-bold">Background (Latar belakang)</h3>
+                            <p>Tuliskan riwayat, konteks, atau informasi terdahulu yang relevan untuk memahami situasi. Cantumkan hanya informasi yang diketahui dan diperlukan.</p>
+                        </div>
+                        <div class="rounded-lg border p-3">
+                            <h3 class="font-bold">Assessment (Penilaian)</h3>
+                            <p>Catat hasil pengamatan dan penilaian kondisi saat ini secara jelas, faktual, dan sesuai kewenangan serta prosedur tempat kerja.</p>
+                        </div>
+                        <div class="rounded-lg border p-3 sm:col-span-2">
+                            <h3 class="font-bold">Recommendation (Rekomendasi)</h3>
+                            <p>Tuliskan tindak lanjut, pemantauan, atau hal yang perlu dilakukan/diteruskan oleh petugas berikutnya. Buat spesifik dan ikuti instruksi klinis serta prosedur yang berlaku.</p>
+                        </div>
+                    </div>
+                    <p class="pt-3"><b>Tips:</b> Gunakan kalimat singkat dan jelas, periksa ejaan serta tanggal, dan jangan mengisi dengan perkiraan. Ikuti standar dokumentasi yang berlaku di tempat kerja.</p>
+                </section>
+
+                <section class="pt-5">
+                    <h2 class="font-bold text-lg">3. Mengelola data pasien</h2>
+                    <ol class="list-decimal pl-6 pt-2 space-y-1">
+                        <li>Buka <b>Daftar Pasien</b>, lalu klik <b>Add Pasien +</b>.</li>
+                        <li>Isi <b>Nama Pasien</b> sesuai data yang berwenang digunakan.</li>
+                        <li>Isi <b>Umur</b> pasien.</li>
+                        <li>Pilih <b>Status</b>: Aktif atau Tidak Aktif, lalu klik <b>Submit</b>.</li>
+                    </ol>
+                    <p class="pt-2">Pasien berstatus tidak aktif tetap tercatat, tetapi pastikan memilih data pasien yang tepat saat membuat laporan.</p>
+                </section>
+
+                <section class="pt-5">
+                    <h2 class="font-bold text-lg">4. Mengelola data pegawai</h2>
+                    <ol class="list-decimal pl-6 pt-2 space-y-1">
+                        <li>Buka <b>Daftar Pegawai</b>, lalu klik <b>Add Pegawai +</b>.</li>
+                        <li>Isi <b>Nama Pegawai</b>.</li>
+                        <li>Isi <b>Kode Pegawai</b> sesuai format kode yang digunakan di tempat kerja (kolom memberi petunjuk 3 huruf).</li>
+                        <li>Pilih <b>Status</b> Aktif atau Tidak Aktif, lalu klik <b>Submit</b>.</li>
+                    </ol>
+                    <p class="pt-2">Daftar ini menjadi sumber pilihan nama petugas saat mengatur shift. Tambahkan atau perbarui data pegawai sebelum membuat jadwal jika nama belum tersedia.</p>
+                </section>
+
+                <section class="pt-5">
+                    <h2 class="font-bold text-lg">5. Mengatur petugas shift</h2>
+                    <ol class="list-decimal pl-6 pt-2 space-y-1">
+                        <li>Buka menu <b>Shift</b>, lalu pilih tanggal di kalender dan shift pada pilihan di sidebar untuk melihat daftar yang sesuai.</li>
+                        <li>Klik <b>Add Shift Handler +</b>.</li>
+                        <li>Isi <b>Jumlah Pegawai Shift ini</b> (maksimal 5), <b>Shift</b>, dan <b>Tanggal</b>.</li>
+                        <li>Untuk setiap pegawai yang muncul, pilih <b>Nama Petugas</b> dari Daftar Pegawai dan tentukan <b>Peran</b>.</li>
+                        <li>Tetapkan tepat satu orang sebagai <b>Ketua Shift</b>; petugas lainnya menjadi <b>Anggota Shift</b>. Periksa kembali tanggal, shift, nama, dan peran sebelum klik <b>Submit</b>.</li>
+                    </ol>
+                </section>
+
+                <section class="pt-5">
+                    <h2 class="font-bold text-lg">6. Mengedit atau menghapus data</h2>
+                    <div class="flex flex-col sm:flex-row gap-4 pt-3">
+                        <div class="flex items-center gap-3 rounded-lg bg-gray-100 p-3">
+                            <img src="src/asset/logo/edit.png" alt="Ikon pensil" class="w-6 h-6 object-contain">
+                            <p><b>Pensil:</b> membuka data untuk diedit. Periksa perubahan sebelum menyimpan.</p>
+                        </div>
+                        <div class="flex items-center gap-3 rounded-lg bg-gray-100 p-3">
+                            <img src="src/asset/logo/delete.png" alt="Ikon tempat sampah" class="w-6 h-6 object-contain">
+                            <p><b>Tempat sampah:</b> digunakan untuk menghapus data. Pastikan data yang dipilih benar sebelum melanjutkan.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <aside class="mt-5 rounded-lg bg-amber-100 p-4">
+                    <h2 class="font-bold">Keamanan dan kerahasiaan data</h2>
+                    <p class="pt-1">Pastikan data yang dimasukkan akurat dan hanya diakses oleh pihak berwenang. Jangan membagikan tangkapan layar atau informasi pasien kepada pihak yang tidak berwenang.</p>
+                </aside>
+            </div>
         </div>
 
         <div class="flex min-h-screen">

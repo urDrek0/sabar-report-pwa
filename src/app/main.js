@@ -229,7 +229,7 @@ function daftarPegawai() {
     state.currentPage = 'daftar-pegawai';    
     console.log('state : ', state.currentPage);
     document.getElementById('app-guide').classList.remove('top-38/40')
-    document.getElementById('app-guide').classList.add('top-1/30')
+    document.getElementById('app-guide').classList.add('top-1/21')
     
     let hideElementbyId = ['table-data-pasien-sabr', 'report-title-dashboard', 'table-header-dashboard', 'modal-add-shift-handler', 'daftar-pasien', 'report-title-pasien', 'table-header-pasien','table-data-daftar-pasien', 'shift-handler-wrapper', 'report-title-shift-handler','shift-handler-join']
     let shownElementbyId = ['daftar-pegawai', 'table-data-daftar-pegawai', 'report-title-pegawai', 'table-header-pegawai'] 
@@ -275,7 +275,7 @@ function daftarPasien() {
     state.currentPage = 'daftar-pasien';
     console.log('state : ', state.currentPage);
     document.getElementById('app-guide').classList.remove('top-38/40')
-    document.getElementById('app-guide').classList.add('top-1/30')
+    document.getElementById('app-guide').classList.add('top-1/21')
 
     let hideElementbyId = ['modal-add-data-report', 'daftar-pegawai', 'table-data-daftar-pegawai', 'report-title-pegawai', 'table-header-pegawai', 'modal-add-data-report', 'table-data-pasien-sabr', 'report-title-dashboard', 'table-header-dashboard', 'shift-handler-wrapper', 'report-title-shift-handler', 'shift-handler-join']
     let shownElementbyId = ['daftar-pasien', 'report-title-pasien', 'table-header-pasien', 'table-data-daftar-pasien'] 
