@@ -158,21 +158,14 @@ function dashboard() {
                     </div>
                 </div>
             </div>    `,).join('');
-    const roleConverter = data_shift.map((shift) => {
-        if (shift.shift_leader === true) {
-            shift.shift_leader = 'Ketua Shift';
-        }else if (shift.shift_leader === false) {
-            shift.shift_leader = 'Anggota Shift';
-        }
-        return shift;
-    });
-    const filterdataShift = roleConverter.filter((shift) => shift.shift === state.selectedShift);
+
+    const filterdataShift = data_shift.filter((shift) => shift.shift === state.selectedShift);
     const filterdataShiftbyDate = filterdataShift.filter((shift) => shift.tanggal_shift.slice(0,10) === state.selectedDate)
     targetShift.innerHTML = filterdataShiftbyDate.map(
         (shift) => `
             <div id="" class="grid grid-cols-4 gap-4">
                 <h1 id="${shift.id_shift + '-nama'}" class="col-span-2 text-sm text-left p-2">${data_pegawai.find(p => p.id_pegawai === shift.pegawai_id)?.nama || 'N/A'}</h1>
-                <h1 id="${shift.id_shift + '-role'}" class="col-span-2 text-sm text-left p-2">${shift.shift_leader}</h1>
+                <h1 id="${shift.id_shift + '-role'}" class="col-span-2 text-sm text-left p-2">${shift.shift_leader ? 'Leader' : 'Member'}</h1>
             </div>`).join('');
 }
 
@@ -190,15 +183,7 @@ function showShift() {
     hideElementbyId.forEach(id => document.getElementById(id)?.classList.add('hidden'))
     shownElementbyId.forEach(id => document.getElementById(id)?.classList.remove('hidden'))
 
-    const roleConverter = data_shift.map((shift) => {
-        if (shift.shift_leader === true) {
-            shift.shift_leader = 'Ketua Shift';
-        }else if (shift.shift_leader === false) {
-            shift.shift_leader = 'Anggota Shift';
-        }
-        return shift;
-    });
-        const filterdataShift = roleConverter.filter((shift) => shift.shift === state.selectedShift);
+        const filterdataShift = data_shift.filter((shift) => shift.shift === state.selectedShift);
         const filterdataShiftbyDate = filterdataShift.filter((shift) => shift.tanggal_shift.slice(0,10) === state.selectedDate)
         const shiftHandlerJoin = document.getElementById('table-data-shift-handler');
         shiftHandlerJoin.innerHTML = filterdataShiftbyDate
@@ -210,7 +195,7 @@ function showShift() {
                     <h1 id="${shift.id_shift + '-shift'}" class="text-md text-left">${shift.shift}</h1>
                     <h1 id="${shift.id_shift + '-nama'}" class="text-md text-left">${data_pegawai.find(p => p.id_pegawai === shift.pegawai_id)?.nama || 'N/A'}</h1>
                     <h1 id="${shift.id_shift + '-kode'}" class="text-md text-left">${data_pegawai.find(p => p.id_pegawai === shift.pegawai_id)?.kode || 'N/A'}</h1>
-                    <h1 id="${shift.id_shift + '-role'}" class="text-md text-left">${shift.shift_leader}</h1>
+                    <h1 id="${shift.id_shift + '-role'}" class="text-md text-left">${shift.shift_leader ? 'Leader' : 'Member'}</h1>
                     <div id="action" class="flex space-x-4 justify-center">
                         <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${shift.id_shift}'), type = 'shift-team'">
                             <img src="src/asset/logo/edit.png" alt="" class="">
@@ -238,22 +223,14 @@ function daftarPegawai() {
     let data_pegawai = state.dataPegawai
     const target = document.getElementById('table-data-daftar-pegawai');
 
-    const roleConverter = data_pegawai.map((pegawai) => {
-        if (pegawai.aktif === true) {
-            pegawai.aktif = 'Aktif';
-        }else if (pegawai.aktif === false) {
-            pegawai.aktif = 'Tidak Aktif';
-        }
-        return pegawai;
-    });
-    target.innerHTML = roleConverter
+    target.innerHTML = data_pegawai
         .map(
         (pegawai) => `
             <div id="data-pegawai-wrapper" class="pt-1 pb-1">
                 <div id="" class="bg-white p-4 grid grid-cols-5 gap-4 w-full">
                     <h2 id="${pegawai.id_pegawai + '-nama'}" class="text-left col-span-2">${pegawai.nama}</h2>
                     <h2 id="${pegawai.id_pegawai + '-kode'}" class="text-left">${pegawai.kode}</h2>
-                    <h2 id="${pegawai.id_pegawai + '-aktif'}" class="text-left">${pegawai.aktif}</h2>
+                    <h2 id="${pegawai.id_pegawai + '-aktif'}" class="text-left">${pegawai.aktif ? 'Aktif' : 'Tidak Aktif'}</h2>
                     <div id="action" class="flex space-x-4 justify-center place-self-end">
                         <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${pegawai.id_pegawai}', type ='pegawai')">
                             <img src="src/asset/logo/edit.png" alt="" class="">
@@ -283,22 +260,15 @@ function daftarPasien() {
 
     let data_pasien = state.dataPasien
     const target = document.getElementById('table-data-daftar-pasien');
-    const roleConverter = data_pasien.map((pasien) => {
-        if (pasien.aktif === true) {
-            pasien.aktif = 'Aktif';
-        }else if (pasien.aktif === false) {
-            pasien.aktif = 'Tidak Aktif';
-        }
-        return pasien;
-    });
-    target.innerHTML = roleConverter
+
+    target.innerHTML = data_pasien
         .map(
         (pasien) => `
             <div id="data-pasien-wrapper" class="pt-1 pb-1">
                 <div id="" class="bg-white p-4 grid grid-cols-5 gap-4 w-full">
                     <h2 id="${pasien.id_pasien + '-nama'}" class="text-left col-span-2">${pasien.nama}</h2>
                     <h2 id="${pasien.id_pasien + '-umur'}" class="text-left">${pasien.umur}</h2>
-                    <h2 id="${pasien.id_pasien + '-aktif'}" class="text-left">${pasien.aktif}</h2>
+                    <h2 id="${pasien.id_pasien + '-aktif'}" class="text-left">${pasien.aktif ? 'Aktif' : 'Tidak Aktif'}</h2>
                     <div id="action" class="flex space-x-4 justify-center place-self-end">
                         <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${pasien.id_pasien}', type = 'pasien')">
                             <img src="src/asset/logo/edit.png" alt="" class="">
