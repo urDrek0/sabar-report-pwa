@@ -388,6 +388,7 @@ function modalEditData(id) {
         document.getElementById('shift-handler-nama-edit').value = data_pegawai.find((p) => p.id_pegawai === editShiftHandler.pegawai_id)?.nama;
         document.getElementById('shift-handler-shift-edit').value = editShiftHandler.shift
         document.getElementById('shift-handler-role-edit').value = editShiftHandler.shift_leader;
+        console.log(`${state.editId}`)
     }
     else if (state.currentPage === 'daftar-pasien') {
         let editPasien = data_pasien.find((pasien) => pasien.id_pasien == state.editId);
@@ -558,7 +559,7 @@ async function submitNewReport() {
                     return;
                 }
 
-            const oldData = state.dataShift.find(s => s.id_shift === parseInt(state.editId));
+            const oldData = state.dataShift.find(s => s.id_shift === state.editId);
                 if (!oldData) {
                     alert("Gagal: Data Shift lama tidak ditemukan di memori!");
                     return;
