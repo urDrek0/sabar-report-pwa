@@ -571,6 +571,7 @@ async function submitNewReport() {
         }
 
         try{
+            isError = false
             for(let data of payload){
                 const response = await fetch('http://localhost:3000/api/shift_handler',{
                     method: 'POST',
@@ -579,8 +580,11 @@ async function submitNewReport() {
                 })
                 console.log(response)
                 if(!response.ok){
+                    isError = true
+                    break;
+                }
+                if (isError){
                     alert("Gagal Mengirimkan Data")
-                    return;
                 }                        
             }
             alert('Tim Shift Berhasil Ditambahkan!');
