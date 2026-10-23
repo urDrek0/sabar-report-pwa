@@ -199,10 +199,10 @@ function showShift() {
                     <h1 id="${shift.id_shift + '-kode'}" class="text-md text-left">${data_pegawai.find(p => p.id_pegawai === shift.pegawai_id)?.kode || 'N/A'}</h1>
                     <h1 id="${shift.id_shift + '-role'}" class="text-md text-left">${shift.shift_leader ? 'Leader' : 'Member'}</h1>
                     <div id="action" class="flex space-x-4 justify-center">
-                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${shift.id_shift}'), type = 'shift-team'">
+                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${shift.id_shift}', type = 'shift-team')">
                             <img src="src/asset/logo/edit.png" alt="" class="">
                         </button>
-                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${shift.id_shift}'), type = 'shift-team'">
+                        <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${shift.id_shift}', type = 'shift-team')">
                             <img src="src/asset/logo/delete.png" alt="" class="">
                         </button>
                     </div>
@@ -632,7 +632,26 @@ async function executeDelete() {
         }
     }else if (state.currentPage === 'daftar-shift-handler'){
         if(!state.idToDelete) {return;}
-
+            try{
+            let endpoint = ''
+            if(state.deleteType === 'shift-team'){
+                endpoint=`http://localhost:3000/api/shift_handler/${state.idToDelete}`
+            }
+            console.log({endpoint})
+            const response = await fetch(endpoint, {
+                method: 'DELETE'
+            })
+            console.log({response})
+            if (response.ok){
+                alert('Data Shift Berhasil Dihapus')
+                document.getElementById('modal-delete').classList.add('hidden')
+                state.dataShift = await fetchDataShiftHandler();
+                showShift()
+            }
+        }catch (error){
+            console.error("Error during deleting", error)
+            alert("Terjadi Kesalahan Jaringan.")
+        }
     }else if(state.currentPage === 'daftar-pegawai'){
         if(!state.idToDelete) {return;}
         try{
