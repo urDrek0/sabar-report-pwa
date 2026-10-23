@@ -526,20 +526,13 @@ async function submitNewReport() {
         const shiftHandler = document.getElementById('shift-handler-shift').value
         const dateShift = document.getElementById('shift-handler-date-input').value
 
-        const namaOne = document.getElementById('shift-handler-nama-one').value
-        const roleOne = document.getElementById('shift-handler-role-one').value
+        const idNama = ['shift-handler-nama-one', 'shift-handler-nama-two', 'shift-handler-nama-three', 'shift-handler-nama-four', 'shift-handler-nama-five']
+        const idRole = ['shift-handler-role-one', 'shift-handler-role-two', 'shift-handler-role-three', 'shift-handler-role-four', 'shift-handler-role-five']
 
-        const namaTwo = document.getElementById('shift-handler-nama-two').value
-        const roleTwo = document.getElementById('shift-handler-role-two').value
-
-        const namaThree = document.getElementById('shift-handler-nama-three').value
-        const roleThree = document.getElementById('shift-handler-role-three').value
-
-        const namaFour = document.getElementById('shift-handler-nama-four').value
-        const roleFour = document.getElementById('shift-handler-role-four').value
-        
-        const namaFive = document.getElementById('shift-handler-nama-five').value
-        const roleFive = document.getElementById('shift-handler-role-five').value
+        let selectedId = []
+        let selectedRole = []
+        let shiftLeaderCount = 0
+        let payload = []
 
         if (!jmlBatchPegawai || !shiftHandler || !dateShift) {
             alert("Jumlah Pegawai Shift ini, Shift Pegawai, dan Tanggal Shift tidak boleh kosong")
@@ -547,47 +540,39 @@ async function submitNewReport() {
         }
 
         let data_pegawai = state.dataPegawai
-        const idPegawaiOne = data_pegawai.find(p => p.nama === namaOne)
-        const idPegawaiTwo = data_pegawai.find(p => p.nama === namaTwo)
-        const idPegawaiThree = data_pegawai.find(p => p.nama === namaThree)
-        const idPegawaiFour = data_pegawai.find(p => p.nama === namaFour)
-        const idPegawaiFive = data_pegawai.find(p => p.nama === namaFive)
-        
-        const payloadOne = {
-            dateOne: dateShift,
-            shiftOne: shiftHandler,
-            idPegawaiOne: idPegawaiOne.id_pegawai,
-            roleOne: roleOne
+        for (let i = 0; i < jmlBatchPegawai; i++){
+            let nameTemp = document.getElementById(idNama[i]).value
+            let roleTemp = document.getElementById(idRole[i]).value
+            const findShiftTeamsId = data_pegawai.find(p => p.nama === nameTemp)
+            if (roleTemp === "true") {shiftLeaderCount++}
+            let idPegawai = findShiftTeamsId.id_pegawai
+            selectedId.push(idPegawai)
+            selectedRole.push(roleTemp)
+
+            payload.push({
+                tanggal_shift: dateShift,
+                shift: shiftHandler,
+                pegawai_id: idPegawai,
+                shift_leader: roleTemp
+            })
         }
-        const payloadTwo = {
-            dateTwo: dateShift,
-            shiftTwo: shiftHandler,
-            idPegawaiTwo: idPegawaiTwo.id_pegawai,
-            roleTwo: roleTwo
+        console.log(payload)
+        console.log(shiftLeaderCount)
+        if(shiftLeaderCount !==1){
+            alert('Ketua Shift Maksimal Hanya 1');
+            return;
         }
-        const payloadThree = {
-            dateThree: dateShift,
-            shiftThree: shiftHandler,
-            idPegawaiThree: idPegawaiThree.id_pegawai,
-            roleThree: roleThree
+        else if(shiftLeaderCount === 0){
+            alert('Pilih Salah Satu Pegawai untuk menjadi ketua shift');
+            return;
         }
-        const payloadFour = {
-            dateFour: dateShift,
-            shiftFour: shiftHandler,
-            idPegawaiFour: idPegawaiFour.id_pegawai,
-            roleFour: roleFour
+        let nameCheckers = new Set(selectedId)
+        console.log({nameCheckers})
+        if (nameCheckers.size !== selectedId.length){
+            alert("Gagal: Nama Pegawai dalam satu shift tidak boleh ada yang sama!")
+            return;
         }
-        const payloadFive = {
-            dateFive: dateShift,
-            shiftFive: shiftHandler,
-            idPegawaiFive: idPegawaiFive.id_pegawai,
-            roleFive: roleFive
-        }
-        console.log(payloadOne)            
-        console.log(payloadTwo)            
-        console.log(payloadThree)            
-        console.log(payloadFour)            
-        console.log(payloadFive)            
+
         try{
         }catch (error){
             console.error("Error Sumbiting Shift's Handler", error)
