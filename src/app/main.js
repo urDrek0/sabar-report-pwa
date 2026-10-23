@@ -30,7 +30,8 @@ let state = {
     dataPegawai: [],
     dataPasien: [],
     idToDelete: null,
-    deleteType: null
+    deleteType: null,
+    editId: null
 }
 
 async function initData() {
@@ -290,7 +291,15 @@ function addNewReport() {
     let data_pasien = state.dataPasien
     let data_pegawai = state.dataPegawai
     const shiftHandlerEvent = document.getElementById('shift-handler-team')
+    state.editId = null;
     if (state.currentPage === 'dashboard') {
+        document.getElementById('date-input').value = '';
+        document.getElementById('situation-input').value = '';
+        document.getElementById('background-input').value = '';
+        document.getElementById('assessment-input').value = '';
+        document.getElementById('recommendation-input').value = '';
+        document.getElementById('modal-shift-selector').selectedIndex = 0;
+        
         document.getElementById('modal-add-data-report').classList.remove('hidden');
         let nameSelectPasien = document.getElementById('pasien-name');
         nameSelectPasien.innerHTML = data_pasien
@@ -299,20 +308,34 @@ function addNewReport() {
             .join('');
     }
     else if (state.currentPage === 'daftar-pegawai') {
+        document.getElementById('pegawai-nama').value = '';
+        document.getElementById('pegawai-kode').value = '';
+        document.getElementById('pegawai-status').value = 'true';
         document.getElementById('modal-add-pegawai').classList.remove('hidden');
     } 
     else if (state.currentPage === 'daftar-pasien') {
+        document.getElementById('pasien-nama').value = '';
+        document.getElementById('pasien-umur').value = '';
+        document.getElementById('pasien-status').value = 'true';
         document.getElementById('modal-add-pasien').classList.remove('hidden');
     }
     else if (state.currentPage === 'daftar-shift-handler') {
+        shiftHandlerEvent.selectedIndex = 0;
+        document.getElementById('shift-handler-shift').selectedIndex = 0;
+        document.getElementById('shift-handler-date-input').value = '';
+        
         document.getElementById('modal-add-shift-handler').classList.remove('hidden');
         let idPuller = ['shift-handler-nama-one', 'shift-handler-nama-two', 'shift-handler-nama-three', 'shift-handler-nama-four', 'shift-handler-nama-five']
+        
         idPuller.forEach((idPlaceHolder) => 
             document.getElementById(idPlaceHolder).innerHTML = data_pegawai
             .filter((pegawai) => pegawai.aktif === true)
             .map((pegawai) => `<option value="${pegawai.nama}">${pegawai.nama}</option>`).join('')
         )
         let fieldFormId = ['field-form-shift-handler-one','field-form-shift-handler-two','field-form-shift-handler-three','field-form-shift-handler-four','field-form-shift-handler-five',]  
+        fieldFormId.forEach((id) => {
+            document.getElementById(id).classList.add('hidden');
+        });
         function renderingFieldFrom(){
             const valueTeamOnShift = shiftHandlerEvent.value
             fieldFormId.forEach((id, index) => {
@@ -328,6 +351,7 @@ function modalEditData(id) {
     let data_sabr = state.dataReport     
     let data_pegawai = state.dataPegawai
     let data_shift = state.dataShift
+    state.editId = id
     console.log('current page : ',state.currentPage)
     if (state.currentPage === 'dashboard') {
         document.getElementById('modal-add-data-report').classList.remove('hidden');
@@ -336,7 +360,7 @@ function modalEditData(id) {
             .map((pasien) => `
                 <option value="${pasien.nama}">${pasien.nama}</option>`)
             .join('');
-        let dataEdit = data_sabr.find((sabr) => sabr.id_report === id);
+        let dataEdit = data_sabr.find((sabr) => sabr.id_report === state.editId);
         let dateFormatting = new Date(dataEdit.tanggal_shift);
         dateFormatting = dateFormatting.toISOString().split('T')[0];
         document.getElementById('modal-shift-selector').value = dataEdit.shift;
@@ -348,7 +372,7 @@ function modalEditData(id) {
         document.getElementById('pasien-name').value = data_pasien.find((pasien) => pasien.id_pasien === dataEdit.pasien_id).nama;
     }
     else if (state.currentPage === 'daftar-pegawai') {
-        let editPegawai = data_pegawai.find((pegawai) => pegawai.id_pegawai === id);
+        let editPegawai = data_pegawai.find((pegawai) => pegawai.id_pegawai === state.editId);
         document.getElementById('pegawai-nama').value = editPegawai.nama;
         document.getElementById('pegawai-kode').value = editPegawai.kode;
         document.getElementById('pegawai-status').value = editPegawai.aktif
@@ -356,7 +380,7 @@ function modalEditData(id) {
     } 
     else if (state.currentPage === 'daftar-shift-handler') {
         document.getElementById('modal-edit-shift-singular').classList.remove('hidden');
-        let editShiftHandler = data_shift.find((handler) => handler.id_shift === id);
+        let editShiftHandler = data_shift.find((handler) => handler.id_shift === state.editId);
         let nameSelectPegawai = document.getElementById('shift-handler-nama-edit');
         nameSelectPegawai.innerHTML = data_pegawai.map((pegawai) => 
             `<option value="${pegawai.nama}">${pegawai.nama}</option>`)
@@ -366,7 +390,7 @@ function modalEditData(id) {
         document.getElementById('shift-handler-role-edit').value = editShiftHandler.shift_leader;
     }
     else if (state.currentPage === 'daftar-pasien') {
-        let editPasien = data_pasien.find((pasien) => pasien.id_pasien === id);
+        let editPasien = data_pasien.find((pasien) => pasien.id_pasien === state.editId);
         document.getElementById('pasien-nama').value = editPasien.nama;
         document.getElementById('pasien-umur').value = editPasien.umur;
         document.getElementById('pasien-status').value = editPasien.aktif;
