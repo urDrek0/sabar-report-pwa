@@ -360,7 +360,7 @@ function modalEditData(id) {
             .map((pasien) => `
                 <option value="${pasien.nama}">${pasien.nama}</option>`)
             .join('');
-        let dataEdit = data_sabr.find((sabr) => sabr.id_report === state.editId);
+        let dataEdit = data_sabr.find((sabr) => sabr.id_report == state.editId);
         let dateFormatting = new Date(dataEdit.tanggal_shift);
         dateFormatting = dateFormatting.toISOString().split('T')[0];
         document.getElementById('modal-shift-selector').value = dataEdit.shift;
@@ -372,7 +372,7 @@ function modalEditData(id) {
         document.getElementById('pasien-name').value = data_pasien.find((pasien) => pasien.id_pasien === dataEdit.pasien_id).nama;
     }
     else if (state.currentPage === 'daftar-pegawai') {
-        let editPegawai = data_pegawai.find((pegawai) => pegawai.id_pegawai === state.editId);
+        let editPegawai = data_pegawai.find((pegawai) => pegawai.id_pegawai == state.editId);
         document.getElementById('pegawai-nama').value = editPegawai.nama;
         document.getElementById('pegawai-kode').value = editPegawai.kode;
         document.getElementById('pegawai-status').value = editPegawai.aktif
@@ -380,7 +380,7 @@ function modalEditData(id) {
     } 
     else if (state.currentPage === 'daftar-shift-handler') {
         document.getElementById('modal-edit-shift-singular').classList.remove('hidden');
-        let editShiftHandler = data_shift.find((handler) => handler.id_shift === state.editId);
+        let editShiftHandler = data_shift.find((handler) => handler.id_shift == state.editId);
         let nameSelectPegawai = document.getElementById('shift-handler-nama-edit');
         nameSelectPegawai.innerHTML = data_pegawai.map((pegawai) => 
             `<option value="${pegawai.nama}">${pegawai.nama}</option>`)
@@ -390,7 +390,7 @@ function modalEditData(id) {
         document.getElementById('shift-handler-role-edit').value = editShiftHandler.shift_leader;
     }
     else if (state.currentPage === 'daftar-pasien') {
-        let editPasien = data_pasien.find((pasien) => pasien.id_pasien === state.editId);
+        let editPasien = data_pasien.find((pasien) => pasien.id_pasien == state.editId);
         document.getElementById('pasien-nama').value = editPasien.nama;
         document.getElementById('pasien-umur').value = editPasien.umur;
         document.getElementById('pasien-status').value = editPasien.aktif;
@@ -432,22 +432,29 @@ async function submitNewReport() {
         }
 
         try{
-            const response = await fetch('http://localhost:3000/api/sabr_report', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+            let endpoint = 'http://localhost:3000/api/sabr_report'
+            let method = 'POST'
+
+            if(state.editId){
+                endpoint = `http://localhost:3000/api/sabr_report/${state.editId}`
+                method = 'PUT'
+            }
+            const response = await fetch(endpoint, {
+                method: method,
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)
             })
-
+            console.log(response)
             if(response.ok){
                 document.getElementById('modal-add-data-report').classList.add('hidden')
                 state.dataReport = await fetchDataSabr();
-                renderCurrentPage()
+                alert(method === 'POST' ? "Laporan Berhasil Ditambahkan" : "Laporan Berhasil Diperbaharui")
+                dashboard()
                 document.getElementById('situation-input').value = '';
                 document.getElementById('background-input').value = '';
                 document.getElementById('assessment-input').value = '';
                 document.getElementById('recommendation-input').value = '';
+                state.editId = null
             }
         }catch (error){
             console.error("Error Sumbiting Report", error)
@@ -470,18 +477,26 @@ async function submitNewReport() {
         }
 
         try{
-            const response = await fetch('http://localhost:3000/api/pegawai', {
-                method: 'POST',
+            let endpoint = 'http://localhost:3000/api/pegawai'
+            let method = 'POST'
+            if(state.editId){
+                endpoint = `http://localhost:3000/api/pegawai/${state.editId}`
+                method = 'PUT'
+            }
+            const response = await fetch(endpoint, {
+                method: method,
                 headers:{'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)
             })
             if (response.ok){
                 document.getElementById('modal-add-pegawai').classList.add('hidden')
+                alert(method === 'POST' ? "Pegawai Berhasil Ditambahkan" : "Pegawai Berhasil Diperbaharui")
                 state.dataPegawai = await fetchDataPegawai()
-                renderCurrentPage()
+                daftarPegawai()
                 document.getElementById('pegawai-nama').value = ""
                 document.getElementById('pegawai-kode').value = ""
                 document.getElementById('pegawai-status').value = "true"
+                state.editId = null
             }
         }catch (error){
             console.error("Error Sumbiting Employee", error)
@@ -504,24 +519,76 @@ async function submitNewReport() {
         }
 
         try{
-            const response = await fetch('http://localhost:3000/api/pasien', {
-                method: 'POST',
+            let endpoint = 'http://localhost:3000/api/pasien'
+            let method = 'POST'
+
+            if (state.editId){
+                endpoint = `http://localhost:3000/api/pasien/${state.editId}`
+                method = 'PUT'
+            }
+            const response = await fetch(endpoint, {
+                method: method,
                 headers:{'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)
             })
             if (response.ok){
                 document.getElementById('modal-add-pasien').classList.add('hidden')
+                alert(method === 'POST' ? "Pasien Berhasil Ditambahkan" : "Pasien Berhasil Diperbaharui")
                 state.dataPasien = await fetchDataPasien()
-                renderCurrentPage()
+                daftarPasien()
                 document.getElementById('pasien-nama').value = ""
                 document.getElementById('pasien-umur').value = ""
                 document.getElementById('pasien-status').value = "true"
+                state.editId = null
             }
         }catch (error){
             console.error("Error Sumbiting Patient", error)
             alert("Terjadi Kesalahan Jaringan.")
         }
     }else if (state.currentPage === 'daftar-shift-handler'){
+        let data_pegawai = state.dataPegawai
+        if(state.editId){
+            const namaPegawai = document.getElementById('shift-handler-nama-edit').value;
+            const shiftVal = document.getElementById('shift-handler-shift-edit').value;
+            const roleVal = document.getElementById('shift-handler-role-edit').value;
+
+            const pegawaiSearch = data_pegawai.find(p => p.nama === namaPegawai);
+                if (!pegawaiSearch) {
+                    alert("Gagal: Nama Pegawai tidak ditemukan di database!");
+                    return;
+                }
+
+            const oldData = state.dataShift.find(s => s.id_shift === parseInt(state.editId));
+                if (!oldData) {
+                    alert("Gagal: Data Shift lama tidak ditemukan di memori!");
+                    return;
+                }
+            const editPayload = {
+                tanggal_shift: oldData.tanggal_shift,
+                shift: shiftVal,
+                pegawai_id: pegawaiSearch.id_pegawai,
+                shift_leader: roleVal === "true"
+            };
+            console.log(editPayload)
+            try{
+                const response = await fetch(`http://localhost:3000/api/shift_handler/${state.editId}`,{
+                    method: 'PUT',
+                    headers: {'Content-Type':'application/json'},
+                    body:JSON.stringify(editPayload) 
+                })
+
+                if(!response.ok){alert("Tim Shift Gagal Diperbaharui"); return}
+                alert("Tim Berhasil di Perbaharui")
+                document.getElementById('modal-edit-shift-singular').classList.add('hidden');
+                state.dataShift = await fetchDataShiftHandler();
+                showShift();
+                state.editId = null
+            }catch(error){
+                console.error("Error updating shift", error);
+                alert("Terjadi Kesalahan Jaringan.")
+            }
+            return;
+        }
         const jmlBatchPegawai = parseInt(document.getElementById('shift-handler-team').value)
         const shiftHandler = document.getElementById('shift-handler-shift').value
         const dateShift = document.getElementById('shift-handler-date-input').value
@@ -539,7 +606,6 @@ async function submitNewReport() {
             return;
         }
 
-        let data_pegawai = state.dataPegawai
         for (let i = 0; i < jmlBatchPegawai; i++){
             let nameTemp = document.getElementById(idNama[i]).value
             let roleTemp = document.getElementById(idRole[i]).value
@@ -590,7 +656,7 @@ async function submitNewReport() {
             alert('Tim Shift Berhasil Ditambahkan!');
             state.dataShift = await fetchDataShiftHandler();
             document.getElementById('modal-add-shift-handler').classList.add('hidden');
-            renderCurrentPage();
+            showShift()
         }catch (error){
             console.error("Error Sumbiting Shift's Handler", error)
             alert("Terjadi Kesalahan Jaringan.")
