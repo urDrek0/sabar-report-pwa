@@ -454,23 +454,6 @@ async function submitNewReport() {
             alert("Terjadi Kesalahan Jaringan.")
         }
     }
-    else if (state.currentPage === "daftar-shift-handler"){
-        const shiftHandlerCount = document.getElementById('shift-handler-team').value
-        const tanggalShift = document.getElementById('shift-handler-date-input').value
-        const shiftPegawai = document.getElementById('shift-handler-shift').value
-        console.log("Jumlah Pegawai Shift ini : ", shiftHandlerCount)
-        if (!shiftHandlerCount || !shiftPegawai || !tanggalShift) {
-            alert("Waktu Shift, Tanggal Shift, dan Jumlah Pegawai pada shift ini tidak boleh kosong")
-            return;
-        }
-        
-        try{
-           
-        }catch (error){
-            console.error("Error Sumbiting Shift's Team", error)
-            alert("Terjadi Kesalahan Jaringan.")
-        }
-    }
     else if (state.currentPage === 'daftar-pegawai'){
         const namaPegawai = document.getElementById('pegawai-nama').value
         const kodePegawai = document.getElementById('pegawai-kode').value
@@ -536,6 +519,78 @@ async function submitNewReport() {
             }
         }catch (error){
             console.error("Error Sumbiting Patient", error)
+            alert("Terjadi Kesalahan Jaringan.")
+        }
+    }else if (state.currentPage === 'daftar-shift-handler'){
+        const jmlBatchPegawai = document.getElementById('shift-handler-team').value
+        const shiftHandler = document.getElementById('shift-handler-shift').value
+        const dateShift = document.getElementById('shift-handler-date-input').value
+
+        const namaOne = document.getElementById('shift-handler-nama-one').value
+        const roleOne = document.getElementById('shift-handler-role-one').value
+
+        const namaTwo = document.getElementById('shift-handler-nama-two').value
+        const roleTwo = document.getElementById('shift-handler-role-two').value
+
+        const namaThree = document.getElementById('shift-handler-nama-three').value
+        const roleThree = document.getElementById('shift-handler-role-three').value
+
+        const namaFour = document.getElementById('shift-handler-nama-four').value
+        const roleFour = document.getElementById('shift-handler-role-four').value
+        
+        const namaFive = document.getElementById('shift-handler-nama-five').value
+        const roleFive = document.getElementById('shift-handler-role-five').value
+
+        if (!jmlBatchPegawai || !shiftHandler || !dateShift) {
+            alert("Jumlah Pegawai Shift ini, Shift Pegawai, dan Tanggal Shift tidak boleh kosong")
+            return;
+        }
+
+        let data_pegawai = state.dataPegawai
+        const idPegawaiOne = data_pegawai.find(p => p.nama === namaOne)
+        const idPegawaiTwo = data_pegawai.find(p => p.nama === namaTwo)
+        const idPegawaiThree = data_pegawai.find(p => p.nama === namaThree)
+        const idPegawaiFour = data_pegawai.find(p => p.nama === namaFour)
+        const idPegawaiFive = data_pegawai.find(p => p.nama === namaFive)
+        
+        const payloadOne = {
+            dateOne: dateShift,
+            shiftOne: shiftHandler,
+            idPegawaiOne: idPegawaiOne.id_pegawai,
+            roleOne: roleOne
+        }
+        const payloadTwo = {
+            dateTwo: dateShift,
+            shiftTwo: shiftHandler,
+            idPegawaiTwo: idPegawaiTwo.id_pegawai,
+            roleTwo: roleTwo
+        }
+        const payloadThree = {
+            dateThree: dateShift,
+            shiftThree: shiftHandler,
+            idPegawaiThree: idPegawaiThree.id_pegawai,
+            roleThree: roleThree
+        }
+        const payloadFour = {
+            dateFour: dateShift,
+            shiftFour: shiftHandler,
+            idPegawaiFour: idPegawaiFour.id_pegawai,
+            roleFour: roleFour
+        }
+        const payloadFive = {
+            dateFive: dateShift,
+            shiftFive: shiftHandler,
+            idPegawaiFive: idPegawaiFive.id_pegawai,
+            roleFive: roleFive
+        }
+        console.log(payloadOne)            
+        console.log(payloadTwo)            
+        console.log(payloadThree)            
+        console.log(payloadFour)            
+        console.log(payloadFive)            
+        try{
+        }catch (error){
+            console.error("Error Sumbiting Shift's Handler", error)
             alert("Terjadi Kesalahan Jaringan.")
         }
     }
