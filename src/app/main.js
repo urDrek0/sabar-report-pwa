@@ -522,7 +522,7 @@ async function submitNewReport() {
             alert("Terjadi Kesalahan Jaringan.")
         }
     }else if (state.currentPage === 'daftar-shift-handler'){
-        const jmlBatchPegawai = document.getElementById('shift-handler-team').value
+        const jmlBatchPegawai = parseInt(document.getElementById('shift-handler-team').value)
         const shiftHandler = document.getElementById('shift-handler-shift').value
         const dateShift = document.getElementById('shift-handler-date-input').value
 
@@ -553,11 +553,9 @@ async function submitNewReport() {
                 tanggal_shift: dateShift,
                 shift: shiftHandler,
                 pegawai_id: idPegawai,
-                shift_leader: roleTemp
+                shift_leader: roleTemp === "true"
             })
         }
-        console.log(payload)
-        console.log(shiftLeaderCount)
         if(shiftLeaderCount !==1){
             alert('Ketua Shift Maksimal Hanya 1');
             return;
@@ -567,13 +565,28 @@ async function submitNewReport() {
             return;
         }
         let nameCheckers = new Set(selectedId)
-        console.log({nameCheckers})
         if (nameCheckers.size !== selectedId.length){
             alert("Gagal: Nama Pegawai dalam satu shift tidak boleh ada yang sama!")
             return;
         }
 
         try{
+            for(let data of payload){
+                const response = await fetch('http://localhost:3000/api/shift_handler',{
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body:JSON.stringify(data)
+                })
+                console.log(response)
+                if(!response.ok){
+                    alert("Gagal Mengirimkan Data")
+                    return;
+                }                        
+            }
+            alert('Tim Shift Berhasil Ditambahkan!');
+            state.dataShift = await fetchDataShiftHandler();
+            document.getElementById('modal-add-shift-handler').classList.add('hidden');
+            renderCurrentPage();
         }catch (error){
             console.error("Error Sumbiting Shift's Handler", error)
             alert("Terjadi Kesalahan Jaringan.")
