@@ -165,10 +165,10 @@ function dashboard() {
                     <h2 id="${sabr.id_report + '-recommendation'}" class="text-justify">${safeHTMLConvert(sabr.recommendation)}</h2>
                     <div id="action" class="flex space-x-4 justify-center place-self-start">
                     <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${sabr.id_report}'), type = 'sabr'">
-                        <img src="src/asset/logo/edit.png" alt="" class="">
+                        <img src="./logo/edit.png" alt="" class="">
                     </button>
                     <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${sabr.id_report}', type = 'sabr')">
-                        <img src="src/asset/logo/delete.png" alt="" class="">
+                        <img src="./logo/delete.png" alt="" class="">
                     </button>
                     </div>
                 </div>
@@ -213,10 +213,10 @@ function showShift() {
                     <h1 id="${shift.id_shift + '-role'}" class="text-md text-left">${shift.shift_leader ? 'Leader' : 'Member'}</h1>
                     <div id="action" class="flex space-x-4 justify-center">
                         <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${shift.id_shift}', type = 'shift-team')">
-                            <img src="src/asset/logo/edit.png" alt="" class="">
+                            <img src="./logo/edit.png" alt="" class="">
                         </button>
                         <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${shift.id_shift}', type = 'shift-team')">
-                            <img src="src/asset/logo/delete.png" alt="" class="">
+                            <img src="./logo/delete.png" alt="" class="">
                         </button>
                     </div>
                 </div>
@@ -249,10 +249,10 @@ function daftarPegawai() {
                     <h2 id="${pegawai.id_pegawai + '-aktif'}" class="text-left">${pegawai.aktif ? 'Aktif' : 'Tidak Aktif'}</h2>
                     <div id="action" class="flex space-x-4 justify-center place-self-end">
                         <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${pegawai.id_pegawai}', type ='pegawai')">
-                            <img src="src/asset/logo/edit.png" alt="" class="">
+                            <img src="./logo/edit.png" alt="" class="">
                         </button>
                         <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${pegawai.id_pegawai}', type ='pegawai')">
-                            <img src="src/asset/logo/delete.png" alt="" class="">
+                            <img src="./logo/delete.png" alt="" class="">
                         </button>
                     </div>
                 </div>
@@ -288,10 +288,10 @@ function daftarPasien() {
                     <h2 id="${pasien.id_pasien + '-aktif'}" class="text-left">${pasien.aktif ? 'Aktif' : 'Tidak Aktif'}</h2>
                     <div id="action" class="flex space-x-4 justify-center place-self-end">
                         <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${pasien.id_pasien}', type = 'pasien')">
-                            <img src="src/asset/logo/edit.png" alt="" class="">
+                            <img src="./logo/edit.png" alt="" class="">
                         </button>
                         <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${pasien.id_pasien}',type ='pasien')">
-                            <img src="src/asset/logo/delete.png" alt="" class="">
+                            <img src="./logo/delete.png" alt="" class="">
                         </button>
                     </div>
                 </div>
