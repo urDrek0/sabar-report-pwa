@@ -1,21 +1,22 @@
-// alert("Aplikasi Masih dalam Pengembangan, untuk segala kendala silahkan dilaporkan, diperhatikan juga untuk aplikasi tidak sampai ke ke tangan lain")
+const API_URL = 'https://sabr-backend-git-master-urdreko14.vercel.app/'
+alert("Aplikasi Masih dalam Pengembangan, untuk segala kendala silahkan dilaporkan, diperhatikan juga untuk aplikasi tidak sampai ke ke tangan lain")
 async function fetchDataPasien() {
-    const resDaftarPasien = await fetch('http://localhost:3000/api/pasien');
+    const resDaftarPasien = await fetch(`${API_URL}/api/pasien`);
     const data_pasien = await resDaftarPasien.json();
     return data_pasien;
 }
 async function fetchDataPegawai() {
-    const resDaftarPasien = await fetch('http://localhost:3000/api/pegawai');
+    const resDaftarPasien = await fetch(`${API_URL}/api/pegawai`);
     const data_pegawai = await resDaftarPasien.json();
     return data_pegawai;
 }
 async function fetchDataSabr() {
-    const resDaftarSabr = await fetch('http://localhost:3000/api/sabr_report');
+    const resDaftarSabr = await fetch(`${API_URL}/api/sabr_report`);
     const data_sabr = await resDaftarSabr.json();
     return data_sabr;
 }
 async function fetchDataShiftHandler() {
-    const resDaftarShift = await fetch('http://localhost:3000/api/shift_handler');
+    const resDaftarShift = await fetch(`${API_URL}/api/shift_handler`);
     const data_shift = await resDaftarShift.json();
     return data_shift;
 }
@@ -445,11 +446,11 @@ async function submitNewReport() {
         }
 
         try{
-            let endpoint = 'http://localhost:3000/api/sabr_report'
+            let endpoint = `${API_URL}/api/sabr_report`
             let method = 'POST'
 
             if(state.editId){
-                endpoint = `http://localhost:3000/api/sabr_report/${state.editId}`
+                endpoint = `${API_URL}/api/sabr_report/${state.editId}`
                 method = 'PUT'
             }
             const response = await fetch(endpoint, {
@@ -494,10 +495,10 @@ async function submitNewReport() {
         }
 
         try{
-            let endpoint = 'http://localhost:3000/api/pegawai'
+            let endpoint = `${API_URL}/api/pegawai`
             let method = 'POST'
             if(state.editId){
-                endpoint = `http://localhost:3000/api/pegawai/${state.editId}`
+                endpoint = `${API_URL}/api/pegawai/${state.editId}`
                 method = 'PUT'
             }
             const response = await fetch(endpoint, {
@@ -541,11 +542,11 @@ async function submitNewReport() {
         }
 
         try{
-            let endpoint = 'http://localhost:3000/api/pasien'
+            let endpoint = `${API_URL}/api/pasien`
             let method = 'POST'
 
             if (state.editId){
-                endpoint = `http://localhost:3000/api/pasien/${state.editId}`
+                endpoint = `${API_URL}/api/pasien/${state.editId}`
                 method = 'PUT'
             }
             const response = await fetch(endpoint, {
@@ -598,7 +599,7 @@ async function submitNewReport() {
             };
             console.log(editPayload)
             try{
-                const response = await fetch(`http://localhost:3000/api/shift_handler/${state.editId}`,{
+                const response = await fetch(`${API_URL}/api/shift_handler/${state.editId}`,{
                     method: 'PUT',
                     headers: {'Content-Type':'application/json'},
                     body:JSON.stringify(editPayload) 
@@ -666,7 +667,7 @@ async function submitNewReport() {
         try{
             isError = false
             for(let data of payload){
-                const response = await fetch('http://localhost:3000/api/shift_handler',{
+                const response = await fetch(`${API_URL}/api/shift_handler`,{
                     method: 'POST',
                     headers: {'Content-Type':'application/json'},
                     body:JSON.stringify(data)
@@ -706,7 +707,7 @@ async function executeDelete() {
         try{
             let endpoint = ''
             if(state.deleteType === 'sabr'){
-                endpoint=`http://localhost:3000/api/sabr_report/${state.idToDelete}`
+                endpoint=`${API_URL}/api/sabr_report/${state.idToDelete}`
             }
             console.log({endpoint})
             const response = await fetch(endpoint, {
@@ -728,7 +729,7 @@ async function executeDelete() {
             try{
             let endpoint = ''
             if(state.deleteType === 'shift-team'){
-                endpoint=`http://localhost:3000/api/shift_handler/${state.idToDelete}`
+                endpoint=`${API_URL}/api/shift_handler/${state.idToDelete}`
             }
             console.log({endpoint})
             const response = await fetch(endpoint, {
@@ -750,7 +751,7 @@ async function executeDelete() {
         try{
             let endpoint = ''
             if(state.deleteType === 'pegawai'){
-                endpoint=`http://localhost:3000/api/pegawai/${state.idToDelete}`
+                endpoint=`${API_URL}/api/pegawai/${state.idToDelete}`
             }
             console.log({endpoint})
             const response = await fetch(endpoint, {
@@ -773,7 +774,7 @@ async function executeDelete() {
         try{
             let endpoint = ''
             if(state.deleteType === 'pasien'){
-                endpoint=`http://localhost:3000/api/pasien/${state.idToDelete}`
+                endpoint=`${API_URL}/api/pasien/${state.idToDelete}`
             }
             console.log({endpoint})
             const response = await fetch(endpoint, {
