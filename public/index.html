@@ -6,7 +6,7 @@
 		<title>Report</title>
         <link href="https://fonts.googleapis.com/css2?family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap" rel="stylesheet">
-		<link rel="stylesheet" href="./dist/style.css" />
+		<link rel="stylesheet" href="./style.css" />
          <!-- STANDARD JS -->
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@7.1.0/all/global.js"></script>
         <!-- THEME JS -->
@@ -15,19 +15,19 @@
         <link href='https://cdn.jsdelivr.net/npm/fullcalendar@7.1.0/skeleton.css' rel='stylesheet' />
         <link href='https://cdn.jsdelivr.net/npm/fullcalendar@7.1.0/themes/monarch/theme.css' rel='stylesheet' />
         <link href='https://cdn.jsdelivr.net/npm/fullcalendar@7.1.0/themes/monarch/palettes/purple.css' rel='stylesheet' />
-        <link rel="icon" href="src/asset/logo/documents.png" type="image/x-icon">
+        <link rel="icon" href="./logo/documents.png" type="image/x-icon">
 	</head>
 	<body>
         <div id="app-guide" class="fixed transform -translate-x-1/2 -translate-y-1/2">
             <button id="open-guide" class="cursor-pointer" onclick="document.getElementById('app-guide-content').classList.remove('hidden')">
-                <img src="src/asset/logo/question-mark.png" alt="" class="max-h-10 w-auto opacity-45 hover:opacity-100 transform duration-200">
+                <img src="./logo/question-mark.png" alt="" class="max-h-10 w-auto opacity-45 hover:opacity-100 transform duration-200">
             </button>
         </div>
 
         <div id="app-guide-content" role="dialog" aria-modal="true" aria-labelledby="guide-title" class="overflow-y-auto fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 grid place-items-center p-4 absolute hidden">
             <div class="bg-white w-11/12 max-w-4xl max-h-[90vh] overflow-y-auto rounded-xl p-4 md:p-6 justify-center place-self-center">
                 <button id="close-guide" type="button" aria-label="Tutup panduan" class="cursor-pointer place-self-end" onclick="document.getElementById('app-guide-content').classList.add('hidden')">
-                    <img src="src/asset/logo/delete.png" alt="" class="max-w-5 h-auto">
+                    <img src="./logo/delete.png" alt="" class="max-w-5 h-auto">
                 </button>
                 <h1 id="guide-title" class="text-center font-bold text-xl md:text-2xl">Panduan Penggunaan Aplikasi Laporan SABR</h1>
                 <p class="text-sm text-center pt-2">Gunakan panduan ini untuk melihat laporan, mengisi laporan SABR, dan mengelola data.</p>
@@ -36,27 +36,27 @@
                     <h2 class="font-bold text-lg">Mengenal menu dan ikon</h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3">
                         <div class="flex items-center gap-3 rounded-lg bg-gray-300 p-3">
-                            <img src="src/asset/logo/home.png" alt="" class="w-8 h-8 object-contain">
+                            <img src="./logo/home.png" alt="" class="w-8 h-8 object-contain">
                             <p><b>Dashboard</b><br>Melihat laporan SABR dan petugas pada tanggal serta shift terpilih.</p>
                         </div>
                         <div class="flex items-center gap-3 rounded-lg bg-gray-300 p-3">
-                            <img src="src/asset/logo/shift.png" alt="" class="w-8 h-8 object-contain">
+                            <img src="./logo/shift.png" alt="" class="w-8 h-8 object-contain">
                             <p><b>Shift</b><br>Membuka daftar petugas shift. Pilih tanggal di kalender dan shift pada pilihan di samping menu.</p>
                         </div>
                         <div class="flex items-center gap-3 rounded-lg bg-gray-300 p-3">
-                            <img src="src/asset/logo/calendar.png" alt="" class="w-8 h-8 object-contain">
+                            <img src="./logo/calendar.png" alt="" class="w-8 h-8 object-contain">
                             <p><b>Kalender</b><br>Klik tanggal untuk menampilkan data pada tanggal tersebut. Gunakan panah untuk berpindah bulan.</p>
                         </div>
                         <div class="flex items-center gap-3 rounded-lg bg-gray-300 p-3">
-                            <img src="src/asset/logo/pegawai.png" alt="" class="w-8 h-8 object-contain">
+                            <img src="./logo/pegawai.png" alt="" class="w-8 h-8 object-contain">
                             <p><b>Daftar Pegawai</b><br>Melihat dan mengelola data pegawai yang dapat dipilih sebagai petugas shift.</p>
                         </div>
                         <div class="flex items-center gap-3 rounded-lg bg-gray-300 p-3">
-                            <img src="src/asset/logo/pasien.png" alt="" class="w-8 h-8 object-contain">
+                            <img src="./logo/pasien.png" alt="" class="w-8 h-8 object-contain">
                             <p><b>Daftar Pasien</b><br>Melihat dan mengelola daftar pasien yang dapat dipilih pada laporan.</p>
                         </div>
                         <div class="flex items-center gap-3 rounded-lg bg-gray-300 p-3">
-                            <img src="src/asset/logo/sidebar.png" alt="" class="w-8 h-8 object-contain">
+                            <img src="./logo/sidebar.png" alt="" class="w-8 h-8 object-contain">
                             <p><b>Tombol menu samping</b><br>Menciutkan atau menampilkan kembali sidebar.</p>
                         </div>
                     </div>
@@ -153,11 +153,11 @@
                     <h2 class="font-bold text-lg">6. Mengedit atau menghapus data</h2>
                     <div class="flex flex-col sm:flex-row gap-4 pt-3">
                         <div class="flex items-center gap-3 rounded-lg bg-gray-100 p-3">
-                            <img src="src/asset/logo/edit.png" alt="Ikon pensil" class="w-6 h-6 object-contain">
+                            <img src="./logo/edit.png" alt="Ikon pensil" class="w-6 h-6 object-contain">
                             <p><b>Pensil:</b> membuka data untuk diedit. Periksa perubahan sebelum menyimpan.</p>
                         </div>
                         <div class="flex items-center gap-3 rounded-lg bg-gray-100 p-3">
-                            <img src="src/asset/logo/delete.png" alt="Ikon tempat sampah" class="w-6 h-6 object-contain">
+                            <img src="./logo/delete.png" alt="Ikon tempat sampah" class="w-6 h-6 object-contain">
                             <p><b>Tempat sampah:</b> digunakan untuk menghapus data. Pastikan data yang dipilih benar sebelum melanjutkan.</p>
                         </div>
                     </div>
@@ -174,19 +174,19 @@
             <aside id="sidebar-container"class="bg-[#353A3E] h-auto w-auto pt-6 pr-4 pl-4 pb-4">
                 <div class="flex space-x-5">
                     <button id="toggle-sidebar" class="cursor-pointer" onclick="toggleSideBar()">
-                            <img src="src/asset/logo/sidebar.png" class="max-h-6 max-w-8 place-self-left" >
+                            <img src="./logo/sidebar.png" class="max-h-6 max-w-8 place-self-left" >
                     </button>
                 <h1 id="today-date" class="navbar-font text-md text-white"></h1>
                 </div>
                 <div class="pt-5">
                     <button id="show-dashboard" class="cursor-pointer flex space-x-5" onclick="dashboard()">
-                        <img src="src/asset/logo/home.png" class="max-w-10 h-auto place-self-left" alt="">
+                        <img src="./logo/home.png" class="max-w-10 h-auto place-self-left" alt="">
                         <h1 id="aside-home" class="navbar-font text-white justify-center text-left mt-2">Dashboard</h1>
                     </button>
                 </div>
                 <div id="shift-section" class="flex space-x-5 pt-5">
                     <button class="cursor-pointer flex space-x-5" onclick="showShift()" id="show-shift">                    
-                        <img src="src/asset/logo/shift.png" alt="" class="max-w-10 place-self-left">
+                        <img src="./logo/shift.png" alt="" class="max-w-10 place-self-left">
                         <h1 id="aside-shift-text" class="navbar-font text-white justify-center text-left mt-2">Shift</h1>
                     </button>
                     <select id="aside-shift" name="Shift" class="cursor-pointer border-1 border-white p-2 text-white">
@@ -198,7 +198,7 @@
 
                 <!-- calender -->
                 <div class="flex space-x-5 pt-5">
-                    <img src="src/asset/logo/calendar.png" alt="" class="h-auto max-w-8 place-self-left">
+                    <img src="./logo/calendar.png" alt="" class="h-auto max-w-8 place-self-left">
                     <h1 id="aside-calendar" class="navbar-font text-white pt-2 text-lg">Kalender</h1>
                 </div>
                 <div id="calendar-wrapper" class="pt-2 cursor-pointer" >
@@ -208,7 +208,7 @@
                 <div class="pt-5">
                     <button id="show-daftar-pegawai" class="cursor-pointer" onclick="daftarPegawai()">
                         <div class="flex space-x-5">
-                            <img src="src/asset/logo/pegawai.png" alt="" class="max-w-10 h-auto place-self-left">
+                            <img src="./logo/pegawai.png" alt="" class="max-w-10 h-auto place-self-left">
                             <h1 id="aside-pegawai" class="navbar-font text-white justify-center text-left mt-2">Daftar Pegawai</h1>
                         </div>
                     </button>
@@ -216,7 +216,7 @@
                 <div class="pt-5">
                     <button id="show-daftar-pasien" class="cursor-pointer" onclick="daftarPasien()">
                         <div class="flex space-x-5">
-                            <img src="src/asset/logo/pasien.png" alt="" class="max-w-10 h-auto place-self-left">
+                            <img src="./logo/pasien.png" alt="" class="max-w-10 h-auto place-self-left">
                             <h1 id="aside-pasien" class="navbar-font text-white justify-center text-left mt-2">Daftar Pasien</h1>
                         </div>
                     </button>
@@ -241,7 +241,7 @@
                             <h2 id="date-selected-data" class="col-span-4 text-left"></h2>
                             <button id="" class="cursor-pointer place-self-end" 
                                 onclick="document.getElementById('shift-handler-on-dashboard').classList.toggle('hidden')">
-                                <img src="src/asset/logo/menu.png" class="w-5 h-auto" alt="">
+                                <img src="./logo/menu.png" class="w-5 h-auto" alt="">
                             </button>
                         </div>
                         <div id="shift-handler-based-on-date" class="grid grid-cols-4 gap-4">
@@ -299,7 +299,7 @@
         <div id="modal-add-data-report" class="overflow-y-scroll fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pt-5 pb-5 hidden">
             <div id="modal-content" class="bg-white w-1/2 h-auto rounded-xl p-4 justify-center place-self-center">
                 <button id="close-modal" class="cursor-pointer place-self-end" onclick="document.getElementById('modal-add-data-report').classList.add('hidden')">
-                    <img src="src/asset/logo/delete.png" alt="" class="max-w-5 h-auto">
+                    <img src="./logo/delete.png" alt="" class="max-w-5 h-auto">
                 </button>
                 <h1 class="text-center text-2xl">Tambahkan Laporan</h1>
                 <div id="modal-form-name-shift" class="grid grid-cols-2 gap-4 pt-4">
@@ -350,7 +350,7 @@
         <div id="modal-add-pegawai" class="overflow-y-scroll fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pt-5 pb-5 hidden">
             <div id="modal-content-pegawai" class="bg-white w-1/2 h-auto rounded-xl p-4 justify-center place-self-center">
                 <button id="close-modal" class="cursor-pointer place-self-end" onclick="document.getElementById('modal-add-pegawai').classList.add('hidden')">
-                    <img src="src/asset/logo/delete.png" alt="" class="max-w-5 h-auto">
+                    <img src="./logo/delete.png" alt="" class="max-w-5 h-auto">
                 </button>
                 <h1 class="text-center text-2xl p-4">Tambahkan Pegawai</h1>
                 <div class="flex flex-col space-y-4 pt-4">
@@ -381,7 +381,7 @@
         <div id="modal-add-pasien" class="overflow-y-scroll fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pt-5 pb-5 hidden">
             <div id="modal-content-pasien" class="bg-white w-1/2 h-auto rounded-xl p-4 justify-center place-self-center">
                 <button id="close-modal" class="cursor-pointer place-self-end" onclick="document.getElementById('modal-add-pasien').classList.add('hidden')">
-                    <img src="src/asset/logo/delete.png" alt="" class="max-w-5 h-auto">
+                    <img src="./logo/delete.png" alt="" class="max-w-5 h-auto">
                 </button>
                 <h1 class="text-center text-2xl p-4">Tambahkan Pasien</h1>
                 <div class="flex flex-col space-y-4 pt-4">
@@ -412,7 +412,7 @@
         <div id="modal-add-shift-handler" class="overflow-y-scroll fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pt-5 pb-5 hidden">
             <div id="modal-content-shift-handler" class="bg-white w-5/6 h-auto rounded-xl p-4 justify-center place-self-center">
                 <button id="close-modal" class="cursor-pointer place-self-end" onclick="document.getElementById('modal-add-shift-handler').classList.add('hidden')">
-                    <img src="src/asset/logo/delete.png" alt="" class="max-w-5 h-auto">
+                    <img src="./logo/delete.png" alt="" class="max-w-5 h-auto">
                 </button>
                 <h1 class="text-center text-2xl p-4">Tambahkan Petugas Shift Hari ini</h1>
                 <div class="grid grid-cols-3 gap-5">
@@ -537,7 +537,7 @@
         <div id="modal-edit-shift-singular" class="overflow-y-scroll fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pt-5 pb-5 hidden">
             <div id="modal-content-shift-handler" class="bg-white w-1/2 h-auto rounded-xl p-4 justify-center place-self-center">
                 <button id="close-modal" class="cursor-pointer place-self-end" onclick="document.getElementById('modal-edit-shift-singular').classList.add('hidden')">
-                    <img src="src/asset/logo/delete.png" alt="" class="max-w-5 h-auto">
+                    <img src="./logo/delete.png" alt="" class="max-w-5 h-auto">
                 </button>
                 <h1 class="text-center text-2xl p-4">Edit Petugas</h1>
                 <div class="flex flex-col space-y-4 pt-2">
@@ -586,5 +586,5 @@
         </div>
         
 	</body>
-    <script src="src/app/main.js"></script>
+    <script src="./app/main.js"></script>
 </html>
