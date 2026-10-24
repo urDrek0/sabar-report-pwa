@@ -1,4 +1,4 @@
-const API_URL = 'https://sabr-backend-git-master-urdreko14.vercel.app'
+const API_URL = 'https://sabr-backend.vercel.app/'
 alert("Aplikasi Masih dalam Pengembangan, untuk segala kendala silahkan dilaporkan, diperhatikan juga untuk aplikasi tidak sampai ke ke tangan lain")
 async function fetchDataPasien() {
     const resDaftarPasien = await fetch(`${API_URL}/api/pasien`);
