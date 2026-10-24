@@ -95,3 +95,14 @@ Proyek ini menggunakan lisensi ISC.
 ## 👤 Kontributor
 
 Project ini dibuat sebagai dashboard report management yang dapat terus dikembangkan sesuai kebutuhan operasional tim.
+
+---
+
+Jika kamu mau, saya juga bisa bantu bikin versi README yang lebih premium dengan:
+
+- tampilan hero section lebih modern
+- badge teknologi yang lebih banyak
+- screenshot mockup section
+- versi README dalam bahasa Inggris
+- struktur yang lebih cocok untuk portfolio/GitHub project
+=======
