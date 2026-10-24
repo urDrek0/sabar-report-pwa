@@ -457,7 +457,11 @@ async function submitNewReport() {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)
             })
-            console.log(response)
+            if(!response.ok){
+                const errorData = await response.json();
+                alert(`Gagal: ${errorData.error || 'Terjadi kesalahan saat menyimpan data.'}`);
+                return;
+            }
             if(response.ok){
                 document.getElementById('modal-add-data-report').classList.add('hidden')
                 state.dataReport = await fetchDataSabr();
@@ -501,6 +505,11 @@ async function submitNewReport() {
                 headers:{'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)
             })
+            if(!response.ok){
+                const errorData = await response.json();
+                alert(`Gagal: ${errorData.error || 'Terjadi kesalahan saat menyimpan data.'}`);
+                return;
+            }
             if (response.ok){
                 document.getElementById('modal-add-pegawai').classList.add('hidden')
                 alert(method === 'POST' ? "Pegawai Berhasil Ditambahkan" : "Pegawai Berhasil Diperbaharui")
@@ -544,6 +553,11 @@ async function submitNewReport() {
                 headers:{'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)
             })
+            if(!response.ok){
+                const errorData = await response.json();
+                alert(`Gagal: ${errorData.error || 'Terjadi kesalahan saat menyimpan data.'}`);
+                return;
+            }
             if (response.ok){
                 document.getElementById('modal-add-pasien').classList.add('hidden')
                 alert(method === 'POST' ? "Pasien Berhasil Ditambahkan" : "Pasien Berhasil Diperbaharui")
