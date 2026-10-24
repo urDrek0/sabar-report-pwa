@@ -51,7 +51,19 @@ function renderCurrentPage(){
     if (state.currentPage === 'dashboard') {dashboard()}
     else if (state.currentPage === 'daftar-shift-handler') {showShift()}
 }
-
+function safeHTMLConvert(str){
+    if (typeof str !== 'string') return str;
+    return str.replace(/[$<>'"]/g, function(tag){
+        const charsToReplace ={
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            "'": '&#39;',
+            '"': '&quot;'
+        }
+        return charsToReplace[tag]
+    })
+}
 document.addEventListener('DOMContentLoaded', async function () {
     const calendarEl = document.getElementById('navbar-content-calendar');
     const shiftSelect = document.getElementById('aside-shift')
@@ -146,10 +158,10 @@ function dashboard() {
             <div id="data-sabr-wrapper" class="pt-1 pb-1">
                 <div id="" class="bg-white p-4 grid grid-cols-8 gap-4 w-full">
                     <h2 id="${sabr.id_report + '-nama'}" class="text-left">${data_pasien.find((pasien) => pasien.id_pasien === sabr.pasien_id)?.nama || 'N/A'}</h2>
-                    <h2 id="${sabr.id_report + '-situation'}" class="text-justify col-span-2">${sabr.situation}</h2>
-                    <h2 id="${sabr.id_report + '-background'}" class="text-justify">${sabr.background}</h2>
-                    <h2 id="${sabr.id_report + '-assessment'}" class="text-justify col-span-2">${sabr.assessment}</h2>
-                    <h2 id="${sabr.id_report + '-recommendation'}" class="text-justify">${sabr.recommendation}</h2>
+                    <h2 id="${sabr.id_report + '-situation'}" class="text-justify col-span-2">${safeHTMLConvert(sabr.situation)}</h2>
+                    <h2 id="${sabr.id_report + '-background'}" class="text-justify">${safeHTMLConvert(sabr.background)}</h2>
+                    <h2 id="${sabr.id_report + '-assessment'}" class="text-justify col-span-2">${safeHTMLConvert(sabr.assessment)}</h2>
+                    <h2 id="${sabr.id_report + '-recommendation'}" class="text-justify">${safeHTMLConvert(sabr.recommendation)}</h2>
                     <div id="action" class="flex space-x-4 justify-center place-self-start">
                     <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${sabr.id_report}'), type = 'sabr'">
                         <img src="src/asset/logo/edit.png" alt="" class="">
@@ -231,8 +243,8 @@ function daftarPegawai() {
         (pegawai) => `
             <div id="data-pegawai-wrapper" class="pt-1 pb-1">
                 <div id="" class="bg-white p-4 grid grid-cols-5 gap-4 w-full">
-                    <h2 id="${pegawai.id_pegawai + '-nama'}" class="text-left col-span-2">${pegawai.nama}</h2>
-                    <h2 id="${pegawai.id_pegawai + '-kode'}" class="text-left">${pegawai.kode}</h2>
+                    <h2 id="${pegawai.id_pegawai + '-nama'}" class="text-left col-span-2">${safeHTMLConvert(pegawai.nama)}</h2>
+                    <h2 id="${pegawai.id_pegawai + '-kode'}" class="text-left">${safeHTMLConvert(pegawai.kode)}</h2>
                     <h2 id="${pegawai.id_pegawai + '-aktif'}" class="text-left">${pegawai.aktif ? 'Aktif' : 'Tidak Aktif'}</h2>
                     <div id="action" class="flex space-x-4 justify-center place-self-end">
                         <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${pegawai.id_pegawai}', type ='pegawai')">
@@ -270,8 +282,8 @@ function daftarPasien() {
         (pasien) => `
             <div id="data-pasien-wrapper" class="pt-1 pb-1">
                 <div id="" class="bg-white p-4 grid grid-cols-5 gap-4 w-full">
-                    <h2 id="${pasien.id_pasien + '-nama'}" class="text-left col-span-2">${pasien.nama}</h2>
-                    <h2 id="${pasien.id_pasien + '-umur'}" class="text-left">${pasien.umur}</h2>
+                    <h2 id="${pasien.id_pasien + '-nama'}" class="text-left col-span-2">${safeHTMLConvert(pasien.nama)}</h2>
+                    <h2 id="${pasien.id_pasien + '-umur'}" class="text-left">${safeHTMLConvert(pasien.umur)}</h2>
                     <h2 id="${pasien.id_pasien + '-aktif'}" class="text-left">${pasien.aktif ? 'Aktif' : 'Tidak Aktif'}</h2>
                     <div id="action" class="flex space-x-4 justify-center place-self-end">
                         <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${pasien.id_pasien}', type = 'pasien')">
@@ -304,7 +316,7 @@ function addNewReport() {
         let nameSelectPasien = document.getElementById('pasien-name');
         nameSelectPasien.innerHTML = data_pasien
             .filter((pasien) => pasien.aktif === true)
-            .map((pasien) => `<option value="${pasien.nama}">${pasien.nama}</option>`)
+            .map((pasien) => `<option value="${pasien.nama}">${safeHTMLConvert(pasien.nama)}</option>`)
             .join('');
     }
     else if (state.currentPage === 'daftar-pegawai') {
@@ -330,7 +342,7 @@ function addNewReport() {
         idPuller.forEach((idPlaceHolder) => 
             document.getElementById(idPlaceHolder).innerHTML = data_pegawai
             .filter((pegawai) => pegawai.aktif === true)
-            .map((pegawai) => `<option value="${pegawai.nama}">${pegawai.nama}</option>`).join('')
+            .map((pegawai) => `<option value="${pegawai.nama}">${safeHTMLConvert(pegawai.nama)}</option>`).join('')
         )
         let fieldFormId = ['field-form-shift-handler-one','field-form-shift-handler-two','field-form-shift-handler-three','field-form-shift-handler-four','field-form-shift-handler-five',]  
         fieldFormId.forEach((id) => {
@@ -358,7 +370,7 @@ function modalEditData(id) {
         const nameOptionList = document.getElementById('pasien-name'); 
         nameOptionList.innerHTML = data_pasien
             .map((pasien) => `
-                <option value="${pasien.nama}">${pasien.nama}</option>`)
+                <option value="${pasien.nama}">${safeHTMLConvert(pasien.nama)}</option>`)
             .join('');
         let dataEdit = data_sabr.find((sabr) => sabr.id_report == state.editId);
         let dateFormatting = new Date(dataEdit.tanggal_shift);
@@ -383,7 +395,7 @@ function modalEditData(id) {
         let editShiftHandler = data_shift.find((handler) => handler.id_shift == state.editId);
         let nameSelectPegawai = document.getElementById('shift-handler-nama-edit');
         nameSelectPegawai.innerHTML = data_pegawai.map((pegawai) => 
-            `<option value="${pegawai.nama}">${pegawai.nama}</option>`)
+            `<option value="${pegawai.nama}">${safeHTMLConvert(pegawai.nama)}</option>`)
             .join('');
         document.getElementById('shift-handler-nama-edit').value = data_pegawai.find((p) => p.id_pegawai === editShiftHandler.pegawai_id)?.nama;
         document.getElementById('shift-handler-shift-edit').value = editShiftHandler.shift

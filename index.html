@@ -145,6 +145,7 @@
                         <li>Isi <b>Jumlah Pegawai Shift ini</b> (maksimal 5), <b>Shift</b>, dan <b>Tanggal</b>.</li>
                         <li>Untuk setiap pegawai yang muncul, pilih <b>Nama Petugas</b> dari Daftar Pegawai dan tentukan <b>Peran</b>.</li>
                         <li>Tetapkan tepat satu orang sebagai <b>Ketua Shift</b>; petugas lainnya menjadi <b>Anggota Shift</b>. Periksa kembali tanggal, shift, nama, dan peran sebelum klik <b>Submit</b>.</li>
+                        <li>Pastikan untuk menambahkan pegawai hanya dalam <b>Satu Waktu</b>.</li>
                     </ol>
                 </section>
 
@@ -322,19 +323,19 @@
                 </div>
                 <div id="modal-form-situation" class="flex flex-col space-y-4 pt-4">
                     <h2 class="text-left">Situation</h2>
-                    <textarea name="" id="situation-input" class="h-24 text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Situation"></textarea>
+                    <textarea name="" id="situation-input" class="h-24 text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Situation" maxlength="1000"></textarea>
                 </div>
                 <div id="modal-form-background" class="flex flex-col space-y-4 pt-4">
                     <h2 class="text-left">Background</h2>
-                    <textarea name="" id="background-input" class="h-24 text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Background"></textarea>
+                    <textarea name="" id="background-input" class="h-24 text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Background" maxlength="1000"></textarea>
                 </div>
                 <div id="modal-form-assessment" class="flex flex-col space-y-4 pt-4">
                     <h2 class="text-left">Assessment</h2>
-                    <textarea name="" id="assessment-input" class="h-24 text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Assessment"></textarea>
+                    <textarea name="" id="assessment-input" class="h-24 text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Assessment" maxlength="1000"></textarea>
                 </div>
                 <div id="modal-form-recommendation" class="flex flex-col space-y-4 pt-4">
                     <h2 class="text-left">Recommendation</h2>
-                    <textarea name="" id="recommendation-input" class="h-24 text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Recommendation"></textarea>
+                    <textarea name="" id="recommendation-input" class="h-24 text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Recommendation" maxlength="1000"></textarea>
                 </div>
                 <div id="modal-form-submit-report" class="pt-4 place-self-end">
                     <button id="" class="cursor-pointer bg-[#353A3E] rounded-xl  w-auto hover:bg-black transition duration-200" onclick="submitNewReport()">
