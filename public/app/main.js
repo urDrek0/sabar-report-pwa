@@ -85,8 +85,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             month: 'short',
             year: 'numeric', 
         });
-        console.log('shiftSelected : ', shiftSelect.value)
-
         calendarEl.querySelector('.chosen-date')?.classList.remove('chosen-date');
         calendarEl.querySelector('.chosen-date-label')?.classList.remove('chosen-date-label');
         info.dayEl.classList.add('chosen-date');
@@ -102,7 +100,6 @@ calendar.render();
     const dateNow = document.getElementById('today-date');
     const autoFillDate = document.getElementById('date-input');
     const dateFormatting = calendar.getDate();
-    console.log("dateFormatting : " + dateFormatting);
     document.getElementById('date-selected-data').innerHTML = 'PJ pada : ' + dateFormatting.toLocaleDateString('id-ID', {
         weekday: 'short',
         day: 'numeric',
@@ -225,7 +222,6 @@ function showShift() {
 
 function daftarPegawai() {
     state.currentPage = 'daftar-pegawai';    
-    console.log('state : ', state.currentPage);
     document.getElementById('app-guide').classList.remove('top-38/40')
     document.getElementById('app-guide').classList.add('top-1/21')
     
@@ -264,7 +260,6 @@ function daftarPegawai() {
 
 function daftarPasien() {
     state.currentPage = 'daftar-pasien';
-    console.log('state : ', state.currentPage);
     document.getElementById('app-guide').classList.remove('top-38/40')
     document.getElementById('app-guide').classList.add('top-1/21')
 
@@ -300,7 +295,6 @@ function daftarPasien() {
 }
 
 function addNewReport() {
-    console.log('state : ', state.currentPage);
     let data_pasien = state.dataPasien
     let data_pegawai = state.dataPegawai
     const shiftHandlerEvent = document.getElementById('shift-handler-team')
@@ -365,7 +359,6 @@ function modalEditData(id) {
     let data_pegawai = state.dataPegawai
     let data_shift = state.dataShift
     state.editId = id
-    console.log('current page : ',state.currentPage)
     if (state.currentPage === 'dashboard') {
         document.getElementById('modal-add-data-report').classList.remove('hidden');
         const nameOptionList = document.getElementById('pasien-name'); 
@@ -401,7 +394,6 @@ function modalEditData(id) {
         document.getElementById('shift-handler-nama-edit').value = data_pegawai.find((p) => p.id_pegawai === editShiftHandler.pegawai_id)?.nama;
         document.getElementById('shift-handler-shift-edit').value = editShiftHandler.shift
         document.getElementById('shift-handler-role-edit').value = editShiftHandler.shift_leader;
-        console.log(`${state.editId}`)
     }
     else if (state.currentPage === 'daftar-pasien') {
         let editPasien = data_pasien.find((pasien) => pasien.id_pasien == state.editId);
@@ -597,7 +589,6 @@ async function submitNewReport() {
                 pegawai_id: pegawaiSearch.id_pegawai,
                 shift_leader: roleVal === "true"
             };
-            console.log(editPayload)
             try{
                 const response = await fetch(`${API_URL}/api/shift_handler/${state.editId}`,{
                     method: 'PUT',
@@ -672,7 +663,6 @@ async function submitNewReport() {
                     headers: {'Content-Type':'application/json'},
                     body:JSON.stringify(data)
                 })
-                console.log(response)
                 if(!response.ok){
                     isError = true
                     break;
@@ -709,7 +699,6 @@ async function executeDelete() {
             if(state.deleteType === 'sabr'){
                 endpoint=`${API_URL}/api/sabr_report/${state.idToDelete}`
             }
-            console.log({endpoint})
             const response = await fetch(endpoint, {
                 method: 'DELETE'
             })
@@ -731,11 +720,9 @@ async function executeDelete() {
             if(state.deleteType === 'shift-team'){
                 endpoint=`${API_URL}/api/shift_handler/${state.idToDelete}`
             }
-            console.log({endpoint})
             const response = await fetch(endpoint, {
                 method: 'DELETE'
             })
-            console.log({response})
             if (response.ok){
                 alert('Data Shift Berhasil Dihapus')
                 document.getElementById('modal-delete').classList.add('hidden')
@@ -753,7 +740,6 @@ async function executeDelete() {
             if(state.deleteType === 'pegawai'){
                 endpoint=`${API_URL}/api/pegawai/${state.idToDelete}`
             }
-            console.log({endpoint})
             const response = await fetch(endpoint, {
                 method: 'DELETE'
             })
@@ -776,7 +762,6 @@ async function executeDelete() {
             if(state.deleteType === 'pasien'){
                 endpoint=`${API_URL}/api/pasien/${state.idToDelete}`
             }
-            console.log({endpoint})
             const response = await fetch(endpoint, {
                 method: 'DELETE'
             })
