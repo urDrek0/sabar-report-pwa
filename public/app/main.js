@@ -223,6 +223,7 @@ function daftarPegawai() {
     const target = document.getElementById('table-data-daftar-pegawai');
 
     target.innerHTML = data_pegawai
+    .filter((pegawai) => pegawai.aktif === true)
         .map(
         (pegawai) => `
             <div id="data-pegawai-wrapper" class="pt-1 pb-1">
