@@ -297,6 +297,7 @@ function addNewReport() {
         document.getElementById('modal-add-data-report').classList.remove('hidden');
         let nameSelectPasien = document.getElementById('pasien-name');
         nameSelectPasien.innerHTML = data_pasien
+        .filter((pasien) => pasien.aktif === true)
             .map((pasien) => `<option value="${pasien.nama}">${safeHTMLConvert(pasien.nama)}</option>`)
             .join('');
     }
