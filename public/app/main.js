@@ -223,7 +223,6 @@ function daftarPegawai() {
     const target = document.getElementById('table-data-daftar-pegawai');
 
     target.innerHTML = data_pegawai
-    .filter((pegawai) => pegawai.aktif === true)
         .map(
         (pegawai) => `
             <div id="data-pegawai-wrapper" class="pt-1 pb-1">
@@ -261,7 +260,6 @@ function daftarPasien() {
     const target = document.getElementById('table-data-daftar-pasien');
 
     target.innerHTML = data_pasien
-        .filter((pasien) => pasien.aktif === true)
         .map(
         (pasien) => `
             <div id="data-pasien-wrapper" class="pt-1 pb-1">
@@ -298,7 +296,6 @@ function addNewReport() {
         document.getElementById('modal-add-data-report').classList.remove('hidden');
         let nameSelectPasien = document.getElementById('pasien-name');
         nameSelectPasien.innerHTML = data_pasien
-            .filter((pasien) => pasien.aktif === true)
             .map((pasien) => `<option value="${pasien.nama}">${safeHTMLConvert(pasien.nama)}</option>`)
             .join('');
     }
