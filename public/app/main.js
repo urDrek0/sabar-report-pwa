@@ -157,8 +157,8 @@ function dashboard() {
                 <div id="" class="bg-white p-4 grid grid-cols-8 gap-4 w-full">
                     <h2 id="${sabr.id_report + '-nama'}" class="text-left">${data_pasien.find((pasien) => pasien.id_pasien === sabr.pasien_id)?.nama || 'N/A'}</h2>
                     <h2 id="${sabr.id_report + '-situation'}" class="text-justify col-span-2">${safeHTMLConvert(sabr.situation)}</h2>
-                    <h2 id="${sabr.id_report + '-background'}" class="text-justify">${safeHTMLConvert(sabr.background)}</h2>
-                    <h2 id="${sabr.id_report + '-assessment'}" class="text-justify col-span-2">${safeHTMLConvert(sabr.assessment)}</h2>
+                    <h2 id="${sabr.id_report + '-background'}" class="text-justify col-span-2">${safeHTMLConvert(sabr.background)}</h2>
+                    <h2 id="${sabr.id_report + '-assessment'}" class="text-justify">${safeHTMLConvert(sabr.assessment)}</h2>
                     <h2 id="${sabr.id_report + '-recommendation'}" class="text-justify">${safeHTMLConvert(sabr.recommendation)}</h2>
                     <div id="action" class="flex space-x-4 justify-center place-self-start">
                     <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${sabr.id_report}'), type = 'sabr'">
