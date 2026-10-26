@@ -135,8 +135,6 @@ function dashboard() {
 
     let data_sabr = state.dataReport;
     let data_pasien = state.dataPasien;
-    let data_pegawai = state.dataPegawai;
-    let data_shift = state.dataShift;
 
     let hideElementbyId = ['daftar-pegawai', 'table-data-daftar-pegawai','report-title-pegawai','table-header-pegawai','daftar-pasien','report-title-pasien','table-header-pasien','table-data-daftar-pasien','report-title-shift-handler','shift-handler-join']
     let shownElementbyId = ['table-data-pasien-sabr','report-title-dashboard','table-header-dashboard','shift-handler-wrapper']
@@ -146,7 +144,6 @@ function dashboard() {
     shownElementbyId.forEach(id => document.getElementById(id)?.classList.remove('hidden'))
 
     const target = document.getElementById('table-data-pasien-sabr');
-    const targetShift = document.getElementById('shift-handler-on-dashboard')
 
     const filteredData = data_sabr.filter((sabr) => sabr.shift === state.selectedShift);
     const filteredDataByDate = filteredData.filter((sabr) => sabr.tanggal_shift.slice(0,10) === state.selectedDate);
@@ -170,15 +167,6 @@ function dashboard() {
                     </div>
                 </div>
             </div>    `,).join('');
-
-    const filterdataShift = data_shift.filter((shift) => shift.shift === state.selectedShift);
-    const filterdataShiftbyDate = filterdataShift.filter((shift) => shift.tanggal_shift.slice(0,10) === state.selectedDate)
-    targetShift.innerHTML = filterdataShiftbyDate.map(
-        (shift) => `
-            <div id="" class="grid grid-cols-4 gap-4">
-                <h1 id="${shift.id_shift + '-nama'}" class="col-span-2 text-sm text-left p-2">${data_pegawai.find(p => p.id_pegawai === shift.pegawai_id)?.nama || 'N/A'}</h1>
-                <h1 id="${shift.id_shift + '-role'}" class="col-span-2 text-sm text-left p-2">${shift.shift_leader ? 'Leader' : 'Member'}</h1>
-            </div>`).join('');
 }
 
 function showShift() {
