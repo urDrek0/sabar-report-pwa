@@ -1,6 +1,6 @@
-// const API_URL = 'https://sabr-backend.vercel.app'
-const API_URL = 'http://localhost:3000'
-// alert("Aplikasi Masih dalam Pengembangan, untuk segala kendala silahkan dilaporkan, diperhatikan juga untuk aplikasi tidak sampai ke ke tangan lain")
+const API_URL = 'https://sabr-backend.vercel.app'
+// const API_URL = 'http://localhost:3000'
+alert("Aplikasi Masih dalam Pengembangan, untuk segala kendala silahkan dilaporkan, diperhatikan juga untuk aplikasi tidak sampai ke ke tangan lain")
 async function fetchDataPasien() {
     const resDaftarPasien = await fetch(`${API_URL}/api/pasien`);
     const data_pasien = await resDaftarPasien.json();
@@ -40,6 +40,11 @@ let state = {
     idToDelete: null,
     deleteType: null,
     editId: null
+}
+const bulanDictionary = {
+    0: 'Januari', 1: 'Februari', 2: 'Maret',3: 'April',
+    4: 'Mei', 5: 'Juni', 6: 'Juli', 7: 'Agustus',
+    8: 'September', 9: 'Oktober', 10: 'November', 11: 'Desember'
 }
 
 async function initData() {
@@ -87,7 +92,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     height: 315,
     dateClick: function(info) {
         var dateFormatting = info.date;
-        document.getElementById('date-selected-data').innerHTML = 'Data Tanggal : ' + dateFormatting.toLocaleDateString('id-ID', {
+        document.getElementById('date-selected-data').innerHTML = 'Data : ' + dateFormatting.toLocaleDateString('id-ID', {
             weekday: 'short',
             day: 'numeric',
             month: 'short',
@@ -108,7 +113,7 @@ calendar.render();
     const dateNow = document.getElementById('today-date');
     const autoFillDate = document.getElementById('date-input');
     const dateFormatting = calendar.getDate();
-    document.getElementById('date-selected-data').innerHTML = 'Data Tanggal : ' + dateFormatting.toLocaleDateString('id-ID', {
+    document.getElementById('date-selected-data').innerHTML = 'Data : ' + dateFormatting.toLocaleDateString('id-ID', {
         weekday: 'short',
         day: 'numeric',
         month: 'short',
@@ -128,6 +133,7 @@ calendar.render();
     });
     await initData()
     renderCurrentPage()
+    statisticOptionDropdown()
 });
 
 function toggleSideBar() {
@@ -144,7 +150,7 @@ function dashboard() {
     let data_sabr = state.dataReport;
     let data_pasien = state.dataPasien;
     let data_shift_counter = state.dataShiftCounter
-
+    console.log("dashboard",{data_sabr})
     let hideElementbyId = ['daftar-pegawai', 'table-data-daftar-pegawai','report-title-pegawai','table-header-pegawai','daftar-pasien','report-title-pasien','table-header-pasien','table-data-daftar-pasien','report-title-shift-handler','shift-handler-join']
     let shownElementbyId = ['table-data-pasien-sabr','report-title-dashboard','table-header-dashboard','shift-handler-wrapper']
 
@@ -182,11 +188,11 @@ function dashboard() {
     const shiftCounter = document.getElementById('shift-handler-based-on-date');
     shiftCounter.innerHTML = filteredCounterByDate.map(
         (counter) => `
-            <h2 id="pasien-awal" class="p-2 font-bold text-sm text-left">Awal : ${counter.pasien_awal}</h2>
-            <h2 id="pasien-masuk" class="p-2 font-bold text-sm text-left">Masuk : ${counter.pasien_masuk}</h2>                    
-            <h2 id="pasien-pulang" class="p-2 font-bold text-sm text-left">Pulang: ${counter.pasien_pulang}</h2>                    
-            <h2 id="pasien-total" class="p-2 font-bold text-sm text-left">Total : ${counter.total_pasien}</h2>  
-            <div id="action" class="flex space-x-4 justify-center">
+            <h2 id="pasien-awal" class="p-1 font-bold text-sm text-center">${counter.pasien_awal}</h2>
+            <h2 id="pasien-masuk" class="p-1 font-bold text-sm text-center">${counter.pasien_masuk}</h2>                    
+            <h2 id="pasien-pulang" class="p-1 font-bold text-sm text-center col-span-2">${counter.pasien_pulang}</h2>                    
+            <h2 id="pasien-total" class="p-1 font-bold text-sm text-center col-span-2">${counter.total_pasien}</h2>  
+            <div id="action" class="flex space-x-4 justify-center pr-4">
                 <button class="max-w-5 h-auto cursor-pointer" id="" onclick="editCounter('${counter.id_counter}')">
                     <img src="./logo/edit.png" alt="" class="max-w-4">
                 </button>
@@ -887,4 +893,62 @@ async function execDeleteCounter(){
         console.error("Error during deleting Data Mobilitas", error)
         alert("Terjadi Kesalahan Jaringan.")
     }
+}
+async function statisticOptionDropdown(){
+    let data_sabr = state.dataReport
+    const allMonth = data_sabr.map((month) => new Date(month.tanggal_shift).getMonth())
+    const allYear = data_sabr.map((year) => new Date(year.tanggal_shift).getFullYear())
+    const uniqueMonth = [...new Set(allMonth)].sort((a,b) => a - b)
+    const uniqueYears = [...new Set(allYear)].sort((a,b) => b - a)
+    const targetMonth = document.getElementById('show-statistic-months')
+    const targetYear = document.getElementById('show-statistic-years')
+    const defaultMonthOption = `<option value="" selected disabled hidden>Pilih Bulan</option>`;
+    const defaultYearOption = `<option value="" selected disabled hidden>Pilih Tahun</option>`;
+    targetMonth.innerHTML = defaultMonthOption + uniqueMonth.map((m) => `<option value="${m}">${bulanDictionary[m]}</option>`,).join('');
+    targetYear.innerHTML = defaultYearOption + uniqueYears.map((y) => `<option value="${y}">${y}</option>`,).join('');
+    targetMonth.addEventListener('change', showStats);
+    targetYear.addEventListener('change', showStats);
+}
+
+function showStats(){
+    const target = document.getElementById('statistic-ready')
+    let monthStats = document.getElementById('show-statistic-months').value
+    let yearStats = document.getElementById('show-statistic-years').value
+    if(!monthStats|| !yearStats){
+        target.innerHTML = `<h2 class="text-center p-4 text-gray-500">Silakan pilih bulan dan tahun terlebih dahulu.</h2> `
+        return;
+    }
+
+    let filteredReports = state.dataReport.filter((report) => {
+        let dateForFilter = new Date(report.tanggal_shift)
+        return dateForFilter.getMonth() === parseInt(monthStats) && dateForFilter.getFullYear() === parseInt(yearStats)
+    })
+   let uniquePasien = [...new Set(filteredReports.map(report => report.pasien_id))]
+   let totalPasien = uniquePasien.length;
+
+   let pasienListHTML = uniquePasien.map(id => {
+        let pasien = state.dataPasien.find(p => p.id_pasien === id);
+        if(!pasien) return '';
+        let statusText = pasien.aktif ? 'Aktif' : 'Tidak Aktif';
+        return `
+            <div class="grid grid-cols-4 gap-4 border-b py-2 px-4 hover:bg-gray-50">
+                <h2 class="text-left col-span-2">${safeHTMLConvert(pasien.nama)}</h2>
+                <h2 class="text-left">${safeHTMLConvert(pasien.umur)}</h2>
+                <h2 class="text-left">${statusText}</h2>
+            </div>
+        `
+   }).join('')
+
+    target.innerHTML = `
+        <h1 class="text-md text-center">Ringaksan Statistik pada Bulan ${bulanDictionary[monthStats]} pada Tahun ${yearStats}</h1>
+        <h1 class="text-sm text-left pt-4 pb-4">Total Pasien pada Bulan ${bulanDictionary[monthStats]} adalah sebanyak ${totalPasien}, berikut adalah nama nama pasien tersebut.</h1>
+        <div id="list-name-${bulanDictionary[monthStats]}-${yearStats}" class="grid grid-cols-4 gap-4 bg-gray-400 p-2">
+            <h2 class="col-span-2 text-white text-sm">Nama</h2>
+            <h2 class="text-white text-sm">Umur</h2>
+            <h2 class="text-white text-sm">Status</h2>
+        </div>
+        <div class="bg-white max-h-[300px] overflow-y-auto rounded-b-md">
+            ${totalPasien > 0 ? pasienListHTML : `<h2 class="text-center p-4 text-gray-500">Tidak ada laporan SBAR di bulan ${bulanDictionary[monthStats]} ${yearStats}.</h2>`}
+         </div>
+    `
 }

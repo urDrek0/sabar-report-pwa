@@ -224,7 +224,7 @@
             </aside>
 
             <main class="min-w-0 flex-1" id="">
-                <div class="grid grid-cols-4 p-4">
+                <div class="grid grid-cols-5 p-4">
                     <button id="" onclick="addNewReport()" class="cursor-pointer bg-[#353A3E] rounded-xl place-self-start w-auto hover:bg-black transition duration-200">
                         <div class="justify-center place-self-center p-2">
                             <h2 id="add-data-guidance" class="text-white text-xl text-center"></h2>
@@ -236,16 +236,26 @@
                     <h1 id="report-title-pasien" class="col-span-2 navbar-font text-2xl text-center hidden place-self-center">Daftar Pasien</h1>
                     <h1 id="report-title-shift-handler" class="col-span-2 navbar-font text-2xl text-center hidden place-self-center">Daftar Shift Handler</h1>
                     
-                    <div id="shift-handler-wrapper" class="bg-white rounded-md">
-                        <div class="p-2 font-bold text-md text-center place-self-center w-full rounded-tl-lg rounded-tr-lg bg-[#BFBFBF] grid grid-cols-5">
-                            <h2 id="date-selected-data" class="col-span-4 text-left"></h2>
-                            <button id="" class="cursor-pointer place-self-end" onclick="addCounter()">
-                                <h1 class="text-xl">+</h1>
+                    <div id="shift-handler-wrapper" class="bg-white rounded-md col-span-2">
+                        <div class="p-2 font-bold text-md text-center place-self-center w-full rounded-tl-lg rounded-tr-lg bg-[#BFBFBF] grid grid-cols-7">
+                            <h2 id="date-selected-data" class="col-span-3 text-left text-md"></h2>
+                            <button id="" class="cursor-pointer col-span-3 hover:text-black text-gray-500 transition duration-200" onclick="addCounter()">
+                                <h1 class="text-md ">(Tambah Data Mobilitas)</h1>
+                            </button>
+                            <button class="cursor-pointer place-self-end pr-4" onclick="document.getElementById('modal-show-statistic').classList.remove('hidden')">
+                                <img src="./logo/stats.png" alt="" class="max-h-5">
                             </button>
                         </div>
-                        <div id="shift-handler-based-on-date" class="grid grid-cols-5 gap-4"></div>
+                        <h2 id="" class="p-2 font-bold text-md text-center">Data Mobilitas Pasien</h2>
+                        <div id="" class="grid grid-cols-7 gap-4">
+                            <h2 id="pasien-awal" class="p-2 font-bold text-sm text-center">Awal</h2>
+                            <h2 id="pasien-masuk" class="p-2 font-bold text-sm text-center">Masuk</h2>                    
+                            <h2 id="pasien-pulang" class="p-2 font-bold text-sm text-center col-span-2">Pulang/Pindah</h2>                    
+                            <h2 id="pasien-total" class="p-2 font-bold text-sm text-center col-span-2">Total Pasien</h2>  
+                            <h2 class=""></h2>
+                        </div>
+                        <div id="shift-handler-based-on-date" class="grid grid-cols-7 gap-4"></div>
                     </div>
-
                 </div>
 
                 <div id="modal-add-counter" class="overflow-y-scroll fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pt-5 pb-5 hidden">
@@ -315,7 +325,7 @@
                         <h2 id="" class="">Peran</h2>                    
                         <h2 id="" class=""></h2>                    
                     </div>
-                    <div id="table-data-shift-handler" class="max-h-[700px] overflow-y-auto"></div>
+                    <div id="table-data-shift-handler" class="max-h-[735px] overflow-y-auto"></div>
                 </div>
 
                 <div id="table-header-dashboard" class="bg-[#BFBFBF] p-4 grid grid-cols-10 gap-4 w-full">
@@ -327,7 +337,7 @@
                     <h2 class=""></h2>
                 </div>
 
-                <div id="table-data-pasien-sabr" class="max-h-[700px] overflow-y-auto"></div>
+                <div id="table-data-pasien-sabr" class="max-h-[735px] overflow-y-auto"></div>
 
                 <div id="daftar-pegawai" class="hidden">
                     <div id="table-header-pegawai" class="bg-[#BFBFBF] p-4 grid grid-cols-5 gap-4 w-full">
@@ -336,7 +346,7 @@
                         <h2 class="">Status</h2>
                         <h2 class=""></h2>
                     </div>
-                    <div id="table-data-daftar-pegawai" class="max-h-[700px] overflow-y-auto"></div>
+                    <div id="table-data-daftar-pegawai" class="max-h-[735px] overflow-y-auto"></div>
                 </div>
 
                 <div id="daftar-pasien" class="hidden">
@@ -346,7 +356,7 @@
                         <h2 class="">Status</h2>
                         <h2 class=""></h2>
                     </div>
-                    <div id="table-data-daftar-pasien" class="max-h-[700px] overflow-y-auto">
+                    <div id="table-data-daftar-pasien" class="max-h-[735px] overflow-y-auto">
                     </div>
                 </div>
             </main>
@@ -641,6 +651,27 @@
             </div>
         </div>
         
+        <div id="modal-show-statistic" class="overflow-y-scroll fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pt-5 pb-5 hidden">
+            <div id="modal-content-statistic" class="bg-white w-5/6 h-auto rounded-xl p-4 justify-center place-self-center">
+                <button id="close-modal" class="cursor-pointer place-self-end" onclick="document.getElementById('modal-show-statistic').classList.add('hidden')">
+                    <img src="./logo/delete.png" alt="" class="max-w-5 h-auto">
+                </button>
+                <h1 class="text-center text-2xl p-4">Rangkuman Statistik</h1>
+                <div class="grid grid-cols-2 gap-8">
+                    <div class="flex flex-col space-y-4 pt-4">
+                        <h2 class="text-left">Bulan</h2>
+                        <select type="text" name="" id="show-statistic-months" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Bulan"></select>
+                    </div>
+                    <div class="flex flex-col space-y-4 pt-4">
+                        <h2 class="text-left">Tahun</h2>
+                        <select type="text" name="" id="show-statistic-years" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Tahun"></select>
+                    </div>
+                </div>
+                <div class="pt-4">
+                    <div id="statistic-ready" class="bg-gray-300 rounded-md p-2"></div>
+                </div>
+            </div>  
+        </div> 
 	</body>
     <script src="./app/main.js"></script>
 </html>
