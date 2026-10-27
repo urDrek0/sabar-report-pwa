@@ -144,9 +144,6 @@ function dashboard() {
     let data_sabr = state.dataReport;
     let data_pasien = state.dataPasien;
     let data_shift_counter = state.dataShiftCounter
-    console.log({data_sabr})
-    console.log({data_pasien})
-    console.log({data_shift_counter})
 
     let hideElementbyId = ['daftar-pegawai', 'table-data-daftar-pegawai','report-title-pegawai','table-header-pegawai','daftar-pasien','report-title-pasien','table-header-pasien','table-data-daftar-pasien','report-title-shift-handler','shift-handler-join']
     let shownElementbyId = ['table-data-pasien-sabr','report-title-dashboard','table-header-dashboard','shift-handler-wrapper']
@@ -489,7 +486,8 @@ async function submitCounter(){
             document.getElementById('pasien-counter-masuk').value = ''
             document.getElementById('pasien-counter-pulang').value = ''
             document.getElementById('modal-add-counter').classList.add('hidden');
-            dashboard()
+            state.dataShiftCounter = await fetchDataShiftPasienCounter()
+            renderCurrentPage()
         }
     }catch(error){
             console.error("Error Sumbiting Data Mobilitas Pasien", error)
@@ -784,7 +782,6 @@ async function modalDeleteData(id, type) {
 async function executeDelete() {
     if(state.currentPage === 'dashboard'){
         if(!state.idToDelete) {return;}
-
         try{
             let endpoint = ''
             if(state.deleteType === 'sabr'){
@@ -875,5 +872,19 @@ async function deleteCounter(id) {
         document.getElementById('modal-delete-counter').classList.remove('hidden');
 }
 async function execDeleteCounter(){
-
+    let endpoint = `${API_URL}/api/shift_pasien_counter/${state.idToDelete}`
+    try{
+        const response = await fetch(endpoint, {   
+            method: 'DELETE'
+        })
+        if(response.ok){
+            alert('Laporan Berhasil Dihapus')
+            document.getElementById('modal-delete-counter').classList.add('hidden');
+            state.dataShiftCounter = await fetchDataShiftPasienCounter();
+            dashboard()
+        }
+    }catch(error){
+        console.error("Error during deleting Data Mobilitas", error)
+        alert("Terjadi Kesalahan Jaringan.")
+    }
 }
