@@ -1,5 +1,6 @@
-const API_URL = 'https://sabr-backend.vercel.app'
-alert("Aplikasi Masih dalam Pengembangan, untuk segala kendala silahkan dilaporkan, diperhatikan juga untuk aplikasi tidak sampai ke ke tangan lain")
+// const API_URL = 'https://sabr-backend.vercel.app'
+const API_URL = 'http://localhost:3000'
+// alert("Aplikasi Masih dalam Pengembangan, untuk segala kendala silahkan dilaporkan, diperhatikan juga untuk aplikasi tidak sampai ke ke tangan lain")
 async function fetchDataPasien() {
     const resDaftarPasien = await fetch(`${API_URL}/api/pasien`);
     const data_pasien = await resDaftarPasien.json();
@@ -20,6 +21,11 @@ async function fetchDataShiftHandler() {
     const data_shift = await resDaftarShift.json();
     return data_shift;
 }
+async function fetchDataShiftPasienCounter() {
+    const resDaftarShiftCounter = await fetch(`${API_URL}/api/shift_pasien_counter`);
+    const data_shift_counter = await resDaftarShiftCounter.json();
+    return data_shift_counter;
+}
 var todayDate = new Date().toLocaleDateString('en-CA')
 
 let state = {
@@ -30,6 +36,7 @@ let state = {
     dataShift: [],
     dataPegawai: [],
     dataPasien: [],
+    dataShiftCounter: [],
     idToDelete: null,
     deleteType: null,
     editId: null
@@ -41,6 +48,7 @@ async function initData() {
         state.dataShift = await fetchDataShiftHandler()
         state.dataPegawai = await fetchDataPegawai()
         state.dataPasien = await fetchDataPasien()
+        state.dataShiftCounter = await fetchDataShiftPasienCounter()
     }catch(error){
         console.error("Gagal Inisialisasi Data : ", error)
     }
@@ -79,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     height: 315,
     dateClick: function(info) {
         var dateFormatting = info.date;
-        document.getElementById('date-selected-data').innerHTML = 'PJ pada : ' + dateFormatting.toLocaleDateString('id-ID', {
+        document.getElementById('date-selected-data').innerHTML = 'Data Tanggal : ' + dateFormatting.toLocaleDateString('id-ID', {
             weekday: 'short',
             day: 'numeric',
             month: 'short',
@@ -100,7 +108,7 @@ calendar.render();
     const dateNow = document.getElementById('today-date');
     const autoFillDate = document.getElementById('date-input');
     const dateFormatting = calendar.getDate();
-    document.getElementById('date-selected-data').innerHTML = 'PJ pada : ' + dateFormatting.toLocaleDateString('id-ID', {
+    document.getElementById('date-selected-data').innerHTML = 'Data Tanggal : ' + dateFormatting.toLocaleDateString('id-ID', {
         weekday: 'short',
         day: 'numeric',
         month: 'short',
@@ -135,6 +143,10 @@ function dashboard() {
 
     let data_sabr = state.dataReport;
     let data_pasien = state.dataPasien;
+    let data_shift_counter = state.dataShiftCounter
+    console.log({data_sabr})
+    console.log({data_pasien})
+    console.log({data_shift_counter})
 
     let hideElementbyId = ['daftar-pegawai', 'table-data-daftar-pegawai','report-title-pegawai','table-header-pegawai','daftar-pasien','report-title-pasien','table-header-pasien','table-data-daftar-pasien','report-title-shift-handler','shift-handler-join']
     let shownElementbyId = ['table-data-pasien-sabr','report-title-dashboard','table-header-dashboard','shift-handler-wrapper']
@@ -151,14 +163,14 @@ function dashboard() {
     target.innerHTML = filteredDataByDate.map(
         (sabr) => `
             <div id="data-sabr-wrapper" class="pt-1 pb-1">
-                <div id="" class="bg-white p-4 grid grid-cols-8 gap-4 w-full">
+                <div id="" class="bg-white p-4 grid grid-cols-10 gap-4 w-full">
                     <h2 id="${sabr.id_report + '-nama'}" class="text-left">${data_pasien.find((pasien) => pasien.id_pasien === sabr.pasien_id)?.nama || 'N/A'}</h2>
                     <h2 id="${sabr.id_report + '-situation'}" class="text-justify col-span-2">${safeHTMLConvert(sabr.situation)}</h2>
                     <h2 id="${sabr.id_report + '-background'}" class="text-justify col-span-2">${safeHTMLConvert(sabr.background)}</h2>
-                    <h2 id="${sabr.id_report + '-assessment'}" class="text-justify">${safeHTMLConvert(sabr.assessment)}</h2>
-                    <h2 id="${sabr.id_report + '-recommendation'}" class="text-justify">${safeHTMLConvert(sabr.recommendation)}</h2>
+                    <h2 id="${sabr.id_report + '-assessment'}" class="text-justify col-span-2">${safeHTMLConvert(sabr.assessment)}</h2>
+                    <h2 id="${sabr.id_report + '-recommendation'}" class="text-justify col-span-2">${safeHTMLConvert(sabr.recommendation)}</h2>
                     <div id="action" class="flex space-x-4 justify-center place-self-start">
-                    <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${sabr.id_report}'), type = 'sabr'">
+                    <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalEditData('${sabr.id_report}', type = 'sabr')">
                         <img src="./logo/edit.png" alt="" class="">
                     </button>
                     <button class="max-w-5 h-auto cursor-pointer" id="" onclick="modalDeleteData('${sabr.id_report}', type = 'sabr')">
@@ -167,6 +179,24 @@ function dashboard() {
                     </div>
                 </div>
             </div>    `,).join('');
+    
+    const filteredCounter = data_shift_counter.filter((counter) => counter.shift === state.selectedShift);
+    const filteredCounterByDate = filteredCounter.filter((counter) => counter.tanggal_shift.slice(0,10) === state.selectedDate);
+    const shiftCounter = document.getElementById('shift-handler-based-on-date');
+    shiftCounter.innerHTML = filteredCounterByDate.map(
+        (counter) => `
+            <h2 id="pasien-awal" class="p-2 font-bold text-sm text-left">Awal : ${counter.pasien_awal}</h2>
+            <h2 id="pasien-masuk" class="p-2 font-bold text-sm text-left">Masuk : ${counter.pasien_masuk}</h2>                    
+            <h2 id="pasien-pulang" class="p-2 font-bold text-sm text-left">Pulang: ${counter.pasien_pulang}</h2>                    
+            <h2 id="pasien-total" class="p-2 font-bold text-sm text-left">Total : ${counter.total_pasien}</h2>  
+            <div id="action" class="flex space-x-4 justify-center">
+                <button class="max-w-5 h-auto cursor-pointer" id="" onclick="editCounter('${counter.id_counter}')">
+                    <img src="./logo/edit.png" alt="" class="max-w-4">
+                </button>
+                <button class="max-w-5 h-auto cursor-pointer" id="" onclick="deleteCounter('${counter.id_counter}')">
+                    <img src="./logo/delete.png" alt="" class="max-w-4">
+                </button>                  
+        `,).join('');
 }
 
 function showShift() {
@@ -176,8 +206,8 @@ function showShift() {
 
     let data_shift = state.dataShift
     let data_pegawai = state.dataPegawai
-    let hideElementbyId = ['modal-add-data-report','daftar-pegawai','table-data-daftar-pegawai','report-title-pegawai','table-header-pegawai','table-data-pasien-sabr','report-title-dashboard','table-header-dashboard','daftar-pasien','report-title-pasien','table-header-pasien','table-data-daftar-pasien','shift-handler-wrapper']
-    let shownElementbyId = ['report-title-shift-handler', 'shift-handler-join']
+    let hideElementbyId = ['modal-add-data-report','daftar-pegawai','table-data-daftar-pegawai','report-title-pegawai','table-header-pegawai','table-data-pasien-sabr','report-title-dashboard','table-header-dashboard','daftar-pasien','report-title-pasien','table-header-pasien','table-data-daftar-pasien']
+    let shownElementbyId = ['report-title-shift-handler', 'shift-handler-join','shift-handler-wrapper']
 
     document.getElementById('add-data-guidance').textContent = 'Add Shift Handler +';
     hideElementbyId.forEach(id => document.getElementById(id)?.classList.add('hidden'))
@@ -339,7 +369,15 @@ function addNewReport() {
     }
     shiftHandlerEvent.addEventListener('change', renderingFieldFrom)               
 }
- 
+function addCounter(){
+    state.editId = null 
+    document.getElementById('date-counter-input').value = state.selectedDate
+    document.getElementById('modal-shift-counter-selector').value = state.selectedShift
+    document.getElementById('pasien-counter-awal').value = ''
+    document.getElementById('pasien-counter-masuk').value = ''
+    document.getElementById('pasien-counter-pulang').value = ''
+    document.getElementById('modal-add-counter').classList.remove('hidden')
+}
 function modalEditData(id) {
     let data_pasien = state.dataPasien
     let data_sabr = state.dataReport     
@@ -390,7 +428,74 @@ function modalEditData(id) {
         document.getElementById('modal-add-pasien').classList.remove('hidden');
     }
 }
+function editCounter(id){
+    state.editId = id
+    let data_shift_counter = state.dataShiftCounter
+    let dataEdit = data_shift_counter.find((sabr) => sabr.id_counter == state.editId);
+    let dateFormatting = new Date(dataEdit.tanggal_shift);
+    dateFormatting = dateFormatting.toISOString().split('T')[0];
+    document.getElementById('modal-add-counter').classList.remove('hidden')
+    document.getElementById('date-counter-input').value = dataEdit.tanggal_shift
+    document.getElementById('modal-shift-counter-selector').value = dataEdit.shift
+    document.getElementById('pasien-counter-awal').value = dataEdit.pasien_awal
+    document.getElementById('pasien-counter-masuk').value = dataEdit.pasien_masuk
+    document.getElementById('pasien-counter-pulang').value = dataEdit.pasien_pulang
+}
+async function submitCounter(){
+    const tanggal_shift = document.getElementById('date-counter-input').value
+    const shift = document.getElementById('modal-shift-counter-selector').value
+    const pasien_awal = parseInt(document.getElementById('pasien-counter-awal').value)
+    const pasien_masuk = parseInt(document.getElementById('pasien-counter-masuk').value)
+    const pasien_pulang = parseInt(document.getElementById('pasien-counter-pulang').value)
 
+    if (!pasien_awal || !pasien_masuk || !pasien_pulang){
+        alert('Lengkapi data, pastikan semua data terisi');
+        return;
+    }
+
+    const payload = {
+        tanggal_shift: tanggal_shift,
+        shift: shift,
+        pasien_awal: pasien_awal,
+        pasien_masuk: pasien_masuk,
+        pasien_pulang: pasien_pulang
+    }
+    console.log(payload)
+
+    try{
+        let endpoint = `${API_URL}/api/shift_pasien_counter`
+        let method = 'POST'
+
+        if(state.editId){
+            endpoint = `${API_URL}/api/shift_pasien_counter/${state.editId}`
+            method = 'PUT'
+        }
+        const response = await fetch(endpoint, {
+            method: method,
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        })
+        if(!response.ok){
+            const errorData = await response.json();
+            alert(`Gagal: ${errorData.error || 'Terjadi kesalahan saat menyimpan data.'}`);
+            return;
+        }
+        if(response.ok){
+            state.editId = null
+            alert(method === 'POST' ? "Data Mobilitas Pasien Berhasil Ditambahkan" : "Data Mobilitas Pasien Berhasil Diperbaharui")        
+            document.getElementById('date-counter-input').value = state.selectedDate
+            document.getElementById('modal-shift-counter-selector').value = state.selectedShift
+            document.getElementById('pasien-counter-awal').value = ''
+            document.getElementById('pasien-counter-masuk').value = ''
+            document.getElementById('pasien-counter-pulang').value = ''
+            document.getElementById('modal-add-counter').classList.add('hidden');
+            dashboard()
+        }
+    }catch(error){
+            console.error("Error Sumbiting Data Mobilitas Pasien", error)
+            alert("Terjadi Kesalahan Jaringan.")
+    }
+}
 async function submitNewReport() {
     if (state.currentPage === "dashboard"){
         const namaPasien = document.getElementById('pasien-name').value
@@ -676,7 +781,6 @@ async function modalDeleteData(id, type) {
     state.deleteType = type
     document.getElementById('modal-delete').classList.remove('hidden');
 }
-
 async function executeDelete() {
     if(state.currentPage === 'dashboard'){
         if(!state.idToDelete) {return;}
@@ -764,4 +868,12 @@ async function executeDelete() {
             alert("Terjadi Kesalahan Jaringan.")
         }
     }
+}
+
+async function deleteCounter(id) {
+        state.idToDelete = id
+        document.getElementById('modal-delete-counter').classList.remove('hidden');
+}
+async function execDeleteCounter(){
+
 }

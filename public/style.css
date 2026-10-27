@@ -273,23 +273,14 @@
   .max-h-\[90vh\] {
     max-height: 90vh;
   }
-  .max-h-\[500px\] {
-    max-height: 500px;
-  }
-  .max-h-\[600px\] {
-    max-height: 600px;
-  }
   .max-h-\[680px\] {
     max-height: 680px;
-  }
-  .max-h-\[690px\] {
-    max-height: 690px;
   }
   .max-h-\[700px\] {
     max-height: 700px;
   }
-  .max-h-\[800px\] {
-    max-height: 800px;
+  .max-h-\[7000px\] {
+    max-height: 7000px;
   }
   .min-h-screen {
     min-height: 100vh;
@@ -329,6 +320,12 @@
   }
   .w-full {
     width: 100%;
+  }
+  .max-w-3 {
+    max-width: calc(var(--spacing) * 3);
+  }
+  .max-w-4 {
+    max-width: calc(var(--spacing) * 4);
   }
   .max-w-4xl {
     max-width: var(--container-4xl);
@@ -399,6 +396,12 @@
   }
   .grid-cols-8 {
     grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+  .grid-cols-10 {
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+  }
+  .grid-cols-11 {
+    grid-template-columns: repeat(11, minmax(0, 1fr));
   }
   .flex-col {
     flex-direction: column;

@@ -239,20 +239,73 @@
                     <div id="shift-handler-wrapper" class="bg-white rounded-md">
                         <div class="p-2 font-bold text-md text-center place-self-center w-full rounded-tl-lg rounded-tr-lg bg-[#BFBFBF] grid grid-cols-5">
                             <h2 id="date-selected-data" class="col-span-4 text-left"></h2>
-                            <button id="" class="cursor-pointer place-self-end" 
-                                onclick="document.getElementById('shift-handler-on-dashboard').classList.toggle('hidden')">
-                                <img src="./logo/menu.png" class="w-5 h-auto" alt="">
+                            <button id="" class="cursor-pointer place-self-end" onclick="addCounter()">
+                                <h1 class="text-xl">+</h1>
                             </button>
                         </div>
+                        <div id="shift-handler-based-on-date" class="grid grid-cols-5 gap-4"></div>
+                    </div>
 
-                        <div id="shift-handler-based-on-date" class="grid grid-cols-4 gap-4">
-                            <h2 id="" class="p-2 font-bold text-sm text-left">Awal : </h2>
-                            <h2 id="" class="p-2 font-bold text-sm text-left">Masuk : </h2>                    
-                            <h2 id="" class="p-2 font-bold text-sm text-left">Pulang: </h2>                    
-                            <h2 id="" class="p-2 font-bold text-sm text-left">Total : </h2>                    
+                </div>
+
+                <div id="modal-add-counter" class="overflow-y-scroll fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pt-5 pb-5 hidden">
+                    <div id="modal-content-counter" class="bg-white w-1/2 h-auto rounded-xl p-4 justify-center place-self-center">
+                        <button id="close-modal" class="cursor-pointer place-self-end" onclick="document.getElementById('modal-add-counter').classList.add('hidden')">
+                            <img src="./logo/delete.png" alt="" class="max-w-5 h-auto">
+                        </button>
+                        <h1 class="text-center text-2xl p-4">Tambahkan Data Mobilitas Pasien</h1>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div id="modal-form-date" class="flex flex-col space-y-4 pt-4">
+                                <h2 class="text-left">Tanggal</h2>
+                                <input type="date" name="" id="date-counter-input" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Date" value="">
+                            </div>
+                            <div id="modal-form-shift" class="flex flex-col space-y-4 pt-4">
+                                <h2 class="text-left">Shift</h2>
+                                <select id="modal-shift-counter-selector" name="shift-select" class="cursor-pointer border-1 p-2">
+                                    <option value="" selected disabled hidden>Pilih Shift</option>
+                                    <option value="pagi" class="text-black">Pagi</option>
+                                    <option value="siang" class="text-black">Siang</option>
+                                    <option value="malam" class="text-black">Malam</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="flex flex-col space-y-4 pt-4">
+                                <h2 class="text-left">Pasien Awal</h2>
+                                <input type="number" name="" id="pasien-counter-awal" min="0" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Jumlah Pasien Awal">
+                            </div>
+                            <div class="flex flex-col space-y-4 pt-4">
+                                <h2 class="text-left">Pasien Masuk</h2>
+                                <input type="number" name="" id="pasien-counter-masuk" min="0" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Jumlah Pasien Masuk">
+                            </div>
+                            <div class="flex flex-col space-y-4 pt-4">
+                                <h2 class="text-number">Pasien Pulang/Pindah</h2>
+                                <input type="number" name="" id="pasien-counter-pulang" min="0" class="text-pretty border border-1 rounded-xl p-2 w-full" placeholder="Jumlah Pasien Pulang">
+                            </div>
+                        </div>
+                        <div id="modal-form-submit-pegawai" class="pt-4 place-self-end">
+                            <button id="" class="cursor-pointer bg-[#353A3E] rounded-xl  w-auto hover:bg-black transition duration-200" onclick="submitCounter()">
+                                <div class="justify-center place-self-center p-2">
+                                    <h2 class="text-white text-center">Submit</h2>
+                                </div>
+                            </button>
+                        </div>  
+                    </div>
+                </div>
+                <div class="fixed w-full h-full bg-black/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pt-5 pb-5 hidden" id="modal-delete-counter">
+                    <div class="bg-white p-6 rounded-xl w-2/5 justify-center place-self-center">
+                        <h2 class="text-center">Apakah anda yakin ingin menghapus data ini?</h2>
+                        <div class="grid grid-cols-2 gap-4 pt-4">
+                            <button class="cursor-pointer bg-red-500 rounded-xl p-2 hover:bg-red-600 transition duration-200" onclick="execDeleteCounter()">
+                                <h2 class="text-white text-center">Ya</h2>
+                            </button>
+                            <button class="cursor-pointer bg-gray-500 rounded-xl p-2 hover:bg-gray-600 transition duration-200" onclick="document.getElementById('modal-delete-counter').classList.add('hidden')">
+                                <h2 class="text-white text-center">Tidak</h2>
+                            </button>
                         </div>
                     </div>
                 </div>
+
                 <div id="shift-handler-join" class="hidden">
                     <div id="shift-handler-join-content" class="bg-[#BFBFBF] w-full grid grid-cols-6 gap-4 p-4">
                         <h2 id="" class="">Tanggal</h2>
@@ -265,16 +318,16 @@
                     <div id="table-data-shift-handler" class=""></div>
                 </div>
 
-                <div id="table-header-dashboard" class="bg-[#BFBFBF] p-4 grid grid-cols-8 gap-4 w-full">
+                <div id="table-header-dashboard" class="bg-[#BFBFBF] p-4 grid grid-cols-10 gap-4 w-full">
                     <h2 class="">Name</h2>
                     <h2 class="col-span-2">Situation</h2>
                     <h2 class="col-span-2">Background</h2>
-                    <h2 class="">Assessment</h2>
-                    <h2 class="">Recommendation</h2>
+                    <h2 class="col-span-2">Assessment</h2>
+                    <h2 class="col-span-2">Recommendation</h2>
                     <h2 class=""></h2>
                 </div>
 
-                <div id="table-data-pasien-sabr" class="max-h-[680px] overflow-y-auto"></div>
+                <div id="table-data-pasien-sabr" class="max-h-[700px] overflow-y-auto"></div>
 
                 <div id="daftar-pegawai" class="hidden">
                     <div id="table-header-pegawai" class="bg-[#BFBFBF] p-4 grid grid-cols-5 gap-4 w-full">
