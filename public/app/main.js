@@ -293,9 +293,9 @@ function daftarPasien() {
     let data_pasien = state.dataPasien
     const target = document.getElementById('table-data-daftar-pasien');
 
-    target.innerHTML = data_pasien
-        .map(
-        (pasien) => `
+    target.innerHTML = [...data_pasien]
+    .sort((a,b) => b.aktif - a.aktif)
+        .map((pasien) => `
             <div id="data-pasien-wrapper" class="pt-1 pb-1">
                 <div id="" class="bg-white p-4 grid grid-cols-5 gap-4 w-full">
                     <h2 id="${pasien.id_pasien + '-nama'}" class="text-left col-span-2">${safeHTMLConvert(pasien.nama)}</h2>
@@ -451,7 +451,7 @@ async function submitCounter(){
     const pasien_masuk = parseInt(document.getElementById('pasien-counter-masuk').value)
     const pasien_pulang = parseInt(document.getElementById('pasien-counter-pulang').value)
 
-    if (!pasien_awal || !pasien_masuk || !pasien_pulang){
+    if (!pasien_awal){
         alert('Lengkapi data, pastikan semua data terisi');
         return;
     }
