@@ -164,9 +164,12 @@ function dashboard() {
     const filteredDataByDate = filteredData.filter((sabr) => sabr.tanggal_shift.slice(0,10) === state.selectedDate);
 
     target.innerHTML = filteredDataByDate.map(
-        (sabr) => `
+        (sabr, index) => {
+            let bgColor = index % 2 === 0 ? 'bg-white' : 'bg-gray-200'
+            return `
             <div id="data-sabr-wrapper" class="pt-1 pb-1">
-                <div id="" class="bg-white p-4 grid grid-cols-10 gap-4 w-full">
+                <div id="" class="${bgColor} p-4 grid grid-cols-11 gap-4 w-full">
+                    <h2 class="text-left">${index + 1}</h2>
                     <h2 id="${sabr.id_report + '-nama'}" class="text-left">${data_pasien.find((pasien) => pasien.id_pasien === sabr.pasien_id)?.nama || 'N/A'}</h2>
                     <h2 id="${sabr.id_report + '-situation'}" class="text-justify col-span-2">${safeHTMLConvert(sabr.situation)}</h2>
                     <h2 id="${sabr.id_report + '-background'}" class="text-justify col-span-2">${safeHTMLConvert(sabr.background)}</h2>
@@ -181,7 +184,7 @@ function dashboard() {
                     </button>
                     </div>
                 </div>
-            </div>    `,).join('');
+            </div>`;}).join('');
     
     const filteredCounter = data_shift_counter.filter((counter) => counter.shift === state.selectedShift);
     const filteredCounterByDate = filteredCounter.filter((counter) => counter.tanggal_shift.slice(0,10) === state.selectedDate);
